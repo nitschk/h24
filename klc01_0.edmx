@@ -1,0 +1,1492 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="klc01Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="categories">
+          <Key>
+            <PropertyRef Name="cat_id" />
+          </Key>
+          <Property Name="cat_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="cat_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="first_start_number" Type="int" />
+          <Property Name="cat_start_time" Type="datetime" />
+          <Property Name="cat_time_limit" Type="int" />
+          <Property Name="force_order" Type="bit" />
+          <Property Name="valid" Type="bit" />
+          <Property Name="as_of_date" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="competitors">
+          <Key>
+            <PropertyRef Name="comp_id" />
+          </Key>
+          <Property Name="comp_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="comp_name" Type="nvarchar" MaxLength="50" />
+          <Property Name="bib" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="comp_chip_id" Type="int" />
+          <Property Name="rented_chip" Type="bit" />
+          <Property Name="team_id" Type="int" />
+          <Property Name="rank_order" Type="int" Nullable="false" />
+          <Property Name="comp_withdrawn" Type="bit" Nullable="false" />
+          <Property Name="comp_status" Type="varchar" MaxLength="10" />
+          <Property Name="comp_valid_flag" Type="bit" />
+          <Property Name="comp_club" Type="nvarchar" MaxLength="50" />
+          <Property Name="comp_reg" Type="nvarchar" MaxLength="10" />
+          <Property Name="comp_country" Type="varchar" MaxLength="10" />
+          <Property Name="comp_birthday" Type="datetime" />
+          <Property Name="as_of_date" Type="datetime" Nullable="false" />
+          <Property Name="withdrawn_datetime" Type="datetime" />
+          <Property Name="comp_id_previous" Type="int" />
+        </EntityType>
+        <EntityType Name="controls">
+          <Key>
+            <PropertyRef Name="control_id" />
+          </Key>
+          <Property Name="control_id" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="control_code" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="alt_code" Type="varchar" MaxLength="5" />
+          <Property Name="time_direction" Type="char" MaxLength="2" />
+          <Property Name="dif_hour" Type="int" />
+          <Property Name="dif_min" Type="int" />
+          <Property Name="dif_sec" Type="int" />
+          <Property Name="as_of_date" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="course_codes">
+          <Key>
+            <PropertyRef Name="cc_id" />
+          </Key>
+          <Property Name="cc_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="course_id" Type="int" Nullable="false" />
+          <Property Name="control_id" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="position" Type="int" Nullable="false" />
+          <Property Name="cc_status" Type="bit" />
+          <Property Name="as_of_date" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="courses">
+          <Key>
+            <PropertyRef Name="course_id" />
+          </Key>
+          <Property Name="course_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="course_name" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="course_length" Type="int" />
+          <Property Name="course_climb" Type="int" />
+          <Property Name="course_type" Type="nvarchar" MaxLength="100" />
+          <Property Name="control_count" Type="int" />
+          <Property Name="as_of_date" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="entry_xml">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="oris_team_id" Type="int" Nullable="false" />
+          <Property Name="class_name" Type="nvarchar" MaxLength="20" />
+          <Property Name="team_name" Type="nvarchar" MaxLength="50" />
+          <Property Name="team_short_name" Type="nvarchar" MaxLength="50" />
+          <Property Name="leg" Type="int" />
+          <Property Name="family" Type="nvarchar" MaxLength="50" />
+          <Property Name="given" Type="nvarchar" MaxLength="50" />
+          <Property Name="gender" Type="nchar" MaxLength="10" />
+          <Property Name="country" Type="nchar" MaxLength="10" />
+          <Property Name="birth_date" Type="nvarchar" MaxLength="50" />
+          <Property Name="si_chip" Type="int" />
+          <Property Name="note" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="legs">
+          <Key>
+            <PropertyRef Name="leg_id" />
+          </Key>
+          <Property Name="leg_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="comp_id" Type="int" Nullable="false" />
+          <Property Name="course_id" Type="int" />
+          <Property Name="readout_id" Type="int" />
+          <Property Name="start_dtime" Type="datetime" />
+          <Property Name="start_time" Type="varchar" MaxLength="20" />
+          <Property Name="finish_dtime" Type="datetime" />
+          <Property Name="finish_time" Type="varchar" MaxLength="20" />
+          <Property Name="leg_time" Type="varchar" MaxLength="20" />
+          <Property Name="leg_status" Type="nvarchar" MaxLength="10" />
+          <Property Name="dsk_penalty" Type="time" Precision="7" />
+          <Property Name="as_of_date" Type="datetime" Nullable="false" />
+          <Property Name="valid_flag" Type="bit" />
+          <Property Name="starting_leg" Type="bit" />
+        </EntityType>
+        <EntityType Name="logs">
+          <Key>
+            <PropertyRef Name="logs_id" />
+          </Key>
+          <Property Name="logs_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="logs_time" Type="datetime" Nullable="false" />
+          <Property Name="logs_message" Type="text" />
+          <Property Name="logs_type" Type="nvarchar" MaxLength="20" />
+          <Property Name="as_of_date" Type="datetime" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'klc01.dbo.results' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="results">
+          <Key>
+            <PropertyRef Name="team_nr" />
+            <PropertyRef Name="team_id" />
+            <PropertyRef Name="bib" />
+            <PropertyRef Name="valid_leg" />
+          </Key>
+          <Property Name="cat_id" Type="int" />
+          <Property Name="team_name" Type="nvarchar" MaxLength="255" />
+          <Property Name="team_nr" Type="int" Nullable="false" />
+          <Property Name="team_id" Type="int" Nullable="false" />
+          <Property Name="race_end" Type="datetime" />
+          <Property Name="comp_name" Type="nvarchar" MaxLength="50" />
+          <Property Name="bib" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="start_time" Type="varchar" MaxLength="20" />
+          <Property Name="finish_time" Type="varchar" MaxLength="20" />
+          <Property Name="leg_time" Type="varchar" MaxLength="20" />
+          <Property Name="leg_status" Type="nvarchar" MaxLength="10" />
+          <Property Name="course_id" Type="int" />
+          <Property Name="valid_leg" Type="int" Nullable="false" />
+          <Property Name="sum_legs" Type="int" />
+          <Property Name="max_finish" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="settings">
+          <Key>
+            <PropertyRef Name="s_id" />
+          </Key>
+          <Property Name="s_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="config_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="config_value" Type="nvarchar" MaxLength="1000" />
+          <Property Name="as_of_date" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="si_readout">
+          <Key>
+            <PropertyRef Name="readout_id" />
+          </Key>
+          <Property Name="readout_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="chip_id" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="card_readout_datetime" Type="datetime" Nullable="false" />
+          <Property Name="clear_datetime" Type="datetime" />
+          <Property Name="start_datetime" Type="datetime" />
+          <Property Name="check_datetime" Type="datetime" />
+          <Property Name="finish_datetime" Type="datetime" />
+          <Property Name="finish_missing" Type="bit" />
+          <Property Name="punch_count" Type="int" />
+          <Property Name="as_of_date" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="si_stamps">
+          <Key>
+            <PropertyRef Name="id_stamp" />
+          </Key>
+          <Property Name="id_stamp" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="readout_id" Type="int" Nullable="false" />
+          <Property Name="chip_id" Type="bigint" Nullable="false" />
+          <Property Name="control_code" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="control_mode" Type="int" Nullable="false" />
+          <Property Name="punch_datetime" Type="datetime" />
+          <Property Name="punch_wday" Type="varchar" MaxLength="50" />
+          <Property Name="punch_index" Type="int" />
+          <Property Name="as_of_date" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="slips">
+          <Key>
+            <PropertyRef Name="slip_id" />
+          </Key>
+          <Property Name="slip_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="comp_id" Type="int" Nullable="false" />
+          <Property Name="team_id" Type="int" />
+          <Property Name="course_id" Type="int" Nullable="false" />
+          <Property Name="course_name" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="readout_id" Type="int" Nullable="false" />
+          <Property Name="chip_id" Type="int" Nullable="false" />
+          <Property Name="leg_id" Type="int" Nullable="false" />
+          <Property Name="comp_name" Type="nvarchar" MaxLength="50" />
+          <Property Name="bib" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="comp_country" Type="varchar" MaxLength="10" />
+          <Property Name="rented_chip" Type="bit" />
+          <Property Name="team_nr" Type="int" />
+          <Property Name="team_name" Type="nvarchar" MaxLength="255" />
+          <Property Name="cat_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="course_length" Type="int" />
+          <Property Name="course_climb" Type="int" />
+          <Property Name="start_dtime" Type="datetime" />
+          <Property Name="clear_dtime" Type="datetime" />
+          <Property Name="clear_time" Type="varchar" MaxLength="15" />
+          <Property Name="check_dtime" Type="datetime" />
+          <Property Name="check_time" Type="varchar" MaxLength="15" />
+          <Property Name="finish_dtime" Type="datetime" />
+          <Property Name="leg_time" Type="varchar" MaxLength="15" />
+          <Property Name="punch_index" Type="int" />
+          <Property Name="position" Type="int" />
+          <Property Name="control_code" Type="varchar" MaxLength="5" />
+          <Property Name="punch_dtime" Type="datetime" />
+          <Property Name="punch_time" Type="varchar" MaxLength="15" />
+          <Property Name="lap_dtime" Type="time" Precision="7" />
+          <Property Name="lap_time" Type="varchar" MaxLength="15" />
+          <Property Name="valid_flag" Type="bit" />
+          <Property Name="leg_status" Type="nvarchar" MaxLength="10" />
+          <Property Name="dsk_penalty" Type="time" Precision="7" />
+          <Property Name="team_race_end_zero" Type="varchar" MaxLength="10" />
+          <Property Name="team_race_end" Type="datetime" />
+          <Property Name="stamp_readout_dtime" Type="datetime" />
+          <Property Name="as_of_date" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="teams">
+          <Key>
+            <PropertyRef Name="team_id" />
+          </Key>
+          <Property Name="team_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="team_nr" Type="int" />
+          <Property Name="team_name" Type="nvarchar" MaxLength="255" />
+          <Property Name="team_abbr" Type="nvarchar" MaxLength="50" />
+          <Property Name="cat_id" Type="int" />
+          <Property Name="team_did_start" Type="bit" Nullable="false" />
+          <Property Name="team_status" Type="varchar" MaxLength="10" />
+          <Property Name="race_end" Type="datetime" />
+          <Property Name="oris_id" Type="int" />
+          <Property Name="as_of_date" Type="datetime" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'klc01.dbo.v_comp_teams' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="v_comp_teams">
+          <Key>
+            <PropertyRef Name="team_id" />
+            <PropertyRef Name="comp_id" />
+            <PropertyRef Name="bib" />
+            <PropertyRef Name="rank_order" />
+            <PropertyRef Name="comp_withdrawn" />
+            <PropertyRef Name="cat_name" />
+          </Key>
+          <Property Name="team_id" Type="int" Nullable="false" />
+          <Property Name="team_nr" Type="int" />
+          <Property Name="team_name" Type="nvarchar" MaxLength="255" />
+          <Property Name="team_did_start" Type="bit" />
+          <Property Name="team_status" Type="varchar" MaxLength="10" />
+          <Property Name="race_end" Type="datetime" />
+          <Property Name="comp_id" Type="int" Nullable="false" />
+          <Property Name="comp_chip_id" Type="int" />
+          <Property Name="comp_name" Type="nvarchar" MaxLength="50" />
+          <Property Name="bib" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="rented_chip" Type="bit" />
+          <Property Name="rank_order" Type="int" Nullable="false" />
+          <Property Name="comp_withdrawn" Type="bit" Nullable="false" />
+          <Property Name="comp_status" Type="varchar" MaxLength="10" />
+          <Property Name="comp_country" Type="varchar" MaxLength="10" />
+          <Property Name="comp_birthday" Type="datetime" />
+          <Property Name="comp_valid_flag" Type="bit" />
+          <Property Name="withdrawn_datetime" Type="datetime" />
+          <Property Name="cat_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="cat_start_time" Type="datetime" />
+          <Property Name="cat_time_limit" Type="int" />
+        </EntityType>
+        <Association Name="FK_competitors_teams">
+          <End Role="teams" Type="Self.teams" Multiplicity="0..1" />
+          <End Role="competitors" Type="Self.competitors" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="teams">
+              <PropertyRef Name="team_id" />
+            </Principal>
+            <Dependent Role="competitors">
+              <PropertyRef Name="team_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_course_codes_controls">
+          <End Role="controls" Type="Self.controls" Multiplicity="1" />
+          <End Role="course_codes" Type="Self.course_codes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="controls">
+              <PropertyRef Name="control_id" />
+            </Principal>
+            <Dependent Role="course_codes">
+              <PropertyRef Name="control_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_course_codes_courses">
+          <End Role="courses" Type="Self.courses" Multiplicity="1" />
+          <End Role="course_codes" Type="Self.course_codes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="courses">
+              <PropertyRef Name="course_id" />
+            </Principal>
+            <Dependent Role="course_codes">
+              <PropertyRef Name="course_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_legs_competitors">
+          <End Role="competitors" Type="Self.competitors" Multiplicity="1" />
+          <End Role="legs" Type="Self.legs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="competitors">
+              <PropertyRef Name="comp_id" />
+            </Principal>
+            <Dependent Role="legs">
+              <PropertyRef Name="comp_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_legs_courses1">
+          <End Role="courses" Type="Self.courses" Multiplicity="0..1" />
+          <End Role="legs" Type="Self.legs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="courses">
+              <PropertyRef Name="course_id" />
+            </Principal>
+            <Dependent Role="legs">
+              <PropertyRef Name="course_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_si_stamps_si_readout">
+          <End Role="si_readout" Type="Self.si_readout" Multiplicity="1" />
+          <End Role="si_stamps" Type="Self.si_stamps" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="si_readout">
+              <PropertyRef Name="readout_id" />
+            </Principal>
+            <Dependent Role="si_stamps">
+              <PropertyRef Name="readout_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_teams_categories">
+          <End Role="categories" Type="Self.categories" Multiplicity="0..1" />
+          <End Role="teams" Type="Self.teams" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="categories">
+              <PropertyRef Name="cat_id" />
+            </Principal>
+            <Dependent Role="teams">
+              <PropertyRef Name="cat_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+        <Function Name="get_competitor" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="chip_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="get_one_entry_json" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="team_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="get_slip_json" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="readout_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="rpt_results" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="category_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_generate_legs" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="prefix" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="sp_guess_course" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="readout_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_ins_xml_entries" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_insert_slips" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="leg_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_inset_wdr_slip" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="comp_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_search_competitors" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="s" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_upsert_legs" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="readout_id" Type="int" Mode="In" />
+          <Parameter Name="competitor_id" Type="int" Mode="In" />
+          <Parameter Name="course_id" Type="int" Mode="In" />
+          <Parameter Name="guessed_course" Type="int" Mode="In" />
+          <Parameter Name="upd" Type="char" Mode="In" />
+        </Function>
+        <Function Name="time_from_start" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="varchar">
+          <Parameter Name="start_time" Type="datetime" Mode="In" />
+          <Parameter Name="punch_time" Type="datetime" Mode="In" />
+        </Function>
+        <Function Name="update_team_race_end" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="comp_id" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="klc01ModelStoreContainer">
+          <EntitySet Name="categories" EntityType="Self.categories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="competitors" EntityType="Self.competitors" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="controls" EntityType="Self.controls" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="course_codes" EntityType="Self.course_codes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="courses" EntityType="Self.courses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="entry_xml" EntityType="Self.entry_xml" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="legs" EntityType="Self.legs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="logs" EntityType="Self.logs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="settings" EntityType="Self.settings" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="si_readout" EntityType="Self.si_readout" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="si_stamps" EntityType="Self.si_stamps" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="slips" EntityType="Self.slips" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="teams" EntityType="Self.teams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="results" EntityType="Self.results" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [results].[cat_id] AS [cat_id], 
+    [results].[team_name] AS [team_name], 
+    [results].[team_nr] AS [team_nr], 
+    [results].[team_id] AS [team_id], 
+    [results].[race_end] AS [race_end], 
+    [results].[comp_name] AS [comp_name], 
+    [results].[bib] AS [bib], 
+    [results].[start_time] AS [start_time], 
+    [results].[finish_time] AS [finish_time], 
+    [results].[leg_time] AS [leg_time], 
+    [results].[leg_status] AS [leg_status], 
+    [results].[course_id] AS [course_id], 
+    [results].[valid_leg] AS [valid_leg], 
+    [results].[sum_legs] AS [sum_legs], 
+    [results].[max_finish] AS [max_finish]
+    FROM [dbo].[results] AS [results]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="v_comp_teams" EntityType="Self.v_comp_teams" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [v_comp_teams].[team_id] AS [team_id], 
+    [v_comp_teams].[team_nr] AS [team_nr], 
+    [v_comp_teams].[team_name] AS [team_name], 
+    [v_comp_teams].[team_did_start] AS [team_did_start], 
+    [v_comp_teams].[team_status] AS [team_status], 
+    [v_comp_teams].[race_end] AS [race_end], 
+    [v_comp_teams].[comp_id] AS [comp_id], 
+    [v_comp_teams].[comp_chip_id] AS [comp_chip_id], 
+    [v_comp_teams].[comp_name] AS [comp_name], 
+    [v_comp_teams].[bib] AS [bib], 
+    [v_comp_teams].[rented_chip] AS [rented_chip], 
+    [v_comp_teams].[rank_order] AS [rank_order], 
+    [v_comp_teams].[comp_withdrawn] AS [comp_withdrawn], 
+    [v_comp_teams].[comp_status] AS [comp_status], 
+    [v_comp_teams].[comp_country] AS [comp_country], 
+    [v_comp_teams].[comp_birthday] AS [comp_birthday], 
+    [v_comp_teams].[comp_valid_flag] AS [comp_valid_flag], 
+    [v_comp_teams].[withdrawn_datetime] AS [withdrawn_datetime], 
+    [v_comp_teams].[cat_name] AS [cat_name], 
+    [v_comp_teams].[cat_start_time] AS [cat_start_time], 
+    [v_comp_teams].[cat_time_limit] AS [cat_time_limit]
+    FROM [dbo].[v_comp_teams] AS [v_comp_teams]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_competitors_teams" Association="Self.FK_competitors_teams">
+            <End Role="teams" EntitySet="teams" />
+            <End Role="competitors" EntitySet="competitors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_course_codes_controls" Association="Self.FK_course_codes_controls">
+            <End Role="controls" EntitySet="controls" />
+            <End Role="course_codes" EntitySet="course_codes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_course_codes_courses" Association="Self.FK_course_codes_courses">
+            <End Role="courses" EntitySet="courses" />
+            <End Role="course_codes" EntitySet="course_codes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_legs_competitors" Association="Self.FK_legs_competitors">
+            <End Role="competitors" EntitySet="competitors" />
+            <End Role="legs" EntitySet="legs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_legs_courses1" Association="Self.FK_legs_courses1">
+            <End Role="courses" EntitySet="courses" />
+            <End Role="legs" EntitySet="legs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_si_stamps_si_readout" Association="Self.FK_si_stamps_si_readout">
+            <End Role="si_readout" EntitySet="si_readout" />
+            <End Role="si_stamps" EntitySet="si_stamps" />
+          </AssociationSet>
+          <AssociationSet Name="FK_teams_categories" Association="Self.FK_teams_categories">
+            <End Role="categories" EntitySet="categories" />
+            <End Role="teams" EntitySet="teams" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="klc01Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="categories">
+          <Key>
+            <PropertyRef Name="cat_id" />
+          </Key>
+          <Property Name="cat_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="cat_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="cat_start_time" Type="DateTime" Precision="3" />
+          <Property Name="cat_time_limit" Type="Int32" />
+          <Property Name="valid" Type="Boolean" />
+          <Property Name="as_of_date" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="teams" Relationship="Self.FK_teams_categories" FromRole="categories" ToRole="teams" />
+          <Property Name="force_order" Type="Boolean" />
+          <Property Name="first_start_number" Type="Int32" />
+        </EntityType>
+        <EntityType Name="competitors">
+          <Key>
+            <PropertyRef Name="comp_id" />
+          </Key>
+          <Property Name="comp_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="comp_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="bib" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="comp_chip_id" Type="Int32" />
+          <Property Name="rented_chip" Type="Boolean" />
+          <Property Name="team_id" Type="Int32" />
+          <Property Name="rank_order" Type="Int32" Nullable="false" />
+          <Property Name="comp_withdrawn" Type="Boolean" Nullable="false" />
+          <Property Name="comp_status" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="comp_valid_flag" Type="Boolean" />
+          <Property Name="comp_club" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="comp_reg" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="comp_country" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="comp_birthday" Type="DateTime" Precision="3" />
+          <Property Name="as_of_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="withdrawn_datetime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="teams" Relationship="Self.FK_competitors_teams" FromRole="competitors" ToRole="teams" />
+          <NavigationProperty Name="legs" Relationship="Self.FK_legs_competitors" FromRole="competitors" ToRole="legs" />
+          <Property Name="comp_id_previous" Type="Int32" />
+        </EntityType>
+        <EntityType Name="controls">
+          <Key>
+            <PropertyRef Name="control_id" />
+          </Key>
+          <Property Name="control_id" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="control_code" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="alt_code" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="time_direction" Type="String" MaxLength="2" FixedLength="true" Unicode="false" />
+          <Property Name="dif_hour" Type="Int32" />
+          <Property Name="dif_min" Type="Int32" />
+          <Property Name="dif_sec" Type="Int32" />
+          <Property Name="as_of_date" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="course_codes" Relationship="Self.FK_course_codes_controls" FromRole="controls" ToRole="course_codes" />
+        </EntityType>
+        <EntityType Name="course_codes">
+          <Key>
+            <PropertyRef Name="cc_id" />
+          </Key>
+          <Property Name="cc_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="course_id" Type="Int32" Nullable="false" />
+          <Property Name="control_id" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="position" Type="Int32" Nullable="false" />
+          <Property Name="cc_status" Type="Boolean" />
+          <Property Name="as_of_date" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="controls" Relationship="Self.FK_course_codes_controls" FromRole="course_codes" ToRole="controls" />
+          <NavigationProperty Name="courses" Relationship="Self.FK_course_codes_courses" FromRole="course_codes" ToRole="courses" />
+        </EntityType>
+        <EntityType Name="courses">
+          <Key>
+            <PropertyRef Name="course_id" />
+          </Key>
+          <Property Name="course_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="course_name" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="course_length" Type="Int32" />
+          <Property Name="course_climb" Type="Int32" />
+          <Property Name="course_type" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="control_count" Type="Int32" />
+          <Property Name="as_of_date" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="course_codes" Relationship="Self.FK_course_codes_courses" FromRole="courses" ToRole="course_codes" />
+          <NavigationProperty Name="legs" Relationship="Self.FK_legs_courses1" FromRole="courses" ToRole="legs" />
+        </EntityType>
+        <EntityType Name="legs">
+          <Key>
+            <PropertyRef Name="leg_id" />
+          </Key>
+          <Property Name="leg_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="comp_id" Type="Int32" Nullable="false" />
+          <Property Name="course_id" Type="Int32" />
+          <Property Name="readout_id" Type="Int32" />
+          <Property Name="start_dtime" Type="DateTime" Precision="3" />
+          <Property Name="start_time" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="finish_dtime" Type="DateTime" Precision="3" />
+          <Property Name="finish_time" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="as_of_date" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="competitors" Relationship="Self.FK_legs_competitors" FromRole="legs" ToRole="competitors" />
+          <NavigationProperty Name="courses" Relationship="Self.FK_legs_courses1" FromRole="legs" ToRole="courses" />
+          <Property Name="leg_status" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="dsk_penalty" Type="Time" Precision="7" />
+          <Property Name="valid_flag" Type="Boolean" />
+          <Property Name="leg_time" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="starting_leg" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="logs">
+          <Key>
+            <PropertyRef Name="logs_id" />
+          </Key>
+          <Property Name="logs_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="logs_time" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="logs_message" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="logs_type" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="as_of_date" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="settings">
+          <Key>
+            <PropertyRef Name="s_id" />
+          </Key>
+          <Property Name="s_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="config_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="config_value" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="as_of_date" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="si_readout">
+          <Key>
+            <PropertyRef Name="readout_id" />
+          </Key>
+          <Property Name="readout_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="chip_id" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="card_readout_datetime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="clear_datetime" Type="DateTime" Precision="3" />
+          <Property Name="check_datetime" Type="DateTime" Precision="3" />
+          <Property Name="finish_datetime" Type="DateTime" Precision="3" />
+          <Property Name="punch_count" Type="Int32" />
+          <Property Name="as_of_date" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="si_stamps" Relationship="Self.FK_si_stamps_si_readout" FromRole="si_readout" ToRole="si_stamps" />
+          <Property Name="start_datetime" Type="DateTime" Precision="3" />
+          <Property Name="finish_missing" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="si_stamps">
+          <Key>
+            <PropertyRef Name="id_stamp" />
+          </Key>
+          <Property Name="id_stamp" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="readout_id" Type="Int32" Nullable="false" />
+          <Property Name="chip_id" Type="Int64" Nullable="false" />
+          <Property Name="control_code" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="control_mode" Type="Int32" Nullable="false" />
+          <Property Name="punch_datetime" Type="DateTime" Precision="3" />
+          <Property Name="punch_wday" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="punch_index" Type="Int32" />
+          <Property Name="as_of_date" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="si_readout" Relationship="Self.FK_si_stamps_si_readout" FromRole="si_stamps" ToRole="si_readout" />
+        </EntityType>
+        <EntityType Name="slips">
+          <Key>
+            <PropertyRef Name="slip_id" />
+          </Key>
+          <Property Name="slip_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="comp_id" Type="Int32" Nullable="false" />
+          <Property Name="team_id" Type="Int32" />
+          <Property Name="course_id" Type="Int32" Nullable="false" />
+          <Property Name="course_name" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="readout_id" Type="Int32" Nullable="false" />
+          <Property Name="chip_id" Type="Int32" Nullable="false" />
+          <Property Name="leg_id" Type="Int32" Nullable="false" />
+          <Property Name="comp_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="bib" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="comp_country" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="rented_chip" Type="Boolean" />
+          <Property Name="team_nr" Type="Int32" />
+          <Property Name="team_name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="cat_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="punch_index" Type="Int32" />
+          <Property Name="control_code" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="punch_dtime" Type="DateTime" Precision="3" />
+          <Property Name="punch_time" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="lap_dtime" Type="Time" Precision="7" />
+          <Property Name="lap_time" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="valid_flag" Type="Boolean" />
+          <Property Name="clear_dtime" Type="DateTime" Precision="3" />
+          <Property Name="clear_time" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="check_dtime" Type="DateTime" Precision="3" />
+          <Property Name="check_time" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="start_dtime" Type="DateTime" Precision="3" />
+          <Property Name="finish_dtime" Type="DateTime" Precision="3" />
+          <Property Name="leg_time" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="stamp_readout_dtime" Type="DateTime" Precision="3" />
+          <Property Name="as_of_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="position" Type="Int32" />
+          <Property Name="leg_status" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="dsk_penalty" Type="Time" Precision="7" />
+          <Property Name="team_race_end" Type="DateTime" Precision="3" />
+          <Property Name="team_race_end_zero" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="course_length" Type="Int32" />
+          <Property Name="course_climb" Type="Int32" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="teams">
+          <Key>
+            <PropertyRef Name="team_id" />
+          </Key>
+          <Property Name="team_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="team_nr" Type="Int32" />
+          <Property Name="team_name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="team_abbr" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cat_id" Type="Int32" />
+          <Property Name="team_did_start" Type="Boolean" Nullable="false" />
+          <Property Name="team_status" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="as_of_date" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="categories" Relationship="Self.FK_teams_categories" FromRole="teams" ToRole="categories" />
+          <NavigationProperty Name="competitors" Relationship="Self.FK_competitors_teams" FromRole="teams" ToRole="competitors" />
+          <Property Name="race_end" Type="DateTime" Precision="3" />
+          <Property Name="oris_id" Type="Int32" />
+        </EntityType>
+        <Association Name="FK_teams_categories">
+          <End Role="categories" Type="Self.categories" Multiplicity="0..1" />
+          <End Role="teams" Type="Self.teams" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="categories">
+              <PropertyRef Name="cat_id" />
+            </Principal>
+            <Dependent Role="teams">
+              <PropertyRef Name="cat_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_competitors_teams">
+          <End Role="teams" Type="Self.teams" Multiplicity="0..1" />
+          <End Role="competitors" Type="Self.competitors" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="teams">
+              <PropertyRef Name="team_id" />
+            </Principal>
+            <Dependent Role="competitors">
+              <PropertyRef Name="team_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_legs_competitors">
+          <End Role="competitors" Type="Self.competitors" Multiplicity="1" />
+          <End Role="legs" Type="Self.legs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="competitors">
+              <PropertyRef Name="comp_id" />
+            </Principal>
+            <Dependent Role="legs">
+              <PropertyRef Name="comp_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_course_codes_controls">
+          <End Role="controls" Type="Self.controls" Multiplicity="1" />
+          <End Role="course_codes" Type="Self.course_codes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="controls">
+              <PropertyRef Name="control_id" />
+            </Principal>
+            <Dependent Role="course_codes">
+              <PropertyRef Name="control_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_course_codes_courses">
+          <End Role="courses" Type="Self.courses" Multiplicity="1" />
+          <End Role="course_codes" Type="Self.course_codes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="courses">
+              <PropertyRef Name="course_id" />
+            </Principal>
+            <Dependent Role="course_codes">
+              <PropertyRef Name="course_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_legs_courses1">
+          <End Role="courses" Type="Self.courses" Multiplicity="0..1" />
+          <End Role="legs" Type="Self.legs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="courses">
+              <PropertyRef Name="course_id" />
+            </Principal>
+            <Dependent Role="legs">
+              <PropertyRef Name="course_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_si_stamps_si_readout">
+          <End Role="si_readout" Type="Self.si_readout" Multiplicity="1" />
+          <End Role="si_stamps" Type="Self.si_stamps" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="si_readout">
+              <PropertyRef Name="readout_id" />
+            </Principal>
+            <Dependent Role="si_stamps">
+              <PropertyRef Name="readout_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="klc01" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="categories" EntityType="Self.categories" />
+          <EntitySet Name="competitors" EntityType="Self.competitors" />
+          <EntitySet Name="controls" EntityType="Self.controls" />
+          <EntitySet Name="course_codes" EntityType="Self.course_codes" />
+          <EntitySet Name="courses" EntityType="Self.courses" />
+          <EntitySet Name="legs" EntityType="Self.legs" />
+          <EntitySet Name="logs" EntityType="Self.logs" />
+          <EntitySet Name="settings" EntityType="Self.settings" />
+          <EntitySet Name="si_readout" EntityType="Self.si_readout" />
+          <EntitySet Name="si_stamps" EntityType="Self.si_stamps" />
+          <EntitySet Name="slips" EntityType="Self.slips" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="teams" EntityType="Self.teams" />
+          <AssociationSet Name="FK_teams_categories" Association="Self.FK_teams_categories">
+            <End Role="categories" EntitySet="categories" />
+            <End Role="teams" EntitySet="teams" />
+          </AssociationSet>
+          <AssociationSet Name="FK_competitors_teams" Association="Self.FK_competitors_teams">
+            <End Role="teams" EntitySet="teams" />
+            <End Role="competitors" EntitySet="competitors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_legs_competitors" Association="Self.FK_legs_competitors">
+            <End Role="competitors" EntitySet="competitors" />
+            <End Role="legs" EntitySet="legs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_course_codes_controls" Association="Self.FK_course_codes_controls">
+            <End Role="controls" EntitySet="controls" />
+            <End Role="course_codes" EntitySet="course_codes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_course_codes_courses" Association="Self.FK_course_codes_courses">
+            <End Role="courses" EntitySet="courses" />
+            <End Role="course_codes" EntitySet="course_codes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_legs_courses1" Association="Self.FK_legs_courses1">
+            <End Role="courses" EntitySet="courses" />
+            <End Role="legs" EntitySet="legs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_si_stamps_si_readout" Association="Self.FK_si_stamps_si_readout">
+            <End Role="si_readout" EntitySet="si_readout" />
+            <End Role="si_stamps" EntitySet="si_stamps" />
+          </AssociationSet>
+          <FunctionImport Name="get_competitor" ReturnType="Collection(Int32)">
+          <Parameter Name="chip_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_alterdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_creatediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_dropdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_fill_legs">
+            <Parameter Name="id_card" Mode="In" Type="Int32" />
+            <Parameter Name="course_id" Mode="In" Type="Int32" />
+            <Parameter Name="comp_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_fill_runs" />
+          <FunctionImport Name="sp_guess_course" ReturnType="Collection(Int32)">
+          <Parameter Name="readout_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(klc01Model.sp_helpdiagramdefinition_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(klc01Model.sp_helpdiagrams_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_insert_legs" ReturnType="Collection(Int32)">
+            <Parameter Name="readout_id" Mode="In" Type="Int32" />
+            <Parameter Name="competitor_id" Mode="In" Type="Int32" />
+            <Parameter Name="course_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_insert_slips">
+          <Parameter Name="leg_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_renamediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="new_diagramname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_stamp2punches">
+          <Parameter Name="id_card" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_stamp2punches2">
+          <Parameter Name="id_card" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_upgraddiagrams" />
+          <EntitySet Name="v_comp_teams" EntityType="klc01Model.v_comp_teams" />
+          <FunctionImport Name="sp_search_competitors" ReturnType="Collection(klc01Model.sp_search_competitors_Result)">
+          <Parameter Name="s" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_upsert_legs" ReturnType="Collection(Int32)">
+            <Parameter Name="readout_id" Mode="In" Type="Int32" />
+            <Parameter Name="competitor_id" Mode="In" Type="Int32" />
+            <Parameter Name="course_id" Mode="In" Type="Int32" />
+            <Parameter Name="guessed_course" Mode="In" Type="Int32" />
+            <Parameter Name="upd" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_generate_legs">
+          <Parameter Name="prefix" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="update_team_race_end">
+          <Parameter Name="comp_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="get_one_entry" ReturnType="Collection(String)">
+            <Parameter Name="team_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="get_one_entry_json" ReturnType="Collection(String)">
+          <Parameter Name="team_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="get_slip_json" ReturnType="Collection(String)">
+          <Parameter Name="readout_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="rpt_results" ReturnType="Collection(klc01Model.rpt_results_Result)">
+          <Parameter Name="category_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="results" EntityType="klc01Model.results" />
+          <EntitySet Name="entry_xml" EntityType="klc01Model.entry_xml" />
+          <FunctionImport Name="sp_ins_xml_entries" />
+          <FunctionImport Name="sp_inset_wdr_slip">
+          <Parameter Name="comp_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="sp_helpdiagramdefinition_Result">
+          <Property Type="Int32" Name="version" Nullable="true" />
+          <Property Type="Binary" Name="definition" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagrams_Result">
+          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="OwnerID" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="sp_insert_legs_Result">
+          <Property Type="Int32" Name="leg_id" Nullable="false" />
+          <Property Type="Int32" Name="comp_id" Nullable="false" />
+          <Property Type="Int32" Name="course_id" Nullable="true" />
+          <Property Type="Int32" Name="readout_id" Nullable="true" />
+          <Property Type="DateTime" Name="start_dtime" Nullable="true" Precision="23" />
+          <Property Type="String" Name="start_time" Nullable="true" MaxLength="20" />
+          <Property Type="DateTime" Name="finish_dtime" Nullable="true" Precision="23" />
+          <Property Type="String" Name="finish_time" Nullable="true" MaxLength="20" />
+          <Property Type="DateTime" Name="as_of_date" Nullable="false" Precision="23" />
+          <Property Type="Int32" Name="ID" Nullable="true" />
+        </ComplexType>
+        <EntityType Name="v_comp_teams">
+          <Key>
+            <PropertyRef Name="comp_id" />
+            <PropertyRef Name="bib" />
+            <PropertyRef Name="rank_order" />
+            <PropertyRef Name="comp_withdrawn" />
+            <PropertyRef Name="team_id" />
+            <PropertyRef Name="cat_name" />
+          </Key>
+          <Property Name="team_nr" Type="Int32" />
+          <Property Name="team_name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="team_did_start" Type="Boolean" />
+          <Property Name="team_status" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="comp_id" Type="Int32" Nullable="false" />
+          <Property Name="comp_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="bib" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="comp_chip_id" Type="Int32" />
+          <Property Name="rented_chip" Type="Boolean" />
+          <Property Name="rank_order" Type="Int32" Nullable="false" />
+          <Property Name="comp_withdrawn" Type="Boolean" Nullable="false" />
+          <Property Name="comp_status" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="comp_valid_flag" Type="Boolean" />
+          <Property Name="withdrawn_datetime" Type="DateTime" Precision="3" />
+          <Property Name="team_id" Type="Int32" Nullable="false" />
+          <Property Name="race_end" Type="DateTime" Precision="3" />
+          <Property Name="comp_country" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="comp_birthday" Type="DateTime" Precision="3" />
+          <Property Name="cat_name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cat_start_time" Type="DateTime" Precision="3" />
+          <Property Name="cat_time_limit" Type="Int32" />
+        </EntityType>
+        <ComplexType Name="sp_search_competitors_Result">
+          <Property Type="Int32" Name="team_nr" Nullable="true" />
+          <Property Type="String" Name="team_name" Nullable="true" MaxLength="255" />
+          <Property Type="Boolean" Name="team_did_start" Nullable="true" />
+          <Property Type="String" Name="team_status" Nullable="true" MaxLength="10" />
+          <Property Type="Int32" Name="comp_id" Nullable="false" />
+          <Property Type="String" Name="comp_name" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="bib" Nullable="false" MaxLength="10" />
+          <Property Type="Int32" Name="comp_chip_id" Nullable="true" />
+          <Property Type="Boolean" Name="rented_chip" Nullable="true" />
+          <Property Type="Int32" Name="rank_order" Nullable="false" />
+          <Property Type="Boolean" Name="comp_withdrawn" Nullable="false" />
+          <Property Type="String" Name="comp_status" Nullable="true" MaxLength="10" />
+          <Property Type="Boolean" Name="comp_valid_flag" Nullable="true" />
+          <Property Type="DateTime" Name="withdrawn_datetime" Nullable="true" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="rpt_results_Result">
+          <Property Type="String" Name="team_name" Nullable="true" MaxLength="255" />
+          <Property Type="Int32" Name="team_nr" Nullable="false" />
+          <Property Type="Int32" Name="team_id" Nullable="false" />
+          <Property Type="DateTime" Name="race_end" Nullable="true" Precision="23" />
+          <Property Type="String" Name="comp_name" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="bib" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="start_time" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="finish_time" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="leg_time" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="leg_status" Nullable="true" MaxLength="10" />
+          <Property Type="Int32" Name="course_id" Nullable="true" />
+          <Property Type="Int32" Name="valid_leg" Nullable="false" />
+          <Property Type="Int32" Name="s" Nullable="true" />
+        </ComplexType>
+        <EntityType Name="results">
+          <Key>
+            <PropertyRef Name="team_nr" />
+            <PropertyRef Name="team_id" />
+            <PropertyRef Name="bib" />
+            <PropertyRef Name="valid_leg" />
+          </Key>
+          <Property Name="team_name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="team_nr" Type="Int32" Nullable="false" />
+          <Property Name="team_id" Type="Int32" Nullable="false" />
+          <Property Name="race_end" Type="DateTime" Precision="3" />
+          <Property Name="comp_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="bib" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="start_time" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="finish_time" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="leg_time" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="leg_status" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="course_id" Type="Int32" />
+          <Property Name="valid_leg" Type="Int32" Nullable="false" />
+          <Property Name="sum_legs" Type="Int32" />
+          <Property Name="max_finish" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="cat_id" Type="Int32" />
+        </EntityType>
+        <EntityType Name="entry_xml">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="class_name" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="team_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="team_short_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="leg" Type="Int32" />
+          <Property Name="family" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="given" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="gender" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="country" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="birth_date" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="si_chip" Type="Int32" />
+          <Property Name="note" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="oris_team_id" Type="Int32" Nullable="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="klc01ModelStoreContainer" CdmEntityContainer="klc01">
+          <EntitySetMapping Name="categories">
+            <EntityTypeMapping TypeName="klc01Model.categories">
+              <MappingFragment StoreEntitySet="categories">
+                <ScalarProperty Name="first_start_number" ColumnName="first_start_number" />
+                <ScalarProperty Name="force_order" ColumnName="force_order" />
+                <ScalarProperty Name="cat_id" ColumnName="cat_id" />
+                <ScalarProperty Name="cat_name" ColumnName="cat_name" />
+                <ScalarProperty Name="cat_start_time" ColumnName="cat_start_time" />
+                <ScalarProperty Name="cat_time_limit" ColumnName="cat_time_limit" />
+                <ScalarProperty Name="valid" ColumnName="valid" />
+                <ScalarProperty Name="as_of_date" ColumnName="as_of_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="competitors">
+            <EntityTypeMapping TypeName="klc01Model.competitors">
+              <MappingFragment StoreEntitySet="competitors">
+                <ScalarProperty Name="comp_id_previous" ColumnName="comp_id_previous" />
+                <ScalarProperty Name="comp_id" ColumnName="comp_id" />
+                <ScalarProperty Name="comp_name" ColumnName="comp_name" />
+                <ScalarProperty Name="bib" ColumnName="bib" />
+                <ScalarProperty Name="comp_chip_id" ColumnName="comp_chip_id" />
+                <ScalarProperty Name="rented_chip" ColumnName="rented_chip" />
+                <ScalarProperty Name="team_id" ColumnName="team_id" />
+                <ScalarProperty Name="rank_order" ColumnName="rank_order" />
+                <ScalarProperty Name="comp_withdrawn" ColumnName="comp_withdrawn" />
+                <ScalarProperty Name="comp_status" ColumnName="comp_status" />
+                <ScalarProperty Name="comp_valid_flag" ColumnName="comp_valid_flag" />
+                <ScalarProperty Name="comp_club" ColumnName="comp_club" />
+                <ScalarProperty Name="comp_reg" ColumnName="comp_reg" />
+                <ScalarProperty Name="comp_country" ColumnName="comp_country" />
+                <ScalarProperty Name="comp_birthday" ColumnName="comp_birthday" />
+                <ScalarProperty Name="as_of_date" ColumnName="as_of_date" />
+                <ScalarProperty Name="withdrawn_datetime" ColumnName="withdrawn_datetime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="controls">
+            <EntityTypeMapping TypeName="klc01Model.controls">
+              <MappingFragment StoreEntitySet="controls">
+                <ScalarProperty Name="control_id" ColumnName="control_id" />
+                <ScalarProperty Name="control_code" ColumnName="control_code" />
+                <ScalarProperty Name="alt_code" ColumnName="alt_code" />
+                <ScalarProperty Name="time_direction" ColumnName="time_direction" />
+                <ScalarProperty Name="dif_hour" ColumnName="dif_hour" />
+                <ScalarProperty Name="dif_min" ColumnName="dif_min" />
+                <ScalarProperty Name="dif_sec" ColumnName="dif_sec" />
+                <ScalarProperty Name="as_of_date" ColumnName="as_of_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="course_codes">
+            <EntityTypeMapping TypeName="klc01Model.course_codes">
+              <MappingFragment StoreEntitySet="course_codes">
+                <ScalarProperty Name="cc_id" ColumnName="cc_id" />
+                <ScalarProperty Name="course_id" ColumnName="course_id" />
+                <ScalarProperty Name="control_id" ColumnName="control_id" />
+                <ScalarProperty Name="position" ColumnName="position" />
+                <ScalarProperty Name="cc_status" ColumnName="cc_status" />
+                <ScalarProperty Name="as_of_date" ColumnName="as_of_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="courses">
+            <EntityTypeMapping TypeName="klc01Model.courses">
+              <MappingFragment StoreEntitySet="courses">
+                <ScalarProperty Name="course_id" ColumnName="course_id" />
+                <ScalarProperty Name="course_name" ColumnName="course_name" />
+                <ScalarProperty Name="course_length" ColumnName="course_length" />
+                <ScalarProperty Name="course_climb" ColumnName="course_climb" />
+                <ScalarProperty Name="course_type" ColumnName="course_type" />
+                <ScalarProperty Name="control_count" ColumnName="control_count" />
+                <ScalarProperty Name="as_of_date" ColumnName="as_of_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="legs">
+            <EntityTypeMapping TypeName="klc01Model.legs">
+              <MappingFragment StoreEntitySet="legs">
+                <ScalarProperty Name="starting_leg" ColumnName="starting_leg" />
+                <ScalarProperty Name="leg_time" ColumnName="leg_time" />
+                <ScalarProperty Name="valid_flag" ColumnName="valid_flag" />
+                <ScalarProperty Name="dsk_penalty" ColumnName="dsk_penalty" />
+                <ScalarProperty Name="leg_status" ColumnName="leg_status" />
+                <ScalarProperty Name="leg_id" ColumnName="leg_id" />
+                <ScalarProperty Name="comp_id" ColumnName="comp_id" />
+                <ScalarProperty Name="course_id" ColumnName="course_id" />
+                <ScalarProperty Name="readout_id" ColumnName="readout_id" />
+                <ScalarProperty Name="start_dtime" ColumnName="start_dtime" />
+                <ScalarProperty Name="start_time" ColumnName="start_time" />
+                <ScalarProperty Name="finish_dtime" ColumnName="finish_dtime" />
+                <ScalarProperty Name="finish_time" ColumnName="finish_time" />
+                <ScalarProperty Name="as_of_date" ColumnName="as_of_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="logs">
+            <EntityTypeMapping TypeName="klc01Model.logs">
+              <MappingFragment StoreEntitySet="logs">
+                <ScalarProperty Name="logs_id" ColumnName="logs_id" />
+                <ScalarProperty Name="logs_time" ColumnName="logs_time" />
+                <ScalarProperty Name="logs_message" ColumnName="logs_message" />
+                <ScalarProperty Name="logs_type" ColumnName="logs_type" />
+                <ScalarProperty Name="as_of_date" ColumnName="as_of_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="settings">
+            <EntityTypeMapping TypeName="klc01Model.settings">
+              <MappingFragment StoreEntitySet="settings">
+                <ScalarProperty Name="s_id" ColumnName="s_id" />
+                <ScalarProperty Name="config_name" ColumnName="config_name" />
+                <ScalarProperty Name="config_value" ColumnName="config_value" />
+                <ScalarProperty Name="as_of_date" ColumnName="as_of_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="si_readout">
+            <EntityTypeMapping TypeName="klc01Model.si_readout">
+              <MappingFragment StoreEntitySet="si_readout">
+                <ScalarProperty Name="finish_missing" ColumnName="finish_missing" />
+                <ScalarProperty Name="start_datetime" ColumnName="start_datetime" />
+                <ScalarProperty Name="readout_id" ColumnName="readout_id" />
+                <ScalarProperty Name="chip_id" ColumnName="chip_id" />
+                <ScalarProperty Name="card_readout_datetime" ColumnName="card_readout_datetime" />
+                <ScalarProperty Name="clear_datetime" ColumnName="clear_datetime" />
+                <ScalarProperty Name="check_datetime" ColumnName="check_datetime" />
+                <ScalarProperty Name="finish_datetime" ColumnName="finish_datetime" />
+                <ScalarProperty Name="punch_count" ColumnName="punch_count" />
+                <ScalarProperty Name="as_of_date" ColumnName="as_of_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="si_stamps">
+            <EntityTypeMapping TypeName="klc01Model.si_stamps">
+              <MappingFragment StoreEntitySet="si_stamps">
+                <ScalarProperty Name="id_stamp" ColumnName="id_stamp" />
+                <ScalarProperty Name="readout_id" ColumnName="readout_id" />
+                <ScalarProperty Name="chip_id" ColumnName="chip_id" />
+                <ScalarProperty Name="control_code" ColumnName="control_code" />
+                <ScalarProperty Name="control_mode" ColumnName="control_mode" />
+                <ScalarProperty Name="punch_datetime" ColumnName="punch_datetime" />
+                <ScalarProperty Name="punch_wday" ColumnName="punch_wday" />
+                <ScalarProperty Name="punch_index" ColumnName="punch_index" />
+                <ScalarProperty Name="as_of_date" ColumnName="as_of_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="slips">
+            <EntityTypeMapping TypeName="klc01Model.slips">
+              <MappingFragment StoreEntitySet="slips">
+                <ScalarProperty Name="course_climb" ColumnName="course_climb" />
+                <ScalarProperty Name="course_length" ColumnName="course_length" />
+                <ScalarProperty Name="team_race_end_zero" ColumnName="team_race_end_zero" />
+                <ScalarProperty Name="leg_time" ColumnName="leg_time" />
+                <ScalarProperty Name="team_race_end" ColumnName="team_race_end" />
+                <ScalarProperty Name="dsk_penalty" ColumnName="dsk_penalty" />
+                <ScalarProperty Name="leg_status" ColumnName="leg_status" />
+                <ScalarProperty Name="position" ColumnName="position" />
+                <ScalarProperty Name="slip_id" ColumnName="slip_id" />
+                <ScalarProperty Name="comp_id" ColumnName="comp_id" />
+                <ScalarProperty Name="team_id" ColumnName="team_id" />
+                <ScalarProperty Name="course_id" ColumnName="course_id" />
+                <ScalarProperty Name="course_name" ColumnName="course_name" />
+                <ScalarProperty Name="readout_id" ColumnName="readout_id" />
+                <ScalarProperty Name="chip_id" ColumnName="chip_id" />
+                <ScalarProperty Name="leg_id" ColumnName="leg_id" />
+                <ScalarProperty Name="comp_name" ColumnName="comp_name" />
+                <ScalarProperty Name="bib" ColumnName="bib" />
+                <ScalarProperty Name="comp_country" ColumnName="comp_country" />
+                <ScalarProperty Name="rented_chip" ColumnName="rented_chip" />
+                <ScalarProperty Name="team_nr" ColumnName="team_nr" />
+                <ScalarProperty Name="team_name" ColumnName="team_name" />
+                <ScalarProperty Name="cat_name" ColumnName="cat_name" />
+                <ScalarProperty Name="punch_index" ColumnName="punch_index" />
+                <ScalarProperty Name="control_code" ColumnName="control_code" />
+                <ScalarProperty Name="punch_dtime" ColumnName="punch_dtime" />
+                <ScalarProperty Name="punch_time" ColumnName="punch_time" />
+                <ScalarProperty Name="lap_dtime" ColumnName="lap_dtime" />
+                <ScalarProperty Name="lap_time" ColumnName="lap_time" />
+                <ScalarProperty Name="valid_flag" ColumnName="valid_flag" />
+                <ScalarProperty Name="clear_dtime" ColumnName="clear_dtime" />
+                <ScalarProperty Name="clear_time" ColumnName="clear_time" />
+                <ScalarProperty Name="check_dtime" ColumnName="check_dtime" />
+                <ScalarProperty Name="check_time" ColumnName="check_time" />
+                <ScalarProperty Name="start_dtime" ColumnName="start_dtime" />
+                <ScalarProperty Name="finish_dtime" ColumnName="finish_dtime" />
+                <ScalarProperty Name="stamp_readout_dtime" ColumnName="stamp_readout_dtime" />
+                <ScalarProperty Name="as_of_date" ColumnName="as_of_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="klc01Model.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="teams">
+            <EntityTypeMapping TypeName="klc01Model.teams">
+              <MappingFragment StoreEntitySet="teams">
+                <ScalarProperty Name="oris_id" ColumnName="oris_id" />
+                <ScalarProperty Name="race_end" ColumnName="race_end" />
+                <ScalarProperty Name="team_id" ColumnName="team_id" />
+                <ScalarProperty Name="team_nr" ColumnName="team_nr" />
+                <ScalarProperty Name="team_name" ColumnName="team_name" />
+                <ScalarProperty Name="team_abbr" ColumnName="team_abbr" />
+                <ScalarProperty Name="cat_id" ColumnName="cat_id" />
+                <ScalarProperty Name="team_did_start" ColumnName="team_did_start" />
+                <ScalarProperty Name="team_status" ColumnName="team_status" />
+                <ScalarProperty Name="as_of_date" ColumnName="as_of_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="get_competitor" FunctionName="klc01Model.Store.get_competitor" />
+          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="klc01Model.Store.sp_alterdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="klc01Model.Store.sp_creatediagram" />
+          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="klc01Model.Store.sp_dropdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_guess_course" FunctionName="klc01Model.Store.sp_guess_course" />
+          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="klc01Model.Store.sp_helpdiagramdefinition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="klc01Model.sp_helpdiagramdefinition_Result">
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="klc01Model.Store.sp_helpdiagrams">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="klc01Model.sp_helpdiagrams_Result">
+                <ScalarProperty Name="Database" ColumnName="Database" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_insert_slips" FunctionName="klc01Model.Store.sp_insert_slips" />
+          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="klc01Model.Store.sp_renamediagram" />
+          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="klc01Model.Store.sp_upgraddiagrams" />
+          <EntitySetMapping Name="v_comp_teams">
+            <EntityTypeMapping TypeName="klc01Model.v_comp_teams">
+              <MappingFragment StoreEntitySet="v_comp_teams">
+                <ScalarProperty Name="withdrawn_datetime" ColumnName="withdrawn_datetime" />
+                <ScalarProperty Name="comp_valid_flag" ColumnName="comp_valid_flag" />
+                <ScalarProperty Name="comp_chip_id" ColumnName="comp_chip_id" />
+                <ScalarProperty Name="comp_id" ColumnName="comp_id" />
+                <ScalarProperty Name="cat_time_limit" ColumnName="cat_time_limit" />
+                <ScalarProperty Name="cat_start_time" ColumnName="cat_start_time" />
+                <ScalarProperty Name="cat_name" ColumnName="cat_name" />
+                <ScalarProperty Name="comp_birthday" ColumnName="comp_birthday" />
+                <ScalarProperty Name="comp_country" ColumnName="comp_country" />
+                <ScalarProperty Name="race_end" ColumnName="race_end" />
+                <ScalarProperty Name="team_id" ColumnName="team_id" />
+                <ScalarProperty Name="comp_status" ColumnName="comp_status" />
+                <ScalarProperty Name="comp_withdrawn" ColumnName="comp_withdrawn" />
+                <ScalarProperty Name="rank_order" ColumnName="rank_order" />
+                <ScalarProperty Name="rented_chip" ColumnName="rented_chip" />
+                <ScalarProperty Name="bib" ColumnName="bib" />
+                <ScalarProperty Name="comp_name" ColumnName="comp_name" />
+                <ScalarProperty Name="team_status" ColumnName="team_status" />
+                <ScalarProperty Name="team_did_start" ColumnName="team_did_start" />
+                <ScalarProperty Name="team_name" ColumnName="team_name" />
+                <ScalarProperty Name="team_nr" ColumnName="team_nr" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_search_competitors" FunctionName="klc01Model.Store.sp_search_competitors">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="klc01Model.sp_search_competitors_Result">
+                <ScalarProperty Name="team_nr" ColumnName="team_nr" />
+                <ScalarProperty Name="team_name" ColumnName="team_name" />
+                <ScalarProperty Name="team_did_start" ColumnName="team_did_start" />
+                <ScalarProperty Name="team_status" ColumnName="team_status" />
+                <ScalarProperty Name="comp_id" ColumnName="comp_id" />
+                <ScalarProperty Name="comp_name" ColumnName="comp_name" />
+                <ScalarProperty Name="bib" ColumnName="bib" />
+                <ScalarProperty Name="comp_chip_id" ColumnName="comp_chip_id" />
+                <ScalarProperty Name="rented_chip" ColumnName="rented_chip" />
+                <ScalarProperty Name="rank_order" ColumnName="rank_order" />
+                <ScalarProperty Name="comp_withdrawn" ColumnName="comp_withdrawn" />
+                <ScalarProperty Name="comp_status" ColumnName="comp_status" />
+                <ScalarProperty Name="comp_valid_flag" ColumnName="comp_valid_flag" />
+                <ScalarProperty Name="withdrawn_datetime" ColumnName="withdrawn_datetime" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_upsert_legs" FunctionName="klc01Model.Store.sp_upsert_legs" />
+          <FunctionImportMapping FunctionImportName="sp_generate_legs" FunctionName="klc01Model.Store.sp_generate_legs" />
+          <FunctionImportMapping FunctionImportName="update_team_race_end" FunctionName="klc01Model.Store.update_team_race_end" />
+          <FunctionImportMapping FunctionImportName="get_one_entry_json" FunctionName="klc01Model.Store.get_one_entry_json" />
+          <FunctionImportMapping FunctionImportName="get_slip_json" FunctionName="klc01Model.Store.get_slip_json" />
+          <FunctionImportMapping FunctionImportName="rpt_results" FunctionName="klc01Model.Store.rpt_results">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="klc01Model.rpt_results_Result">
+                <ScalarProperty Name="team_name" ColumnName="team_name" />
+                <ScalarProperty Name="team_nr" ColumnName="team_nr" />
+                <ScalarProperty Name="team_id" ColumnName="team_id" />
+                <ScalarProperty Name="race_end" ColumnName="race_end" />
+                <ScalarProperty Name="comp_name" ColumnName="comp_name" />
+                <ScalarProperty Name="bib" ColumnName="bib" />
+                <ScalarProperty Name="start_time" ColumnName="start_time" />
+                <ScalarProperty Name="finish_time" ColumnName="finish_time" />
+                <ScalarProperty Name="leg_time" ColumnName="leg_time" />
+                <ScalarProperty Name="leg_status" ColumnName="leg_status" />
+                <ScalarProperty Name="course_id" ColumnName="course_id" />
+                <ScalarProperty Name="valid_leg" ColumnName="valid_leg" />
+                <ScalarProperty Name="s" ColumnName="s" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="results">
+            <EntityTypeMapping TypeName="klc01Model.results">
+              <MappingFragment StoreEntitySet="results">
+                <ScalarProperty Name="cat_id" ColumnName="cat_id" />
+                <ScalarProperty Name="max_finish" ColumnName="max_finish" />
+                <ScalarProperty Name="sum_legs" ColumnName="sum_legs" />
+                <ScalarProperty Name="valid_leg" ColumnName="valid_leg" />
+                <ScalarProperty Name="course_id" ColumnName="course_id" />
+                <ScalarProperty Name="leg_status" ColumnName="leg_status" />
+                <ScalarProperty Name="leg_time" ColumnName="leg_time" />
+                <ScalarProperty Name="finish_time" ColumnName="finish_time" />
+                <ScalarProperty Name="start_time" ColumnName="start_time" />
+                <ScalarProperty Name="bib" ColumnName="bib" />
+                <ScalarProperty Name="comp_name" ColumnName="comp_name" />
+                <ScalarProperty Name="race_end" ColumnName="race_end" />
+                <ScalarProperty Name="team_id" ColumnName="team_id" />
+                <ScalarProperty Name="team_nr" ColumnName="team_nr" />
+                <ScalarProperty Name="team_name" ColumnName="team_name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="entry_xml">
+            <EntityTypeMapping TypeName="klc01Model.entry_xml">
+              <MappingFragment StoreEntitySet="entry_xml">
+                <ScalarProperty Name="oris_team_id" ColumnName="oris_team_id" />
+                <ScalarProperty Name="note" ColumnName="note" />
+                <ScalarProperty Name="si_chip" ColumnName="si_chip" />
+                <ScalarProperty Name="birth_date" ColumnName="birth_date" />
+                <ScalarProperty Name="country" ColumnName="country" />
+                <ScalarProperty Name="gender" ColumnName="gender" />
+                <ScalarProperty Name="given" ColumnName="given" />
+                <ScalarProperty Name="family" ColumnName="family" />
+                <ScalarProperty Name="leg" ColumnName="leg" />
+                <ScalarProperty Name="team_short_name" ColumnName="team_short_name" />
+                <ScalarProperty Name="team_name" ColumnName="team_name" />
+                <ScalarProperty Name="class_name" ColumnName="class_name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_ins_xml_entries" FunctionName="klc01Model.Store.sp_ins_xml_entries" />
+          <FunctionImportMapping FunctionImportName="sp_inset_wdr_slip" FunctionName="klc01Model.Store.sp_inset_wdr_slip" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
