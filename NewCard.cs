@@ -470,40 +470,49 @@ namespace h24
         public static async Task<string> PostSlip(int readout_id)
         {
             string url;
+            string allResponses = "";
+            string oneResponse = "";
             HttpClient client = new HttpClient();
             //int i = 0;
             using (var db = new klc01())
             {
-                string url_live = db.settings.FirstOrDefault(c => c.config_name == "live_url").config_value;
-                string url_slips = db.settings.FirstOrDefault(c => c.config_name == "live_slips").config_value;
-                url = url_live + url_slips;
-
                 string OneSlip;
                 OneSlip = db.get_slip_json(readout_id).FirstOrDefault();
-
 
                 //write punch log
                 string filename = @"c:\k\slip_post_" + readout_id + "_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".json";
                 File.WriteAllText(filename, OneSlip);
 
-                var content = new StringContent(
-                    OneSlip,
-                    System.Text.Encoding.UTF8,
-                    "application/json"
-                    );
+                string live_urls = db.settings.FirstOrDefault(c => c.config_name == "live_url").config_value;
+                string url_slips = db.settings.FirstOrDefault(c => c.config_name == "live_slips").config_value;
 
-                var response = await client.PostAsync(url, content);
-                try
+                string[] urls = live_urls.Split(';');
+
+                foreach (string oneUrl in urls)
                 {
-                    response.EnsureSuccessStatusCode();
-                    return await response.Content.ReadAsStringAsync();
-                }
-                catch
-                {
-                    MessageBox.Show("ERR EnsureSuccessStatusCode post");
-                    return "";
+                    url = oneUrl + url_slips;
+
+                    var content = new StringContent(
+                        OneSlip,
+                        System.Text.Encoding.UTF8,
+                        "application/json"
+                        );
+
+                    var response = await client.PostAsync(url, content);
+                    try
+                    {
+                        response.EnsureSuccessStatusCode();
+                        oneResponse = await response.Content.ReadAsStringAsync();
+                    }
+                    catch
+                    {
+                        MessageBox.Show("ERR EnsureSuccessStatusCode post");
+                        oneResponse = url + "ERR EnsureSuccessStatusCode post";
+                    }
+                    allResponses += oneResponse;
                 }
             }
+            return allResponses;
         }
 
         private void SetTxtInfo(EnvironmentVariableTarget result)
