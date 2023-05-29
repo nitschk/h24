@@ -502,7 +502,7 @@ namespace h24
                     try
                     {
                         response.EnsureSuccessStatusCode();
-                        oneResponse = await response.Content.ReadAsStringAsync();
+                        oneResponse = url + " " + await response.Content.ReadAsStringAsync();
                     }
                     catch
                     {
