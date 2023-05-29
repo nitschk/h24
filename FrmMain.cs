@@ -1251,7 +1251,8 @@ namespace h24
     private void FrmMain_Resize(object sender, EventArgs e)
     {
       //LbLastBib.Size = new Size(this.ClientSize.Width / 8, this.ClientSize.Height / 8);
-      LbLastBib.Font = new Font("Microsoft Sans Serif", this.ClientSize.Height / 8);
+      if(this.WindowState != FormWindowState.Minimized )
+        LbLastBib.Font = new Font("Microsoft Sans Serif", this.ClientSize.Height / 8);
     }
 
     private void btnClearSearch_Click(object sender, EventArgs e)
