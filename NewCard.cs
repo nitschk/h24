@@ -337,46 +337,49 @@ namespace h24
             {
                 HttpClient client = new HttpClient();
                 string live_entries = db.settings.FirstOrDefault(c => c.config_name == "live_entries_truncate").config_value;
-                string url = db.settings.FirstOrDefault(c => c.config_name == "live_url").config_value;
-                string url_truncate = url + live_entries;
-
+                string live_urls = db.settings.FirstOrDefault(c => c.config_name == "live_url").config_value;
                 string pwd = db.settings.FirstOrDefault(c => c.config_name == "live_password").config_value;
 
+                string[] urls = live_urls.Split(';');
                 string json = "{\"truncate\":\"yes\"," +
-                                    "\"password\":\"" + pwd + "\"}";
-                //make request
-                StringContent httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+                                "\"password\":\"" + pwd + "\"}";
 
-                HttpResponseMessage response = await client.PostAsync(url_truncate, httpContent);
-                try
+                foreach (string oneUrl in urls)
                 {
-                    response.EnsureSuccessStatusCode();
-                }
-                catch
-                {
-                    MessageBox.Show("ERR EnsureSuccessStatusCode truncate");
-                    return;
-                }
+                    string url_truncate = oneUrl + live_entries;
 
-                string info = await response.Content.ReadAsStringAsync();
-                MessageBox.Show("API response: " + info);
+                    //make request
+                    StringContent httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+                    HttpResponseMessage response = await client.PostAsync(url_truncate, httpContent);
+                    try
+                    {
+                        response.EnsureSuccessStatusCode();
+                    }
+                    catch
+                    {
+                        MessageBox.Show("ERR EnsureSuccessStatusCode truncate");
+                        return;
+                    }
+
+                    string info = await response.Content.ReadAsStringAsync();
+                    MessageBox.Show("API response: " + info);
+                }
             }
-
         }
 
         public static async Task PostEntries(int team = -1)
         {
-
             int i = 0;
             using (var db = new klc01())
             {
                 List<int> AllTeams;
-                    if(team == -1)
+                if(team == -1)
                 {
                     AllTeams = db.teams.Where(s => s.team_did_start == true)
                     .Select(s => s.team_id).ToList();
                 }
-                    else
+                else
                 {
                     AllTeams = db.teams.Where(s => s.team_did_start == true && s.team_id == team)
                     .Select(s => s.team_id).ToList();
@@ -386,11 +389,12 @@ namespace h24
                 {
                     //send all entries
                     HttpClient client = new HttpClient();
-                    string url = db.settings.FirstOrDefault(c => c.config_name == "live_url").config_value;
+                    string live_urls = db.settings.FirstOrDefault(c => c.config_name == "live_url").config_value;
                     string live_entries = db.settings.FirstOrDefault(c => c.config_name == "live_entries").config_value;
-                    string url_entries = url + live_entries;
 
+                    string[] urls = live_urls.Split(';');
                     string entry;
+
                     foreach (int team_id in AllTeams)
                     {
                         entry = db.get_one_entry_json(team_id).FirstOrDefault();
@@ -398,25 +402,30 @@ namespace h24
                         string filename = @"c:\k\entry_post_" + team_id + "_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".json";
                         File.WriteAllText(filename, entry);
 
-                        //var data = new FormUrlEncodedContent(entry);
-                        var entry_content = new StringContent(
-                            entry,
-                            System.Text.Encoding.UTF8,
-                            "application/json"
-                            );
-                        HttpResponseMessage response = await client.PostAsync(url_entries, entry_content);
-                        try
+                        foreach (string oneUrl in urls)
                         {
-                            response.EnsureSuccessStatusCode();
-                        }
-                        catch
-                        {
-                            MessageBox.Show("ERR EnsureSuccessStatusCode post");
-                            return;
-                        }
+                            string url_entries = oneUrl + live_entries;
 
-                        var result = await response.Content.ReadAsStringAsync();
-                        i++;
+                            //var data = new FormUrlEncodedContent(entry);
+                            var entry_content = new StringContent(
+                                entry,
+                                System.Text.Encoding.UTF8,
+                                "application/json"
+                                );
+                            HttpResponseMessage response = await client.PostAsync(url_entries, entry_content);
+                            try
+                            {
+                                response.EnsureSuccessStatusCode();
+                            }
+                            catch
+                            {
+                                MessageBox.Show("ERR EnsureSuccessStatusCode post");
+                                return;
+                            }
+
+                            var result = await response.Content.ReadAsStringAsync();
+                            i++;
+                        }
                     }
                 }
             }
@@ -564,29 +573,34 @@ namespace h24
             {
                 HttpClient client = new HttpClient();
                 string live_legs = db.settings.FirstOrDefault(c => c.config_name == "live_legs_truncate").config_value;
-                string url = db.settings.FirstOrDefault(c => c.config_name == "live_url").config_value;
-                string url_truncate = url + live_legs;
-
+                string live_urls = db.settings.FirstOrDefault(c => c.config_name == "live_url").config_value;
+                string[] urls = live_urls.Split(';');
                 string pwd = db.settings.FirstOrDefault(c => c.config_name == "live_password").config_value;
-
                 string json = "{\"truncate\":\"yes\"," +
                                     "\"password\":\"" + pwd + "\"}";
-                //make request
-                StringContent httpContent = new StringContent(json, Encoding.UTF8, "application/json");
 
-                HttpResponseMessage response = await client.PostAsync(url_truncate, httpContent);
-                try
+                foreach (string oneUrl in urls)
                 {
-                    response.EnsureSuccessStatusCode();
-                }
-                catch
-                {
-                    MessageBox.Show("ERR EnsureSuccessStatusCode truncate");
-                    return;
-                }
+                    string url_truncate = oneUrl + live_legs;
+
+
+                    //make request
+                    StringContent httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+                    HttpResponseMessage response = await client.PostAsync(url_truncate, httpContent);
+                    try
+                    {
+                        response.EnsureSuccessStatusCode();
+                    }
+                    catch
+                    {
+                        MessageBox.Show("ERR EnsureSuccessStatusCode truncate");
+                        return;
+                    }
 
                 string info = await response.Content.ReadAsStringAsync();
                 MessageBox.Show("API response: " + info);
+                }
             }
         }
 

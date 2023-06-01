@@ -399,8 +399,9 @@ namespace h24
             settings.Indent = true;
             settings.IndentChars = "\t";
             settings.NewLineOnAttributes = true;
+            string file_name = "StartList.xml";
 
-            using (XmlWriter writer = XmlWriter.Create("StartList.xml", settings))
+            using (XmlWriter writer = XmlWriter.Create(file_name, settings))
             {
                 writer.WriteStartElement("StartList", "http://www.orienteering.org/datastandard/3.0");
                 writer.WriteAttributeString("xmlns", "", null, "http://www.orienteering.org/datastandard/3.0");
@@ -419,7 +420,7 @@ namespace h24
                 writer.WriteString("2022-12-13");
                 writer.WriteEndElement();//Date
                 writer.WriteStartElement("Time");
-                writer.WriteString("8:00:00+01:00");
+                writer.WriteString("08:00:00+01:00");
                 writer.WriteEndElement();//Time
                 writer.WriteEndElement();//StartTime
                 writer.WriteStartElement("EndTime");
@@ -427,7 +428,7 @@ namespace h24
                 writer.WriteString("2022-12-14");
                 writer.WriteEndElement();//Date
                 writer.WriteStartElement("Time");
-                writer.WriteString("8:00:00+01:00");
+                writer.WriteString("08:00:00+01:00");
                 writer.WriteEndElement();//Time
                 writer.WriteEndElement();//EndTime
                 writer.WriteEndElement();//Event
@@ -435,26 +436,107 @@ namespace h24
                 db = new klc01();
                 List<v_comp_teams> AllCompetitors = db.v_comp_teams.ToList();
                 string cat_name_prev = "";
-
-                writer.WriteStartElement("ClassStart");
+                int i = 0;
                 foreach (var comp in AllCompetitors)
                 {
 
                     if (comp.cat_name != cat_name_prev)
                     {
+                        if(i != 0) 
+                            writer.WriteEndElement();//ClassStart
                         writer.WriteStartElement("ClassStart");
                         writer.WriteStartElement("Class");
+                        /*writer.WriteStartElement("Id");
+                        writer.WriteValue(comp.cat_id);
+                        writer.WriteEndElement();//Id*/
+                        writer.WriteStartElement("Name");
+                        writer.WriteValue(comp.cat_name);
+                        writer.WriteEndElement();//Name
+                        writer.WriteEndElement();//Class
+
+                        writer.WriteStartElement("StartName");
+                        writer.WriteValue("S1");
+                        writer.WriteEndElement();//StartName
                     }
+                    writer.WriteStartElement("PersonStart");
 
+                    writer.WriteStartElement("EntryId");
+                    writer.WriteValue(comp.comp_id);
+                    writer.WriteEndElement();//EntryId
 
+                    writer.WriteStartElement("Person");
+                    writer.WriteStartElement("Id");
+                    writer.WriteValue(comp.comp_id);
+                    writer.WriteEndElement();//Id
+
+                    writer.WriteStartElement("Name");
+                    writer.WriteStartElement("Family");
+                    writer.WriteValue(comp.comp_name);
+                    writer.WriteEndElement();//Family
+                    writer.WriteStartElement("Given");
+                    writer.WriteValue(comp.bib);
+                    writer.WriteEndElement();//Given
+                    writer.WriteEndElement();//Name
+
+                    writer.WriteEndElement();//Person
+                    writer.WriteStartElement("Organisation");
+                    writer.WriteStartElement("Id");
+                    writer.WriteValue(comp.team_id);
+                    writer.WriteEndElement();//Id
+                    writer.WriteStartElement("Name");
+                    writer.WriteValue(comp.team_name);
+                    writer.WriteEndElement();//Name
+                    writer.WriteEndElement();//Organisation
+                    writer.WriteStartElement("Start");
+                    /*writer.WriteStartElement("BibNumber");
+                    writer.WriteValue(comp.bib);
+                    writer.WriteEndElement();//BibNumber*/
+                    writer.WriteStartElement("ControlCard");
+                    writer.WriteValue(comp.comp_chip_id);
+                    writer.WriteEndElement();//ControlCard
+                    writer.WriteEndElement();//Start
+                    writer.WriteEndElement();//PersonStart
+                    
                     cat_name_prev = comp.cat_name;
+                    i++;
                 }
-
-                writer.WriteEndElement();
+                writer.WriteEndElement();//ClassStart
                 writer.Flush();
+                MessageBox.Show("Export copmlete");
             }
 
+
         }
+
+       /* public static int xmlStartList()
+        {
+            string file_contents;
+            string file_name = "StartList.xml";
+
+            string path = @"C:\temp\readme.txt";
+            string contents = @"<?xml version="1.0" encoding="UTF - 8"?>
+  < !--
+    Start list for an individual event.
+-->
+<StartList xmlns="http://www.orienteering.org/datastandard/3.0"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           iofVersion="3.0"
+           createTime="2011-07-20T12:16:31+02:00"
+           creator="Example Software">
+  <Event>
+    <Name>Example event</Name>
+    <StartTime>
+      <Date>2011-07-30</Date>
+      <Time>10:00:00+01:00</Time>
+    </StartTime>
+    <EndTime>
+      <Date>2011-07-30</Date>
+      <Time>14:00:00+01:00</Time>
+    </EndTime>
+  </Event>";
+
+            File.WriteAllText(path, contents);
+        }*/
 
         private static void RemoveAllNamespaces(XDocument xDoc)
         {
