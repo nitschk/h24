@@ -383,9 +383,14 @@ namespace h24
             string token = await getAccessToken;
             MessageBox.Show("response:" + token);
             */
-            if(this.ChbTruncate.Checked)
+            if (this.ChbTruncate.Checked)
+            {
                 _ = NewCard.TruncateEntries();
+                _ = NewCard.TruncateCompetitors();
+            }
+                
             _ = NewCard.PostEntries();
+            _ = NewCard.PostCompetitors();
         }
 
         private void BtnRegisterClient_Click(object sender, EventArgs e)

@@ -1066,10 +1066,13 @@ namespace h24
 
     private void dgCompetitors_CellEndEdit(object sender, DataGridViewCellEventArgs e)
     {
-      int curRow = dgTeams.CurrentRow.Index;
-      int team_id = Convert.ToInt32(dgTeams.Rows[curRow].Cells["team_id"].Value);
-      db.SaveChanges();
-      _ = NewCard.PostEntries(team_id);
+        int curRow = dgTeams.CurrentRow.Index;
+        int team_id = Convert.ToInt32(dgTeams.Rows[curRow].Cells["team_id"].Value);
+            int curRowComp = dgCompetitors.CurrentRow.Index;
+            int comp_id = Convert.ToInt32(dgCompetitors.Rows[curRowComp].Cells["competitor_id"].Value);
+        db.SaveChanges();
+        _ = NewCard.PostEntries(team_id);
+        _ = NewCard.PostCompetitors(comp_id);
     }
 
     private void btnResults_Click(object sender, EventArgs e)

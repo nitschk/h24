@@ -399,7 +399,7 @@ namespace h24
                     {
                         entry = db.get_one_entry_json(team_id).FirstOrDefault();
 
-                        string filename = @"c:\k\entry_post_" + team_id + "_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".json";
+                        string filename = @"c:\temp\entry_post_" + team_id + "_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".json";
                         File.WriteAllText(filename, entry);
 
                         foreach (string oneUrl in urls)
@@ -432,6 +432,108 @@ namespace h24
             //return i;
         }
 
+        public static async Task TruncateCompetitors()
+        {
+            using (var db = new klc01())
+            {
+                HttpClient client = new HttpClient();
+                string live_competitors = db.settings.FirstOrDefault(c => c.config_name == "live_competitors_truncate").config_value;
+                string live_urls = db.settings.FirstOrDefault(c => c.config_name == "live_url").config_value;
+                string pwd = db.settings.FirstOrDefault(c => c.config_name == "live_password").config_value;
+
+                string[] urls = live_urls.Split(';');
+                string json = "{\"truncate\":\"yes\"," +
+                                "\"password\":\"" + pwd + "\"}";
+
+                foreach (string oneUrl in urls)
+                {
+                    string url_truncate = oneUrl + live_competitors;
+
+                    //make request
+                    StringContent httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+                    HttpResponseMessage response = await client.PostAsync(url_truncate, httpContent);
+                    try
+                    {
+                        response.EnsureSuccessStatusCode();
+                    }
+                    catch
+                    {
+                        MessageBox.Show("ERR EnsureSuccessStatusCode truncate");
+                        return;
+                    }
+
+                    string info = await response.Content.ReadAsStringAsync();
+                    MessageBox.Show("API response: " + info);
+                }
+            }
+        }
+
+        public static async Task PostCompetitors(int comp = -1)
+        {
+            int i = 0;
+            using (var db = new klc01())
+            {
+                List<int> AllTeams;
+                if (comp == -1)
+                {
+                    AllTeams = db.competitors.Where(s => s.comp_valid_flag == true)
+                    .Select(s => s.comp_id).ToList();
+                }
+                else
+                {
+                    AllTeams = db.competitors.Where(s => s.comp_valid_flag == true && s.comp_id == comp)
+                    .Select(s => s.comp_id).ToList();
+                }
+
+                if (AllTeams.Count > 0)
+                {
+                    //send all entries
+                    HttpClient client = new HttpClient();
+                    string live_urls = db.settings.FirstOrDefault(c => c.config_name == "live_url").config_value;
+                    string live_competitors = db.settings.FirstOrDefault(c => c.config_name == "live_competitors").config_value;
+
+                    string[] urls = live_urls.Split(';');
+                    string entry;
+
+                    foreach (int comp_id in AllTeams)
+                    {
+                        entry = db.get_one_competitor_json(comp_id).FirstOrDefault();
+
+                        string filename = @"c:\temp\comp_post_" + comp_id + "_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".json";
+                        File.WriteAllText(filename, entry);
+
+                        foreach (string oneUrl in urls)
+                        {
+                            string url_competitors = oneUrl + live_competitors;
+
+                            //var data = new FormUrlEncodedContent(entry);
+                            var entry_content = new StringContent(
+                                entry,
+                                System.Text.Encoding.UTF8,
+                                "application/json"
+                                );
+                            HttpResponseMessage response = await client.PostAsync(url_competitors, entry_content);
+                            try
+                            {
+                                response.EnsureSuccessStatusCode();
+                            }
+                            catch
+                            {
+                                MessageBox.Show("ERR EnsureSuccessStatusCode post");
+                                return;
+                            }
+
+                            var result = await response.Content.ReadAsStringAsync();
+                            i++;
+                        }
+                    }
+                }
+            }
+            //return i;
+        }
+
+
         public async static Task<string> OrisGetEntries()
         {
             string result;
@@ -455,7 +557,7 @@ namespace h24
 
                 result = await response.Content.ReadAsStringAsync();
 
-                string filename = @"c:\k\oris_entries_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".xml";
+                string filename = @"c:\temp\oris_entries_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".xml";
                 File.WriteAllText(filename, result);
 
             }
@@ -489,7 +591,7 @@ namespace h24
                 OneSlip = db.get_slip_json(readout_id).FirstOrDefault();
 
                 //write punch log
-                string filename = @"c:\k\slip_post_" + readout_id + "_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".json";
+                string filename = @"c:\temp\slip_post_" + readout_id + "_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".json";
                 File.WriteAllText(filename, OneSlip);
 
                 string live_urls = db.settings.FirstOrDefault(c => c.config_name == "live_url").config_value;
@@ -583,7 +685,6 @@ namespace h24
                 {
                     string url_truncate = oneUrl + live_legs;
 
-
                     //make request
                     StringContent httpContent = new StringContent(json, Encoding.UTF8, "application/json");
 
@@ -615,30 +716,35 @@ namespace h24
                     service_config = "start_roc_service";
                 }
                 
-                string live_entries = db.settings.FirstOrDefault(c => c.config_name == service_config).config_value;
-                string url = db.settings.FirstOrDefault(c => c.config_name == "live_url").config_value;
-                string url_roc_service = url + live_entries;
+                string live_roc = db.settings.FirstOrDefault(c => c.config_name == service_config).config_value;
+                string live_urls = db.settings.FirstOrDefault(c => c.config_name == "live_url").config_value;
 
+                string[] urls = live_urls.Split(';');
                 string pwd = db.settings.FirstOrDefault(c => c.config_name == "live_password").config_value;
 
-                string json = "{\"truncate\":\"yes\"," +
-                                    "\"password\":\"" + pwd + "\"}";
-                //make request
-                StringContent httpContent = new StringContent(json, Encoding.UTF8, "application/json");
-
-                HttpResponseMessage response = await client.PostAsync(url_roc_service, httpContent);
-                try
+                foreach (string oneUrl in urls)
                 {
-                    response.EnsureSuccessStatusCode();
-                }
-                catch
-                {
-                    MessageBox.Show("ERR EnsureSuccessStatusCode truncate");
-                    return;
-                }
+                    string url_roc_service = oneUrl + live_roc;
 
-                string info = await response.Content.ReadAsStringAsync();
-                MessageBox.Show("API response: " + info);
+                    string json = "{\"truncate\":\"yes\"," +
+                                        "\"password\":\"" + pwd + "\"}";
+                    //make request
+                    StringContent httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+                    HttpResponseMessage response = await client.PostAsync(url_roc_service, httpContent);
+                    try
+                    {
+                        response.EnsureSuccessStatusCode();
+                    }
+                    catch
+                    {
+                        MessageBox.Show("ERR EnsureSuccessStatusCode truncate");
+                        return;
+                    }
+
+                    string info = await response.Content.ReadAsStringAsync();
+                    MessageBox.Show("API response: " + info);
+                }
             }
 
         }

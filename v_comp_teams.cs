@@ -16,7 +16,7 @@ namespace h24
     {
         public Nullable<int> team_nr { get; set; }
         public string team_name { get; set; }
-        public Nullable<bool> team_did_start { get; set; }
+        public bool team_did_start { get; set; }
         public string team_status { get; set; }
         public int comp_id { get; set; }
         public string comp_name { get; set; }
@@ -35,5 +35,6 @@ namespace h24
         public string cat_name { get; set; }
         public Nullable<System.DateTime> cat_start_time { get; set; }
         public Nullable<int> cat_time_limit { get; set; }
+        public int cat_id { get; set; }
     }
 }

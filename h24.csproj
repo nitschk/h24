@@ -299,13 +299,13 @@
       <DependentUpon>klc01.tt</DependentUpon>
     </Compile>
     <Compile Include="SqlServerTypes\Loader.cs" />
-    <Compile Include="sysdiagrams.cs">
-      <DependentUpon>klc01.tt</DependentUpon>
-    </Compile>
     <Compile Include="teams.cs">
       <DependentUpon>klc01.tt</DependentUpon>
     </Compile>
     <Compile Include="v_comp_teams.cs">
+      <DependentUpon>klc01.tt</DependentUpon>
+    </Compile>
+    <Compile Include="v_teams_results.cs">
       <DependentUpon>klc01.tt</DependentUpon>
     </Compile>
     <EmbeddedResource Include="frmChipNotFound.resx">

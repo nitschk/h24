@@ -16,7 +16,6 @@
         <EntityTypeShape EntityType="klc01Model.si_readout" Width="1.5" PointX="9.75" PointY="1.125" IsExpanded="true" />
         <EntityTypeShape EntityType="klc01Model.si_stamps" Width="1.5" PointX="12" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="klc01Model.slips" Width="1.5" PointX="11.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="klc01Model.sysdiagrams" Width="1.5" PointX="7.75" PointY="12.75" IsExpanded="true" />
         <EntityTypeShape EntityType="klc01Model.teams" Width="1.5" PointX="3" PointY="1.875" IsExpanded="true" />
         <AssociationConnector Association="klc01Model.FK_teams_categories" ManuallyRouted="false" />
         <AssociationConnector Association="klc01Model.FK_competitors_teams" ManuallyRouted="false" />
@@ -28,6 +27,7 @@
         <EntityTypeShape EntityType="klc01Model.v_comp_teams" Width="1.5" PointX="0.75" PointY="13.75" />
         <EntityTypeShape EntityType="klc01Model.entry_xml" Width="1.5" PointX="10.375" PointY="13.75" />
         <EntityTypeShape EntityType="klc01Model.results" Width="1.5" PointX="0.75" PointY="8.75" />
+        <EntityTypeShape EntityType="klc01Model.v_teams_results" Width="1.5" PointX="14.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

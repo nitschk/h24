@@ -38,11 +38,11 @@ namespace h24
         public virtual DbSet<si_readout> si_readout { get; set; }
         public virtual DbSet<si_stamps> si_stamps { get; set; }
         public virtual DbSet<slips> slips { get; set; }
-        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<teams> teams { get; set; }
         public virtual DbSet<v_comp_teams> v_comp_teams { get; set; }
         public virtual DbSet<entry_xml> entry_xml { get; set; }
         public virtual DbSet<results> results { get; set; }
+        public virtual DbSet<v_teams_results> v_teams_results { get; set; }
     
         public virtual ObjectResult<Nullable<int>> get_competitor(Nullable<int> chip_id)
         {
@@ -336,6 +336,15 @@ namespace h24
                 new ObjectParameter("comp_id", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_inset_wdr_slip", comp_idParameter);
+        }
+    
+        public virtual ObjectResult<string> get_one_competitor_json(Nullable<int> comp_id)
+        {
+            var comp_idParameter = comp_id.HasValue ?
+                new ObjectParameter("comp_id", comp_id) :
+                new ObjectParameter("comp_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("get_one_competitor_json", comp_idParameter);
         }
     }
 }

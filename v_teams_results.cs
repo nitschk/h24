@@ -12,12 +12,14 @@ namespace h24
     using System;
     using System.Collections.Generic;
     
-    public partial class sysdiagrams
+    public partial class v_teams_results
     {
-        public string name { get; set; }
-        public int principal_id { get; set; }
-        public int diagram_id { get; set; }
-        public Nullable<int> version { get; set; }
-        public byte[] definition { get; set; }
+        public Nullable<long> res_pos { get; set; }
+        public Nullable<int> team_id { get; set; }
+        public Nullable<int> team_nr { get; set; }
+        public string team_name { get; set; }
+        public string cat_name { get; set; }
+        public Nullable<System.DateTime> race_time { get; set; }
+        public Nullable<int> legs_count { get; set; }
     }
 }
