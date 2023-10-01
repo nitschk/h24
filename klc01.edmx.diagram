@@ -28,6 +28,7 @@
         <EntityTypeShape EntityType="klc01Model.entry_xml" Width="1.5" PointX="10.375" PointY="13.75" />
         <EntityTypeShape EntityType="klc01Model.results" Width="1.5" PointX="0.75" PointY="8.75" />
         <EntityTypeShape EntityType="klc01Model.v_teams_results" Width="1.5" PointX="14.375" PointY="0.75" />
+        <EntityTypeShape EntityType="klc01Model.api_queue" Width="1.5" PointX="7.375" PointY="12.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -57,9 +57,10 @@ namespace h24
             reportDataSource1.Value = this.slipsBindingSource;
             this.reportViewer1.LocalReport.DataSources.Add(reportDataSource1);
             this.reportViewer1.LocalReport.ReportEmbeddedResource = "h24.rptSlip1.rdlc";
-            this.reportViewer1.Location = new System.Drawing.Point(125, 44);
+            this.reportViewer1.Location = new System.Drawing.Point(141, 55);
+            this.reportViewer1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.reportViewer1.Name = "reportViewer1";
-            this.reportViewer1.Size = new System.Drawing.Size(600, 800);
+            this.reportViewer1.Size = new System.Drawing.Size(675, 1000);
             this.reportViewer1.TabIndex = 0;
             // 
             // slipsTableAdapter
@@ -68,9 +69,10 @@ namespace h24
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(356, 17);
+            this.button1.Location = new System.Drawing.Point(400, 21);
+            this.button1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.Size = new System.Drawing.Size(84, 29);
             this.button1.TabIndex = 1;
             this.button1.Text = "button1";
             this.button1.UseVisualStyleBackColor = true;
@@ -85,11 +87,13 @@ namespace h24
             // 
             // frmSlip
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1187, 1453);
+            this.AutoScroll = true;
+            this.ClientSize = new System.Drawing.Size(1335, 797);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.reportViewer1);
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "frmSlip";
             this.Text = "frmSlip";
             this.Load += new System.EventHandler(this.frmSlip_Load);

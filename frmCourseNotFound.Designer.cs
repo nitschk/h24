@@ -32,18 +32,18 @@ namespace h24
             this.components = new System.ComponentModel.Container();
             this.label1 = new System.Windows.Forms.Label();
             this.dgCourses = new System.Windows.Forms.DataGridView();
-            this.btnSave = new System.Windows.Forms.Button();
-            this.btnCancel = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
-            this.txSearch = new System.Windows.Forms.TextBox();
-            this.btClear = new System.Windows.Forms.Button();
-            this.label3 = new System.Windows.Forms.Label();
             this.course_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.course_length = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.course_climb = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.control_count = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.course_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.coursesBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.btnSave = new System.Windows.Forms.Button();
+            this.btnCancel = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.txSearch = new System.Windows.Forms.TextBox();
+            this.btClear = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgCourses)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.coursesBindingSource)).BeginInit();
             this.SuspendLayout();
@@ -52,9 +52,9 @@ namespace h24
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(246, 26);
+            this.label1.Location = new System.Drawing.Point(277, 32);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(172, 25);
+            this.label1.Size = new System.Drawing.Size(206, 29);
             this.label1.TabIndex = 0;
             this.label1.Text = "Unknown course";
             // 
@@ -72,71 +72,16 @@ namespace h24
             this.control_count,
             this.course_id});
             this.dgCourses.DataSource = this.coursesBindingSource;
-            this.dgCourses.Location = new System.Drawing.Point(69, 151);
+            this.dgCourses.Location = new System.Drawing.Point(78, 189);
+            this.dgCourses.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.dgCourses.Name = "dgCourses";
             this.dgCourses.ReadOnly = true;
             this.dgCourses.RowHeadersWidth = 51;
             this.dgCourses.RowTemplate.Height = 24;
-            this.dgCourses.Size = new System.Drawing.Size(646, 254);
+            this.dgCourses.Size = new System.Drawing.Size(727, 318);
             this.dgCourses.TabIndex = 3;
             this.dgCourses.ColumnWidthChanged += new System.Windows.Forms.DataGridViewColumnEventHandler(this.dgCourses_ColumnWidthChanged);
             this.dgCourses.DoubleClick += new System.EventHandler(this.dgCourses_DoubleClick);
-            // 
-            // btnSave
-            // 
-            this.btnSave.Location = new System.Drawing.Point(369, 425);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(75, 23);
-            this.btnSave.TabIndex = 6;
-            this.btnSave.Text = "Save";
-            this.btnSave.UseVisualStyleBackColor = true;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
-            // 
-            // btnCancel
-            // 
-            this.btnCancel.Location = new System.Drawing.Point(508, 425);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(75, 23);
-            this.btnCancel.TabIndex = 7;
-            this.btnCancel.Text = "Cancel";
-            this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(75, 101);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(57, 17);
-            this.label2.TabIndex = 8;
-            this.label2.Text = "Search:";
-            // 
-            // txSearch
-            // 
-            this.txSearch.Location = new System.Drawing.Point(178, 98);
-            this.txSearch.Name = "txSearch";
-            this.txSearch.Size = new System.Drawing.Size(100, 22);
-            this.txSearch.TabIndex = 9;
-            this.txSearch.TextChanged += new System.EventHandler(this.txSearch_TextChanged);
-            // 
-            // btClear
-            // 
-            this.btClear.Location = new System.Drawing.Point(304, 98);
-            this.btClear.Name = "btClear";
-            this.btClear.Size = new System.Drawing.Size(75, 23);
-            this.btClear.TabIndex = 10;
-            this.btClear.Text = "Clear";
-            this.btClear.UseVisualStyleBackColor = true;
-            this.btClear.Click += new System.EventHandler(this.btClear_Click);
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(75, 70);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(0, 20);
-            this.label3.TabIndex = 11;
             // 
             // course_name
             // 
@@ -146,7 +91,7 @@ namespace h24
             this.course_name.MinimumWidth = 6;
             this.course_name.Name = "course_name";
             this.course_name.ReadOnly = true;
-            this.course_name.Width = 82;
+            this.course_name.Width = 96;
             // 
             // course_length
             // 
@@ -189,11 +134,71 @@ namespace h24
             // 
             this.coursesBindingSource.DataSource = typeof(h24.courses);
             // 
+            // btnSave
+            // 
+            this.btnSave.Location = new System.Drawing.Point(415, 531);
+            this.btnSave.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(84, 29);
+            this.btnSave.TabIndex = 6;
+            this.btnSave.Text = "Save";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            // 
+            // btnCancel
+            // 
+            this.btnCancel.Location = new System.Drawing.Point(572, 531);
+            this.btnCancel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(84, 29);
+            this.btnCancel.TabIndex = 7;
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(84, 126);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(64, 20);
+            this.label2.TabIndex = 8;
+            this.label2.Text = "Search:";
+            // 
+            // txSearch
+            // 
+            this.txSearch.Location = new System.Drawing.Point(200, 122);
+            this.txSearch.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.txSearch.Name = "txSearch";
+            this.txSearch.Size = new System.Drawing.Size(112, 26);
+            this.txSearch.TabIndex = 0;
+            this.txSearch.TextChanged += new System.EventHandler(this.txSearch_TextChanged);
+            // 
+            // btClear
+            // 
+            this.btClear.Location = new System.Drawing.Point(342, 122);
+            this.btClear.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.btClear.Name = "btClear";
+            this.btClear.Size = new System.Drawing.Size(84, 29);
+            this.btClear.TabIndex = 10;
+            this.btClear.Text = "Clear";
+            this.btClear.UseVisualStyleBackColor = true;
+            this.btClear.Click += new System.EventHandler(this.btClear_Click);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(84, 88);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(0, 25);
+            this.label3.TabIndex = 11;
+            // 
             // frmCourseNotFound
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 523);
+            this.ClientSize = new System.Drawing.Size(900, 654);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.btClear);
             this.Controls.Add(this.txSearch);
@@ -202,6 +207,7 @@ namespace h24
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.dgCourses);
             this.Controls.Add(this.label1);
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "frmCourseNotFound";
             this.Text = "frmCourseNotFound";
             this.Load += new System.EventHandler(this.frmCourseNotFound_Load);

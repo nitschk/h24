@@ -5,6 +5,18 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="klc01Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="api_queue">
+          <Key>
+            <PropertyRef Name="q_id" />
+          </Key>
+          <Property Name="q_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="q_dtime" Type="datetime" Nullable="false" />
+          <Property Name="q_url" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="q_content" Type="nvarchar" MaxLength="4000" Nullable="false" />
+          <Property Name="q_status" Type="nchar" MaxLength="10" />
+          <Property Name="q_response" Type="nvarchar" MaxLength="4000" />
+          <Property Name="as_of_date" Type="datetime" />
+        </EntityType>
         <EntityType Name="categories">
           <Key>
             <PropertyRef Name="cat_id" />
@@ -82,10 +94,12 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="oris_team_id" Type="int" Nullable="false" />
+          <Property Name="team_bib" Type="int" Nullable="false" />
           <Property Name="class_name" Type="nvarchar" MaxLength="20" />
           <Property Name="team_name" Type="nvarchar" MaxLength="50" />
           <Property Name="team_short_name" Type="nvarchar" MaxLength="50" />
           <Property Name="leg" Type="int" />
+          <Property Name="bib" Type="nvarchar" MaxLength="10" />
           <Property Name="family" Type="nvarchar" MaxLength="50" />
           <Property Name="given" Type="nvarchar" MaxLength="50" />
           <Property Name="gender" Type="nchar" MaxLength="10" />
@@ -288,7 +302,7 @@ warning 6002: The table/view 'klc01.dbo.v_teams_results' does not have a primary
           <Property Name="team_name" Type="nvarchar" MaxLength="255" />
           <Property Name="cat_name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="race_time" Type="datetime" />
-          <Property Name="legs_count" Type="int" />
+          <Property Name="legs_count" Type="bigint" />
         </EntityType>
         <Association Name="FK_competitors_teams">
           <End Role="teams" Type="Self.teams" Multiplicity="0..1" />
@@ -383,6 +397,9 @@ warning 6002: The table/view 'klc01.dbo.v_teams_results' does not have a primary
         <Function Name="get_one_entry_json" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="team_id" Type="int" Mode="In" />
         </Function>
+        <Function Name="get_results_json" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="cat_name" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="get_slip_json" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="readout_id" Type="int" Mode="In" />
         </Function>
@@ -406,6 +423,7 @@ warning 6002: The table/view 'klc01.dbo.v_teams_results' does not have a primary
         <Function Name="sp_search_competitors" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="s" Type="nvarchar" Mode="In" />
         </Function>
+        <Function Name="sp_update_xml_entries_team_bib" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="sp_upsert_legs" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="readout_id" Type="int" Mode="In" />
           <Parameter Name="competitor_id" Type="int" Mode="In" />
@@ -421,6 +439,7 @@ warning 6002: The table/view 'klc01.dbo.v_teams_results' does not have a primary
           <Parameter Name="comp_id" Type="int" Mode="In" />
         </Function>
         <EntityContainer Name="klc01ModelStoreContainer">
+          <EntitySet Name="api_queue" EntityType="Self.api_queue" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="categories" EntityType="Self.categories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="competitors" EntityType="Self.competitors" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="controls" EntityType="Self.controls" Schema="dbo" store:Type="Tables" />
@@ -936,6 +955,11 @@ warning 6002: The table/view 'klc01.dbo.v_teams_results' does not have a primary
           <FunctionImport Name="get_one_competitor_json" ReturnType="Collection(String)">
           <Parameter Name="comp_id" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="get_results_json" ReturnType="Collection(String)">
+          <Parameter Name="cat_name" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="api_queue" EntityType="klc01Model.api_queue" />
+          <FunctionImport Name="sp_update_xml_entries_team_bib" />
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -1046,6 +1070,8 @@ warning 6002: The table/view 'klc01.dbo.v_teams_results' does not have a primary
           <Property Name="si_chip" Type="Int32" />
           <Property Name="note" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="oris_team_id" Type="Int32" Nullable="false" />
+          <Property Name="team_bib" Type="Int32" Nullable="false" />
+          <Property Name="bib" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="results">
           <Key>
@@ -1079,6 +1105,18 @@ warning 6002: The table/view 'klc01.dbo.v_teams_results' does not have a primary
           <Property Name="cat_name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="race_time" Type="DateTime" Precision="3" />
           <Property Name="legs_count" Type="Int32" />
+        </EntityType>
+        <EntityType Name="api_queue">
+          <Key>
+            <PropertyRef Name="q_id" />
+          </Key>
+          <Property Name="q_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="q_dtime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="q_url" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="q_content" Type="String" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="q_status" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="q_response" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="as_of_date" Type="DateTime" Precision="3" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1381,6 +1419,8 @@ warning 6002: The table/view 'klc01.dbo.v_teams_results' does not have a primary
           <EntitySetMapping Name="entry_xml">
             <EntityTypeMapping TypeName="klc01Model.entry_xml">
               <MappingFragment StoreEntitySet="entry_xml">
+                <ScalarProperty Name="bib" ColumnName="bib" />
+                <ScalarProperty Name="team_bib" ColumnName="team_bib" />
                 <ScalarProperty Name="oris_team_id" ColumnName="oris_team_id" />
                 <ScalarProperty Name="note" ColumnName="note" />
                 <ScalarProperty Name="si_chip" ColumnName="si_chip" />
@@ -1435,6 +1475,21 @@ warning 6002: The table/view 'klc01.dbo.v_teams_results' does not have a primary
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="get_one_competitor_json" FunctionName="klc01Model.Store.get_one_competitor_json" />
+          <FunctionImportMapping FunctionImportName="get_results_json" FunctionName="klc01Model.Store.get_results_json" />
+          <EntitySetMapping Name="api_queue">
+            <EntityTypeMapping TypeName="klc01Model.api_queue">
+              <MappingFragment StoreEntitySet="api_queue">
+                <ScalarProperty Name="as_of_date" ColumnName="as_of_date" />
+                <ScalarProperty Name="q_response" ColumnName="q_response" />
+                <ScalarProperty Name="q_status" ColumnName="q_status" />
+                <ScalarProperty Name="q_content" ColumnName="q_content" />
+                <ScalarProperty Name="q_url" ColumnName="q_url" />
+                <ScalarProperty Name="q_dtime" ColumnName="q_dtime" />
+                <ScalarProperty Name="q_id" ColumnName="q_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_update_xml_entries_team_bib" FunctionName="klc01Model.Store.sp_update_xml_entries_team_bib" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

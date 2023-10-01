@@ -43,6 +43,7 @@ namespace h24
         public virtual DbSet<entry_xml> entry_xml { get; set; }
         public virtual DbSet<results> results { get; set; }
         public virtual DbSet<v_teams_results> v_teams_results { get; set; }
+        public virtual DbSet<api_queue> api_queue { get; set; }
     
         public virtual ObjectResult<Nullable<int>> get_competitor(Nullable<int> chip_id)
         {
@@ -345,6 +346,20 @@ namespace h24
                 new ObjectParameter("comp_id", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("get_one_competitor_json", comp_idParameter);
+        }
+    
+        public virtual ObjectResult<string> get_results_json(string cat_name)
+        {
+            var cat_nameParameter = cat_name != null ?
+                new ObjectParameter("cat_name", cat_name) :
+                new ObjectParameter("cat_name", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("get_results_json", cat_nameParameter);
+        }
+    
+        public virtual int sp_update_xml_entries_team_bib()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_update_xml_entries_team_bib");
         }
     }
 }

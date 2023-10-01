@@ -585,11 +585,10 @@ namespace h24
             }
         }
 
-        private static List<string> _errors = new List<string>();
         public static async Task<string> PostSlip(int readout_id)
         {
             string url;
-            List<string> allResponses = new List<string>();
+            string allResponses = "";
             string oneResponse = "";
             HttpClient client = new HttpClient();
             //int i = 0;
@@ -610,43 +609,28 @@ namespace h24
                 foreach (string oneUrl in urls)
                 {
                     url = oneUrl + url_slips;
-                    bool wasSent = false;
-                    //try to send 3 times
-                    for (int i = 0; i < 3; i++)
-                    {
-                        var content = new StringContent(
+
+                    var content = new StringContent(
                         OneSlip,
                         System.Text.Encoding.UTF8,
                         "application/json"
                         );
 
-                        try
-                        {
-                            var response = await client.PostAsync(url, content);
-                            response.EnsureSuccessStatusCode();
-                            oneResponse = url + " " + await response.Content.ReadAsStringAsync();
-                            allResponses.Add(oneResponse);
-                            wasSent = true;
-                            break;
-                        }
-                        catch (Exception e)
-                        {
-                            oneResponse = url + $"Sending error: attempt {i} - {e.Message}";
-                            allResponses.Add(oneResponse);
-                        }
-
-                    }
-                    if (!wasSent)
+                    var response = await client.PostAsync(url, content);
+                    try
                     {
-                        MessageBox.Show("Sending error:  all attempts failed");
-                        _errors.Add(OneSlip);
-
-                        oneResponse = url + "Sending error:  all attempts failed";
-                        allResponses.Add(oneResponse);
+                        response.EnsureSuccessStatusCode();
+                        oneResponse = url + " " + await response.Content.ReadAsStringAsync();
                     }
+                    catch
+                    {
+                        MessageBox.Show("ERR EnsureSuccessStatusCode post");
+                        oneResponse = url + "ERR EnsureSuccessStatusCode post";
+                    }
+                    allResponses += oneResponse;
                 }
             }
-            return string.Join(Environment.NewLine, allResponses);
+            return allResponses;
         }
 
         private void SetTxtInfo(EnvironmentVariableTarget result)

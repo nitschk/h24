@@ -27,5 +27,7 @@ namespace h24
         public Nullable<int> si_chip { get; set; }
         public string note { get; set; }
         public int oris_team_id { get; set; }
+        public int team_bib { get; set; }
+        public string bib { get; set; }
     }
 }

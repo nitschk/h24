@@ -20,6 +20,23 @@ namespace h24
             InitializeComponent();
         }
 
+        private void FrmResults_Load(object sender, EventArgs e)
+        {
+            List<results> results = null;
+            int cat_id = 2;
+            using (var db = new klc01())
+            {
+                results = db.results.Where(a => a.cat_id == cat_id).ToList();
+
+                this.reportViewer1.LocalReport.ReportPath = "rpt_results.rdlc";
+                this.reportViewer1.LocalReport.DataSources.Clear();
+                ReportDataSource rdc = new ReportDataSource("ds_result", results);
+                this.reportViewer1.LocalReport.DataSources.Add(rdc);
+
+                this.reportViewer1.RefreshReport();
+            }
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
             List<results> results = null;
@@ -97,20 +114,25 @@ namespace h24
             printDoc.Print();
         }
 
-        private void FrmResults_Load(object sender, EventArgs e)
+        private void BtnJson_Click(object sender, EventArgs e)
         {
-            List<results> results = null;
-            int cat_id = 2;
             using (var db = new klc01())
             {
-                results = db.results.Where(a => a.cat_id == cat_id).ToList();
+                // Create a StreamWriter to the output file.
+                var fileStream = new StreamWriter("output.txt");
 
-                this.reportViewer1.LocalReport.ReportPath = "rpt_results.rdlc";
-                this.reportViewer1.LocalReport.DataSources.Clear();
-                ReportDataSource rdc = new ReportDataSource("ds_result", results);
-                this.reportViewer1.LocalReport.DataSources.Add(rdc);
+                string results;
+                // Execute the stored procedure and get the results.
+                results = db.get_results_json("").FirstOrDefault();
+                fileStream.WriteLine(results.ToString());
+                // Iterate through the results and write them to the output file.
+                /*foreach (var row in results)
+                {
+                    fileStream.WriteLine(row.ToString());
+                }*/
 
-                this.reportViewer1.RefreshReport();
+                // Close the StreamWriter.
+                fileStream.Close();
             }
         }
     }

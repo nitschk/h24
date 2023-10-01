@@ -30,7 +30,6 @@ namespace h24
             RefreshEntry_xml();
         }
 
-
         private void RefreshEntry_xml()
         {
             using (var db = new klc01())
@@ -50,7 +49,9 @@ namespace h24
                                  country = e.country,
                                  birth_date = e.birth_date,
                                  si_chip = e.si_chip,
-                                 note = e.note
+                                 note = e.note,
+                                 team_bib = e.team_bib,
+                                 bib = e.bib
                              }
                              ).Distinct().OrderBy(x => x.id).ToList();
                 dgEntry_xml.DataSource = query.ToList();
@@ -62,13 +63,13 @@ namespace h24
         {
             OpenFileDialog openFileDialog1 = new OpenFileDialog
             {
-                Title = "Browse Entries File - ; csv",
+                Title = "Browse Entries File - ; csv, xml",
 
                 CheckFileExists = true,
                 CheckPathExists = true,
 
                 DefaultExt = "csv",
-                Filter = "csv files (*.csv)|*.csv|All files (*.*)|*.*",
+                Filter = "csv files (*.csv)|*.csv|xml files (*.xml)|*.xml|All files (*.*)|*.*",
                 FilterIndex = 2,
                 RestoreDirectory = true,
 
@@ -91,28 +92,33 @@ namespace h24
                 if (File.Exists(textFile))
                 {
                     // Read a text file line by line.  
-                    string[] lines = File.ReadAllLines(textFile);
 
-                    foreach (string line in lines)
+                    string tb = "";
+                    if (Path.GetExtension(textFile) == ".xml")
+                        tb = NewCard.FormatXml(File.ReadAllText(textFile));
+                    else
                     {
-                        tbEntries.Text += line;
-                        tbEntries.Text += "\n";
+                        string[] lines = File.ReadAllLines(textFile);
+                        foreach (string line in lines)
+                        {
+                            tb += line;
+                            tb += "\n";
+                        }
                     }
+                    tbEntries.Text = tb;
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error: " + ex.Message, ex.Message);
             }
-
         }
 
-        private void btnUpload_Click(object sender, EventArgs e)
+        private void btnCSVUpload_Click(object sender, EventArgs e)
         {
             string textFile = tbEntriesFile.Text;
             try
             {
-
                 if (File.Exists(textFile))
                 {
                     var config = new CsvConfiguration(CultureInfo.InvariantCulture)
@@ -337,38 +343,7 @@ namespace h24
             {
                 MessageBox.Show("Error: " + ex.Message);
             }
-
-
             this.dgEntries_refresh();
-            /*            db = new klc01();
-
-                        string q = "SELECT" +
-                            "   t.team_id," +
-                            "   t.team_nr," +
-                            "	t.team_name, " +
-                            "	t.team_did_start, " +
-                            "	t.team_status, " +
-                            "	t.race_end, " +
-                            "   c.comp_id, " +
-                            "	c.comp_name," +
-                            "	c.bib," +
-                            "	c.rented_chip," +
-                            "	c.rank_order," +
-                            "	c.comp_withdrawn," +
-                            "	c.comp_status," +
-                            "	c.comp_country," +
-                            "	c.comp_birthday," +
-                            "	ca.cat_name," +
-                            "	ca.cat_start_time," +
-                            "	ca.cat_time_limit " +
-                            "FROM teams AS t " +
-                            "INNER JOIN competitors AS c ON t.team_id = c.team_id " +
-                            "INNER JOIN categories AS ca ON t.cat_id = ca.cat_id ";
-                        var tms = db.competitors.SqlQuery(q).ToList();
-
-                        dgEntries.DataSource = tms;
-                        dgEntries.Refresh();*/
-
         }
 
         private void btClose_Click(object sender, EventArgs e)
@@ -509,39 +484,8 @@ namespace h24
                 writer.Flush();
                 MessageBox.Show("Export copmlete");
             }
-
-
         }
 
-       /* public static int xmlStartList()
-        {
-            string file_contents;
-            string file_name = "StartList.xml";
-
-            string path = @"C:\temp\readme.txt";
-            string contents = @"<?xml version="1.0" encoding="UTF - 8"?>
-  < !--
-    Start list for an individual event.
--->
-<StartList xmlns="http://www.orienteering.org/datastandard/3.0"
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           iofVersion="3.0"
-           createTime="2011-07-20T12:16:31+02:00"
-           creator="Example Software">
-  <Event>
-    <Name>Example event</Name>
-    <StartTime>
-      <Date>2011-07-30</Date>
-      <Time>10:00:00+01:00</Time>
-    </StartTime>
-    <EndTime>
-      <Date>2011-07-30</Date>
-      <Time>14:00:00+01:00</Time>
-    </EndTime>
-  </Event>";
-
-            File.WriteAllText(path, contents);
-        }*/
 
         private static void RemoveAllNamespaces(XDocument xDoc)
         {
@@ -551,16 +495,17 @@ namespace h24
             }
         }
 
-        private async void BtnUploadXML_Click(object sender, EventArgs e)
+        private async void BtnFetchOrisXML_Click(object sender, EventArgs e)
         {
-
+            //fetch xml file from oris
             var finalResult = await NewCard.OrisGetEntries();
 
             tbEntries.Text = NewCard.FormatXml(finalResult);
             //string textFile = tbEntriesFile.Text;
             try
             {
-
+                int a = this.insert_xml_entries(finalResult);
+                /*
                 XDocument xDoc = XDocument.Parse(finalResult);
                 //XDocument xDoc = XDocument.Load(@"c:\k\oris_entries_20230319_182259.xml");
                 RemoveAllNamespaces(xDoc);
@@ -569,11 +514,15 @@ namespace h24
                 {
                     db.Database.ExecuteSqlCommand("TRUNCATE TABLE entry_xml");
 
+                    List<categories> cat = db.categories.Where(x => (bool)x.valid ).ToList();
+
                     var items = from item in xDoc.Descendants("EntryList").Elements("TeamEntry")
+                                join ct in cat on item.Element("Class").Element("Name").Value equals ct.cat_name
                                 select new
                                 {
                                     id = Int32.Parse(item.Element("Id").Value),
                                     name = item.Element("Name").Value,
+                                    team_bib = ct.first_start_number ?? 0,
                                     organization = item.Element("Organisation").Element("Name").Value,
                                     class_name = item.Element("Class").Element("Name").Value,
                                     note = item.Element("Extensions")?.Element("Note")?.Value ?? "",
@@ -592,6 +541,7 @@ namespace h24
                     string birth_date;
                     int si_chip;
                     string note;
+                    int team_bib;
 
                     foreach (var team_person in items)
                     {
@@ -600,6 +550,7 @@ namespace h24
                         team_short_name = team_person.organization;
                         class_name = team_person.class_name;
                         note = team_person.note;
+                        team_bib = team_person.team_bib;
 
                         foreach (var TeamEntryPerson in team_person.TeamEntryPerson)
                         {
@@ -618,6 +569,7 @@ namespace h24
                             var newEntry = new entry_xml
                             {
                                 oris_team_id = id,
+                                team_bib = team_bib,
                                 class_name = class_name,
                                 team_name = team_name,
                                 team_short_name = team_short_name,
@@ -635,6 +587,7 @@ namespace h24
                         }
                     }
                 }
+                var a = db.sp_update_xml_entries_team_bib();*/
             }
             catch (Exception ex)
             {
@@ -642,6 +595,102 @@ namespace h24
             }
 
             RefreshEntry_xml();
+        }
+
+        public int insert_xml_entries(string finalResult)
+        {
+            try
+            {
+                XDocument xDoc = XDocument.Parse(finalResult);
+                //XDocument xDoc = XDocument.Load(@"c:\k\oris_entries_20230319_182259.xml");
+                RemoveAllNamespaces(xDoc);
+
+                using (var db = new klc01())
+                {
+                    db.Database.ExecuteSqlCommand("TRUNCATE TABLE entry_xml");
+
+                    List<categories> cat = db.categories.Where(x => (bool)x.valid).ToList();
+
+                    var items = from item in xDoc.Descendants("EntryList").Elements("TeamEntry")
+                                join ct in cat on item.Element("Class").Element("Name").Value equals ct.cat_name into gj
+                                from cate in gj.DefaultIfEmpty()
+                                select new
+                                {
+                                    id = Int32.Parse(item.Element("Id").Value),
+                                    name = item.Element("Name").Value,
+                                    team_bib = cate == null? 0 :cate.first_start_number,
+                                    organization = item.Element("Organisation").Element("Name").Value,
+                                    class_name = item.Element("Class").Element("Name").Value,
+                                    note = item.Element("Extensions")?.Element("Note")?.Value ?? "",
+                                    TeamEntryPerson = item.Descendants("TeamEntryPerson"),
+                                };
+
+                    int id;
+                    string team_name;
+                    string team_short_name;
+                    string class_name;
+                    int leg;
+                    string family;
+                    string given;
+                    string gender;
+                    string country;
+                    string birth_date;
+                    int si_chip;
+                    string note;
+                    int team_bib;
+
+                    foreach (var team_person in items)
+                    {
+                        id = team_person.id;
+                        team_name = team_person.name;
+                        team_short_name = team_person.organization;
+                        class_name = team_person.class_name;
+                        note = team_person.note;
+                        team_bib = team_person.team_bib ?? 0;
+
+                        foreach (var TeamEntryPerson in team_person.TeamEntryPerson)
+                        {
+                            leg = Int32.Parse(TeamEntryPerson.Element("Leg").Value);
+                            family = TeamEntryPerson.Element("Person")?.Element("Name")?.Element("Family")?.Value ?? "";
+                            given = TeamEntryPerson.Element("Person")?.Element("Name")?.Element("Given")?.Value ?? "";
+                            gender = TeamEntryPerson.Element("Person")?.Attribute("sex")?.Value ?? "";
+                            country = TeamEntryPerson.Element("Person")?.Element("Nationality")?.Attribute("code")?.Value ?? "";
+                            birth_date = TeamEntryPerson.Element("Person")?.Element("BirthDate")?.Value ?? "";
+                            if (TeamEntryPerson.Element("ControlCard")?.Value != null)
+                                si_chip = Int32.Parse(TeamEntryPerson.Element("ControlCard").Value);
+                            else
+                                si_chip = 0;
+
+                            //save                    
+                            var newEntry = new entry_xml
+                            {
+                                oris_team_id = id,
+                                team_bib = team_bib,
+                                class_name = class_name,
+                                team_name = team_name,
+                                team_short_name = team_short_name,
+                                leg = leg,
+                                family = family,
+                                given = given,
+                                gender = gender,
+                                country = country,
+                                birth_date = birth_date,
+                                si_chip = si_chip,
+                                note = note
+                            };
+                            db.entry_xml.Add(newEntry);
+                            db.SaveChanges();
+                        }
+                    }
+                }
+                var a = db.sp_update_xml_entries_team_bib();
+                return 1;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message, ex.Message);
+                return 0;
+            }
         }
 
         private void BtInsertXmlEntries_Click(object sender, EventArgs e)
@@ -654,37 +703,50 @@ namespace h24
 
         private void BtInsertCatagories_Click(object sender, EventArgs e)
         {
-
             using (var db = new klc01())
             {
-                var clasesToInsert = db.entry_xml
-                          .Where(q => !db.categories.Select(r => r.cat_name).Contains(q.class_name))
-                          .Select(g => new { g.class_name })
-                          .Distinct()
-                          .OrderBy(f => f.class_name)
-                          .ToList();
-
-                foreach (var oneClass in clasesToInsert)
+                string textFile = tbEntries.Text;
+                try
                 {
-                    var start_time = db.settings.Where(b => b.config_name == "start_time").FirstOrDefault();
+                    XDocument xDoc = XDocument.Parse(textFile);
+                    RemoveAllNamespaces(xDoc);
 
-                    string digits = new string(oneClass.class_name.ToString().TakeWhile(c => !Char.IsLetter(c)).ToArray());
-                    int time_limit;
-                    if (Int16.Parse(digits) > 0)
-                        time_limit = Int16.Parse(digits) * 60;
-                    else
-                        time_limit = Int16.Parse(db.settings.Where(b => b.config_name == "default_time_limit").FirstOrDefault().config_value.ToString());
+                    var elements = (from item in xDoc.Elements("EntryList").Elements("TeamEntry").Elements("Class").Descendants("Name")
+                                    select e);//.GroupBy(x => x.Value).Select(x => x.First());
 
-                    var newClass = new categories
+                    var clasesToInsert = db.entry_xml
+                              .Where(q => !db.categories.Select(r => r.cat_name).Contains(q.class_name))
+                              .Select(g => new { g.class_name })
+                              .Distinct()
+                              .OrderBy(f => f.class_name)
+                              .ToList();
+
+                    foreach (var oneClass in clasesToInsert)
                     {
-                        cat_name = oneClass.class_name.ToString(),
-                        as_of_date = DateTime.Now,
-                        cat_start_time = DateTime.ParseExact(start_time.config_value, "yyyy-MM-dd HH:mm:ss.fff", null),
-                        cat_time_limit = time_limit,
-                        valid = true,
-                    };
-                    db.categories.Add(newClass);
-                    db.SaveChanges();
+                        var start_time = db.settings.Where(b => b.config_name == "start_time").FirstOrDefault();
+
+                        string digits = new string(oneClass.class_name.ToString().TakeWhile(c => !Char.IsLetter(c)).ToArray());
+                        int time_limit;
+                        if (Int16.Parse(digits) > 0)
+                            time_limit = Int16.Parse(digits) * 60;
+                        else
+                            time_limit = Int16.Parse(db.settings.Where(b => b.config_name == "default_time_limit").FirstOrDefault().config_value.ToString());
+
+                        var newClass = new categories
+                        {
+                            cat_name = oneClass.class_name.ToString(),
+                            as_of_date = DateTime.Now,
+                            cat_start_time = DateTime.ParseExact(start_time.config_value, "yyyy-MM-dd HH:mm:ss.fff", null),
+                            cat_time_limit = time_limit,
+                            valid = true,
+                        };
+                        db.categories.Add(newClass);
+                        db.SaveChanges();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: " + ex.Message, ex.Message);
                 }
             }
         }
@@ -697,6 +759,21 @@ namespace h24
         private void dgEntry_xml_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             db.SaveChanges();
+        }
+
+        private void BtnUploadFileXml_Click(object sender, EventArgs e)
+        {
+            string textFile = tbEntries.Text;
+            try
+            {
+                int a = this.insert_xml_entries(textFile);
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message, ex.Message);
+            }
+
         }
     }
 }

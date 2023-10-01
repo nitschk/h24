@@ -713,19 +713,11 @@ namespace h24
       // If these threads are different, it returns true.
       var competitor = db.slips.Where(b => b.readout_id == readout_id).FirstOrDefault();
 
-            if(competitor == null)
-            {
-                this.LbLastBib.Text = "Neznámý";
-                this.LbStatus.Text = "??";
-                this.LbPenal.Text = "??";
-                return;
-            }
+      string bib = competitor.bib;
+      string leg_status = competitor.leg_status;
+      string dsk_penalty = competitor.dsk_penalty.ToString();
 
-      //string bib = competitor.bib;
-      //string leg_status = competitor.leg_status;
-      //string dsk_penalty = competitor.dsk_penalty.ToString();
-
-      //this.LbLastBib.Text = bib;
+      this.LbLastBib.Text = bib;
 
       //display competitor details
       this.LbLastBib.Text = competitor.bib;
@@ -868,14 +860,7 @@ namespace h24
       f.ShowDialog();
     }
 
-        private void resultsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            FrmResults f = new FrmResults();
-            f.ShowDialog();
-        }
-
-
-        private void btnPrintSlip_Click(object sender, EventArgs e)
+    private void btnPrintSlip_Click(object sender, EventArgs e)
     {
       int curRow = dgLegs.CurrentRow.Index;
       if (curRow > -1)
@@ -1308,31 +1293,30 @@ namespace h24
         SetSettings(SerialPortSettingsName, cmbSerialPort.SelectedItem.ToString());
     }
 
+    /*
+private void Refresh_Readout(Object sender, EventArgs e)
+{
+if (this.dgLegs.GetCellCount(DataGridViewElementStates.Selected) > 0)
+{
+   try
+   {
+       Clipboard.SetDataObject(this.dataGridView1.GetClipboardContent());
+   }
+   catch (System.Runtime.InteropServices.ExternalException)
+   {
+       MessageBox.Show("Clipboard could not be accessed. Please try again.");
+   }
+}
 
-        /*
-    private void Refresh_Readout(Object sender, EventArgs e)
-    {
-    if (this.dgLegs.GetCellCount(DataGridViewElementStates.Selected) > 0)
-    {
-       try
-       {
-           Clipboard.SetDataObject(this.dataGridView1.GetClipboardContent());
-       }
-       catch (System.Runtime.InteropServices.ExternalException)
-       {
-           MessageBox.Show("Clipboard could not be accessed. Please try again.");
-       }
-    }
+if (this.dataGridView1.SelectedRows.Count > 0)
+{
+   dataGridView1.Rows.RemoveAt(this.dataGridView1.SelectedRows[0].Index);
+}
 
-    if (this.dataGridView1.SelectedRows.Count > 0)
-    {
-       dataGridView1.Rows.RemoveAt(this.dataGridView1.SelectedRows[0].Index);
-    }
-
-    }*/
-
+}*/
 
 
-    }
+
+  }
 
 }

@@ -36,6 +36,8 @@ namespace h24
             this.reportViewer1 = new Microsoft.Reporting.WinForms.ReportViewer();
             this.button1 = new System.Windows.Forms.Button();
             this.rpt_resultsTableAdapter = new h24.ds_resultTableAdapters.rpt_resultsTableAdapter();
+            this.BtnJson = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ds_result)).BeginInit();
             this.SuspendLayout();
@@ -63,9 +65,10 @@ namespace h24
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(225, 13);
+            this.button1.Location = new System.Drawing.Point(253, 16);
+            this.button1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.Size = new System.Drawing.Size(84, 29);
             this.button1.TabIndex = 0;
             this.button1.Text = "button1";
             this.button1.UseVisualStyleBackColor = true;
@@ -75,18 +78,41 @@ namespace h24
             // 
             this.rpt_resultsTableAdapter.ClearBeforeFill = true;
             // 
+            // BtnJson
+            // 
+            this.BtnJson.Location = new System.Drawing.Point(626, 70);
+            this.BtnJson.Name = "BtnJson";
+            this.BtnJson.Size = new System.Drawing.Size(134, 32);
+            this.BtnJson.TabIndex = 1;
+            this.BtnJson.Text = "Create JSON";
+            this.BtnJson.UseVisualStyleBackColor = true;
+            this.BtnJson.Click += new System.EventHandler(this.BtnJson_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(622, 37);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(113, 20);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "Offline Results";
+            // 
             // FrmResults
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(900, 562);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.BtnJson);
             this.Controls.Add(this.button1);
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "FrmResults";
             this.Text = "frmResults";
             this.Load += new System.EventHandler(this.FrmResults_Load);
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ds_result)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -97,5 +123,7 @@ namespace h24
         private ds_result ds_result;
         private System.Windows.Forms.BindingSource bindingSource;
         private ds_resultTableAdapters.rpt_resultsTableAdapter rpt_resultsTableAdapter;
+        private System.Windows.Forms.Button BtnJson;
+        private System.Windows.Forms.Label label1;
     }
 }

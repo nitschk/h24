@@ -32,7 +32,17 @@ namespace h24
             this.components = new System.ComponentModel.Container();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.dgCourses = new System.Windows.Forms.DataGridView();
+            this.coursesBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.dgControlCodes = new System.Windows.Forms.DataGridView();
+            this.ccidDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.courseidDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.controlidDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.positionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ccstatusDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.asofdateDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.controlsDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.coursesDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.coursecodesBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btnUpload = new System.Windows.Forms.Button();
             this.tbCourses = new System.Windows.Forms.TextBox();
@@ -46,15 +56,6 @@ namespace h24
             this.dgSameCourses = new System.Windows.Forms.DataGridView();
             this.course_name1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.course_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ccidDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.courseidDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.controlidDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.positionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ccstatusDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.asofdateDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.controlsDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.coursesDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.coursecodesBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.course_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.coursenameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.courselengthDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -64,13 +65,12 @@ namespace h24
             this.asofdateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.coursecodesDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.legsDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.coursesBindingSource = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dgCourses)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.coursesBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgControlCodes)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.coursecodesBindingSource)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgSameCourses)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.coursecodesBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.coursesBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // openFileDialog1
@@ -95,14 +95,19 @@ namespace h24
             this.coursecodesDataGridViewTextBoxColumn,
             this.legsDataGridViewTextBoxColumn});
             this.dgCourses.DataSource = this.coursesBindingSource;
-            this.dgCourses.Location = new System.Drawing.Point(29, 35);
+            this.dgCourses.Location = new System.Drawing.Point(33, 44);
+            this.dgCourses.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.dgCourses.Name = "dgCourses";
             this.dgCourses.RowHeadersWidth = 51;
             this.dgCourses.RowTemplate.Height = 24;
-            this.dgCourses.Size = new System.Drawing.Size(563, 258);
+            this.dgCourses.Size = new System.Drawing.Size(633, 322);
             this.dgCourses.TabIndex = 6;
             this.dgCourses.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgCourses_CellEndEdit);
             this.dgCourses.SelectionChanged += new System.EventHandler(this.dgCourses_SelectionChanged);
+            // 
+            // coursesBindingSource
+            // 
+            this.coursesBindingSource.DataSource = typeof(h24.courses);
             // 
             // dgControlCodes
             // 
@@ -118,141 +123,14 @@ namespace h24
             this.controlsDataGridViewTextBoxColumn,
             this.coursesDataGridViewTextBoxColumn});
             this.dgControlCodes.DataSource = this.coursecodesBindingSource;
-            this.dgControlCodes.Location = new System.Drawing.Point(863, 35);
+            this.dgControlCodes.Location = new System.Drawing.Point(971, 44);
+            this.dgControlCodes.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.dgControlCodes.Name = "dgControlCodes";
             this.dgControlCodes.RowHeadersWidth = 51;
             this.dgControlCodes.RowTemplate.Height = 24;
-            this.dgControlCodes.Size = new System.Drawing.Size(528, 258);
+            this.dgControlCodes.Size = new System.Drawing.Size(594, 322);
             this.dgControlCodes.TabIndex = 7;
             this.dgControlCodes.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgControlCodes_CellEndEdit);
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.btnUpload);
-            this.groupBox1.Controls.Add(this.tbCourses);
-            this.groupBox1.Controls.Add(this.btnShowFile);
-            this.groupBox1.Controls.Add(this.btnBrowse);
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.tbCourseFile);
-            this.groupBox1.Location = new System.Drawing.Point(23, 307);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(796, 405);
-            this.groupBox1.TabIndex = 8;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Upload Courses";
-            // 
-            // btnUpload
-            // 
-            this.btnUpload.Location = new System.Drawing.Point(324, 330);
-            this.btnUpload.Name = "btnUpload";
-            this.btnUpload.Size = new System.Drawing.Size(75, 23);
-            this.btnUpload.TabIndex = 11;
-            this.btnUpload.Text = "Upload Courses";
-            this.btnUpload.UseVisualStyleBackColor = true;
-            this.btnUpload.Click += new System.EventHandler(this.btnUpload_Click);
-            // 
-            // tbCourses
-            // 
-            this.tbCourses.Location = new System.Drawing.Point(29, 92);
-            this.tbCourses.Multiline = true;
-            this.tbCourses.Name = "tbCourses";
-            this.tbCourses.Size = new System.Drawing.Size(741, 232);
-            this.tbCourses.TabIndex = 10;
-            // 
-            // btnShowFile
-            // 
-            this.btnShowFile.Location = new System.Drawing.Point(507, 54);
-            this.btnShowFile.Name = "btnShowFile";
-            this.btnShowFile.Size = new System.Drawing.Size(129, 23);
-            this.btnShowFile.TabIndex = 9;
-            this.btnShowFile.Text = "Show file";
-            this.btnShowFile.UseVisualStyleBackColor = true;
-            this.btnShowFile.Click += new System.EventHandler(this.btnShow_Click);
-            // 
-            // btnBrowse
-            // 
-            this.btnBrowse.Location = new System.Drawing.Point(400, 52);
-            this.btnBrowse.Name = "btnBrowse";
-            this.btnBrowse.Size = new System.Drawing.Size(75, 23);
-            this.btnBrowse.TabIndex = 8;
-            this.btnBrowse.Text = "Browse";
-            this.btnBrowse.UseVisualStyleBackColor = true;
-            this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(26, 58);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(79, 17);
-            this.label1.TabIndex = 7;
-            this.label1.Text = "Course file:";
-            // 
-            // tbCourseFile
-            // 
-            this.tbCourseFile.Location = new System.Drawing.Point(113, 54);
-            this.tbCourseFile.Name = "tbCourseFile";
-            this.tbCourseFile.Size = new System.Drawing.Size(260, 22);
-            this.tbCourseFile.TabIndex = 6;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(20, 4);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(60, 17);
-            this.label2.TabIndex = 9;
-            this.label2.Text = "Courses";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(860, 4);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(97, 17);
-            this.label3.TabIndex = 10;
-            this.label3.Text = "Course Codes";
-            // 
-            // BtnCheckCourses
-            // 
-            this.BtnCheckCourses.Location = new System.Drawing.Point(1053, 399);
-            this.BtnCheckCourses.Name = "BtnCheckCourses";
-            this.BtnCheckCourses.Size = new System.Drawing.Size(75, 23);
-            this.BtnCheckCourses.TabIndex = 11;
-            this.BtnCheckCourses.Text = "Check courses";
-            this.BtnCheckCourses.UseVisualStyleBackColor = true;
-            this.BtnCheckCourses.Click += new System.EventHandler(this.BtnCheckCourses_Click);
-            // 
-            // dgSameCourses
-            // 
-            this.dgSameCourses.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgSameCourses.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.course_name1,
-            this.course_name});
-            this.dgSameCourses.Location = new System.Drawing.Point(863, 437);
-            this.dgSameCourses.Name = "dgSameCourses";
-            this.dgSameCourses.RowHeadersWidth = 51;
-            this.dgSameCourses.RowTemplate.Height = 24;
-            this.dgSameCourses.Size = new System.Drawing.Size(528, 150);
-            this.dgSameCourses.TabIndex = 12;
-            // 
-            // course_name1
-            // 
-            this.course_name1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.course_name1.DataPropertyName = "course_name1";
-            this.course_name1.HeaderText = "Course";
-            this.course_name1.MinimumWidth = 6;
-            this.course_name1.Name = "course_name1";
-            this.course_name1.Width = 82;
-            // 
-            // course_name
-            // 
-            this.course_name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.course_name.DataPropertyName = "course_name";
-            this.course_name.HeaderText = "Part of Course";
-            this.course_name.MinimumWidth = 6;
-            this.course_name.Name = "course_name";
-            this.course_name.Width = 128;
             // 
             // ccidDataGridViewTextBoxColumn
             // 
@@ -327,6 +205,143 @@ namespace h24
             // 
             this.coursecodesBindingSource.DataSource = typeof(h24.course_codes);
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.btnUpload);
+            this.groupBox1.Controls.Add(this.tbCourses);
+            this.groupBox1.Controls.Add(this.btnShowFile);
+            this.groupBox1.Controls.Add(this.btnBrowse);
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.tbCourseFile);
+            this.groupBox1.Location = new System.Drawing.Point(26, 384);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.groupBox1.Size = new System.Drawing.Size(896, 506);
+            this.groupBox1.TabIndex = 8;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Upload Courses";
+            // 
+            // btnUpload
+            // 
+            this.btnUpload.Location = new System.Drawing.Point(364, 412);
+            this.btnUpload.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.btnUpload.Name = "btnUpload";
+            this.btnUpload.Size = new System.Drawing.Size(84, 29);
+            this.btnUpload.TabIndex = 11;
+            this.btnUpload.Text = "Upload Courses";
+            this.btnUpload.UseVisualStyleBackColor = true;
+            this.btnUpload.Click += new System.EventHandler(this.btnUpload_Click);
+            // 
+            // tbCourses
+            // 
+            this.tbCourses.Location = new System.Drawing.Point(33, 115);
+            this.tbCourses.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.tbCourses.Multiline = true;
+            this.tbCourses.Name = "tbCourses";
+            this.tbCourses.Size = new System.Drawing.Size(833, 289);
+            this.tbCourses.TabIndex = 10;
+            // 
+            // btnShowFile
+            // 
+            this.btnShowFile.Location = new System.Drawing.Point(570, 68);
+            this.btnShowFile.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.btnShowFile.Name = "btnShowFile";
+            this.btnShowFile.Size = new System.Drawing.Size(145, 29);
+            this.btnShowFile.TabIndex = 9;
+            this.btnShowFile.Text = "Show file";
+            this.btnShowFile.UseVisualStyleBackColor = true;
+            this.btnShowFile.Click += new System.EventHandler(this.btnShow_Click);
+            // 
+            // btnBrowse
+            // 
+            this.btnBrowse.Location = new System.Drawing.Point(450, 65);
+            this.btnBrowse.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.btnBrowse.Name = "btnBrowse";
+            this.btnBrowse.Size = new System.Drawing.Size(84, 29);
+            this.btnBrowse.TabIndex = 8;
+            this.btnBrowse.Text = "Browse";
+            this.btnBrowse.UseVisualStyleBackColor = true;
+            this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(29, 72);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(88, 20);
+            this.label1.TabIndex = 7;
+            this.label1.Text = "Course file:";
+            // 
+            // tbCourseFile
+            // 
+            this.tbCourseFile.Location = new System.Drawing.Point(127, 68);
+            this.tbCourseFile.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.tbCourseFile.Name = "tbCourseFile";
+            this.tbCourseFile.Size = new System.Drawing.Size(292, 26);
+            this.tbCourseFile.TabIndex = 6;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(22, 5);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(68, 20);
+            this.label2.TabIndex = 9;
+            this.label2.Text = "Courses";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(968, 5);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(110, 20);
+            this.label3.TabIndex = 10;
+            this.label3.Text = "Course Codes";
+            // 
+            // BtnCheckCourses
+            // 
+            this.BtnCheckCourses.Location = new System.Drawing.Point(1185, 499);
+            this.BtnCheckCourses.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.BtnCheckCourses.Name = "BtnCheckCourses";
+            this.BtnCheckCourses.Size = new System.Drawing.Size(84, 29);
+            this.BtnCheckCourses.TabIndex = 11;
+            this.BtnCheckCourses.Text = "Check courses";
+            this.BtnCheckCourses.UseVisualStyleBackColor = true;
+            this.BtnCheckCourses.Click += new System.EventHandler(this.BtnCheckCourses_Click);
+            // 
+            // dgSameCourses
+            // 
+            this.dgSameCourses.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgSameCourses.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.course_name1,
+            this.course_name});
+            this.dgSameCourses.Location = new System.Drawing.Point(971, 546);
+            this.dgSameCourses.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.dgSameCourses.Name = "dgSameCourses";
+            this.dgSameCourses.RowHeadersWidth = 51;
+            this.dgSameCourses.RowTemplate.Height = 24;
+            this.dgSameCourses.Size = new System.Drawing.Size(594, 188);
+            this.dgSameCourses.TabIndex = 12;
+            // 
+            // course_name1
+            // 
+            this.course_name1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.course_name1.DataPropertyName = "course_name1";
+            this.course_name1.HeaderText = "Course";
+            this.course_name1.MinimumWidth = 6;
+            this.course_name1.Name = "course_name1";
+            this.course_name1.Width = 96;
+            // 
+            // course_name
+            // 
+            this.course_name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.course_name.DataPropertyName = "course_name";
+            this.course_name.HeaderText = "Part of Course";
+            this.course_name.MinimumWidth = 6;
+            this.course_name.Name = "course_name";
+            this.course_name.Width = 147;
+            // 
             // course_id
             // 
             this.course_id.DataPropertyName = "course_id";
@@ -338,27 +353,30 @@ namespace h24
             // 
             // coursenameDataGridViewTextBoxColumn
             // 
+            this.coursenameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.coursenameDataGridViewTextBoxColumn.DataPropertyName = "course_name";
             this.coursenameDataGridViewTextBoxColumn.HeaderText = "Name";
             this.coursenameDataGridViewTextBoxColumn.MinimumWidth = 6;
             this.coursenameDataGridViewTextBoxColumn.Name = "coursenameDataGridViewTextBoxColumn";
-            this.coursenameDataGridViewTextBoxColumn.Width = 125;
+            this.coursenameDataGridViewTextBoxColumn.Width = 87;
             // 
             // courselengthDataGridViewTextBoxColumn
             // 
+            this.courselengthDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.courselengthDataGridViewTextBoxColumn.DataPropertyName = "course_length";
             this.courselengthDataGridViewTextBoxColumn.HeaderText = "Length";
             this.courselengthDataGridViewTextBoxColumn.MinimumWidth = 6;
             this.courselengthDataGridViewTextBoxColumn.Name = "courselengthDataGridViewTextBoxColumn";
-            this.courselengthDataGridViewTextBoxColumn.Width = 125;
+            this.courselengthDataGridViewTextBoxColumn.Width = 95;
             // 
             // courseclimbDataGridViewTextBoxColumn
             // 
+            this.courseclimbDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.courseclimbDataGridViewTextBoxColumn.DataPropertyName = "course_climb";
             this.courseclimbDataGridViewTextBoxColumn.HeaderText = "Climb";
             this.courseclimbDataGridViewTextBoxColumn.MinimumWidth = 6;
             this.courseclimbDataGridViewTextBoxColumn.Name = "courseclimbDataGridViewTextBoxColumn";
-            this.courseclimbDataGridViewTextBoxColumn.Width = 125;
+            this.courseclimbDataGridViewTextBoxColumn.Width = 84;
             // 
             // coursetypeDataGridViewTextBoxColumn
             // 
@@ -404,15 +422,11 @@ namespace h24
             this.legsDataGridViewTextBoxColumn.Visible = false;
             this.legsDataGridViewTextBoxColumn.Width = 125;
             // 
-            // coursesBindingSource
-            // 
-            this.coursesBindingSource.DataSource = typeof(h24.courses);
-            // 
             // frmCourses
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1503, 768);
+            this.ClientSize = new System.Drawing.Size(1691, 960);
             this.Controls.Add(this.dgSameCourses);
             this.Controls.Add(this.BtnCheckCourses);
             this.Controls.Add(this.label3);
@@ -420,16 +434,17 @@ namespace h24
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.dgControlCodes);
             this.Controls.Add(this.dgCourses);
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "frmCourses";
             this.Text = "Courses";
             this.Load += new System.EventHandler(this.frmCourses_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgCourses)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.coursesBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgControlCodes)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.coursecodesBindingSource)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgSameCourses)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.coursecodesBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.coursesBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -442,15 +457,6 @@ namespace h24
         private System.Windows.Forms.BindingSource coursesBindingSource;
         private System.Windows.Forms.DataGridView dgControlCodes;
         private System.Windows.Forms.BindingSource coursecodesBindingSource;
-        private System.Windows.Forms.DataGridViewTextBoxColumn course_id;
-        private System.Windows.Forms.DataGridViewTextBoxColumn coursenameDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn courselengthDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn courseclimbDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn coursetypeDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn controlcountDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn asofdateDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn coursecodesDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn legsDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn ccidDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn courseidDataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn controlidDataGridViewTextBoxColumn;
@@ -472,5 +478,14 @@ namespace h24
         private System.Windows.Forms.DataGridView dgSameCourses;
         private System.Windows.Forms.DataGridViewTextBoxColumn course_name1;
         private System.Windows.Forms.DataGridViewTextBoxColumn course_name;
+        private System.Windows.Forms.DataGridViewTextBoxColumn course_id;
+        private System.Windows.Forms.DataGridViewTextBoxColumn coursenameDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn courselengthDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn courseclimbDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn coursetypeDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn controlcountDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn asofdateDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn coursecodesDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn legsDataGridViewTextBoxColumn;
     }
 }
