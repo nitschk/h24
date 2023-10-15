@@ -612,17 +612,17 @@ namespace h24
                     List<categories> cat = db.categories.Where(x => (bool)x.valid).ToList();
 
                     var items = from item in xDoc.Descendants("EntryList").Elements("TeamEntry")
-                                join ct in cat on item.Element("Class").Element("Name").Value equals ct.cat_name into gj
-                                from cate in gj.DefaultIfEmpty()
+//                                join ct in cat on item.Element("Class").Element("Name").Value equals ct.cat_name into gj
+//                                from cate in gj.DefaultIfEmpty()
                                 select new
                                 {
                                     id = Int32.Parse(item.Element("Id").Value),
-                                    name = item.Element("Name").Value,
-                                    team_bib = cate == null? 0 :cate.first_start_number,
-                                    organization = item.Element("Organisation").Element("Name").Value,
+                                    name = item.Element("Name").Value ?? "",
+//                                    team_bib = cate == null? 0 :cate.first_start_number,
+                                    organisation = (string) item.Element("Organisation")?.Element("Name"),
                                     class_name = item.Element("Class").Element("Name").Value,
                                     note = item.Element("Extensions")?.Element("Note")?.Value ?? "",
-                                    TeamEntryPerson = item.Descendants("TeamEntryPerson"),
+                                    TeamEntryPerson = item.Descendants("TeamEntryPerson")
                                 };
 
                     int id;
@@ -643,10 +643,10 @@ namespace h24
                     {
                         id = team_person.id;
                         team_name = team_person.name;
-                        team_short_name = team_person.organization;
+                        team_short_name = team_person.organisation;
                         class_name = team_person.class_name;
                         note = team_person.note;
-                        team_bib = team_person.team_bib ?? 0;
+//                        team_bib = team_person.team_bib ?? 0;
 
                         foreach (var TeamEntryPerson in team_person.TeamEntryPerson)
                         {
@@ -665,7 +665,7 @@ namespace h24
                             var newEntry = new entry_xml
                             {
                                 oris_team_id = id,
-                                team_bib = team_bib,
+//                                team_bib = team_bib,
                                 class_name = class_name,
                                 team_name = team_name,
                                 team_short_name = team_short_name,
@@ -682,8 +682,8 @@ namespace h24
                             db.SaveChanges();
                         }
                     }
+                    var a = db.sp_update_xml_entries_team_bib();
                 }
-                var a = db.sp_update_xml_entries_team_bib();
                 return 1;
             }
             catch (Exception ex)
@@ -770,7 +770,7 @@ namespace h24
             try
             {
                 int a = this.insert_xml_entries(textFile);
-
+                RefreshEntry_xml();
             }
             catch (Exception ex)
             {
