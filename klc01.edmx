@@ -391,6 +391,9 @@ warning 6002: The table/view 'klc01.dbo.v_teams_results' does not have a primary
         <Function Name="get_competitor" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="chip_id" Type="int" Mode="In" />
         </Function>
+        <Function Name="get_course_results_json" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="cat_name" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="get_one_competitor_json" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="comp_id" Type="int" Mode="In" />
         </Function>
@@ -960,6 +963,9 @@ warning 6002: The table/view 'klc01.dbo.v_teams_results' does not have a primary
           </FunctionImport>
           <EntitySet Name="api_queue" EntityType="klc01Model.api_queue" />
           <FunctionImport Name="sp_update_xml_entries_team_bib" />
+          <FunctionImport Name="get_course_results_json" ReturnType="Collection(String)">
+          <Parameter Name="cat_name" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -1490,6 +1496,7 @@ warning 6002: The table/view 'klc01.dbo.v_teams_results' does not have a primary
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="sp_update_xml_entries_team_bib" FunctionName="klc01Model.Store.sp_update_xml_entries_team_bib" />
+          <FunctionImportMapping FunctionImportName="get_course_results_json" FunctionName="klc01Model.Store.get_course_results_json" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

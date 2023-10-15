@@ -160,6 +160,7 @@
     <Compile Include="course_codes.cs">
       <DependentUpon>klc01.tt</DependentUpon>
     </Compile>
+    <Compile Include="DbSetExtensions.cs" />
     <Compile Include="ds_result.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

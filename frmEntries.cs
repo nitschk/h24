@@ -711,21 +711,16 @@ namespace h24
                     XDocument xDoc = XDocument.Parse(textFile);
                     RemoveAllNamespaces(xDoc);
 
-                    var elements = (from item in xDoc.Elements("EntryList").Elements("TeamEntry").Elements("Class").Descendants("Name")
-                                    select e);//.GroupBy(x => x.Value).Select(x => x.First());
-
-                    var clasesToInsert = db.entry_xml
-                              .Where(q => !db.categories.Select(r => r.cat_name).Contains(q.class_name))
-                              .Select(g => new { g.class_name })
-                              .Distinct()
-                              .OrderBy(f => f.class_name)
-                              .ToList();
-
+                    var clasesToInsert = xDoc.Descendants("Class")
+                    .Select(classElement => classElement.Element("Name").Value)
+                    .Distinct();
+                    int i;
+                    int affe = 0;
                     foreach (var oneClass in clasesToInsert)
                     {
                         var start_time = db.settings.Where(b => b.config_name == "start_time").FirstOrDefault();
 
-                        string digits = new string(oneClass.class_name.ToString().TakeWhile(c => !Char.IsLetter(c)).ToArray());
+                        string digits = new string(oneClass.ToString().TakeWhile(c => !Char.IsLetter(c)).ToArray());
                         int time_limit;
                         if (Int16.Parse(digits) > 0)
                             time_limit = Int16.Parse(digits) * 60;
@@ -734,15 +729,23 @@ namespace h24
 
                         var newClass = new categories
                         {
-                            cat_name = oneClass.class_name.ToString(),
+                            cat_name = oneClass.ToString(),
                             as_of_date = DateTime.Now,
                             cat_start_time = DateTime.ParseExact(start_time.config_value, "yyyy-MM-dd HH:mm:ss.fff", null),
                             cat_time_limit = time_limit,
                             valid = true,
                         };
-                        db.categories.Add(newClass);
-                        db.SaveChanges();
+                        //db.categories.Add(newClass);
+                        db.Set<categories>().AddIfNotExists(newClass, x => x.cat_name == oneClass.ToString());
+                        i = db.SaveChanges();
+                        affe += i;
                     }
+                    if(affe > 0)
+                    {
+                        frmClases f2 = new frmClases();
+                        f2.ShowDialog();
+                    }
+                    RefreshEntry_xml();
                 }
                 catch (Exception ex)
                 {

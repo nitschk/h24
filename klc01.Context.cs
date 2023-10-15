@@ -20,6 +20,7 @@ namespace h24
         public klc01()
             : base("name=klc01")
         {
+            this.Database.CommandTimeout = 300;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -360,6 +361,15 @@ namespace h24
         public virtual int sp_update_xml_entries_team_bib()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_update_xml_entries_team_bib");
+        }
+    
+        public virtual ObjectResult<string> get_course_results_json(string cat_name)
+        {
+            var cat_nameParameter = cat_name != null ?
+                new ObjectParameter("cat_name", cat_name) :
+                new ObjectParameter("cat_name", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("get_course_results_json", cat_nameParameter);
         }
     }
 }

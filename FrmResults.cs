@@ -119,20 +119,33 @@ namespace h24
             using (var db = new klc01())
             {
                 // Create a StreamWriter to the output file.
-                var fileStream = new StreamWriter("output.txt");
+                var fileStream = new StreamWriter("team_results.json");
 
                 string results;
                 // Execute the stored procedure and get the results.
                 results = db.get_results_json("").FirstOrDefault();
                 fileStream.WriteLine(results.ToString());
-                // Iterate through the results and write them to the output file.
-                /*foreach (var row in results)
-                {
-                    fileStream.WriteLine(row.ToString());
-                }*/
 
                 // Close the StreamWriter.
                 fileStream.Close();
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            using (var db = new klc01())
+            {
+                // Create a StreamWriter to the output file.
+                var fileStream = new StreamWriter("course_results.json");
+
+                string results;
+                // Execute the stored procedure and get the results.
+                results = db.get_course_results_json("").FirstOrDefault();
+                fileStream.WriteLine(results.ToString());
+
+                // Close the StreamWriter.
+                fileStream.Close();
+                MessageBox.Show("Done");
             }
         }
     }
