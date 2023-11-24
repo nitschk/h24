@@ -18,6 +18,13 @@ namespace h24
     {
         //klc01 db;
 
+        public static string get_config_item(string cofnig_name)
+        {
+            var db = new klc01();
+            string config_value = db.settings.FirstOrDefault(c => c.config_name == cofnig_name).config_value;
+            return config_value;
+        }
+
         public int HandleNewCard(int readout_id)
         {
             var db = new klc01();
@@ -219,7 +226,7 @@ namespace h24
             }
         }
 
-        public int UpdateTeamRaceEnd(int competitor_id)
+        public static int UpdateTeamRaceEnd(int competitor_id)
         {
             using (var db = new klc01())
             {
@@ -275,9 +282,9 @@ namespace h24
         {
             using (var db = new klc01())
             {
-                string url = db.settings.FirstOrDefault(c => c.config_name == "live_url").config_value;
-                string uid= db.settings.FirstOrDefault(c => c.config_name == "live_user").config_value;
-                string pwd = db.settings.FirstOrDefault(c => c.config_name == "live_password").config_value;
+                string url = get_config_item("live_url");
+                string uid = get_config_item("live_user");
+                string pwd = get_config_item("live_password");
 
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(url + "/register");
                 httpWebRequest.ContentType = "application/json";
@@ -305,10 +312,10 @@ namespace h24
             using (var db = new klc01())
             {
                 HttpClient httpClient = new HttpClient();
-                string url = db.settings.FirstOrDefault(c => c.config_name == "live_url").config_value;
+                string url = get_config_item("live_url");
 
-                string pwd = db.settings.FirstOrDefault(c => c.config_name == "live_password").config_value;
-                string uid = db.settings.FirstOrDefault(c => c.config_name == "live_user").config_value;
+                string pwd = get_config_item("live_password");
+                string uid = get_config_item("live_user");
 
                 string uri = url + "/login";
                 string json = "{\"client_name\":\"" + uid + "\"," +
@@ -323,10 +330,10 @@ namespace h24
                 string token = JsonResponse.token;
 
                 //update token in db
-                var result = db.settings.FirstOrDefault(c => c.config_name == "live_token");
+                var result = get_config_item("live_token");
                 if (result != null)
                 {
-                    result.config_value = token;
+                    result = token;
                     db.SaveChanges();
                 }
 
@@ -343,9 +350,9 @@ namespace h24
             using (var db = new klc01())
             {
                 HttpClient client = new HttpClient();
-                string live_entries = db.settings.FirstOrDefault(c => c.config_name == "live_entries_truncate").config_value;
-                string live_urls = db.settings.FirstOrDefault(c => c.config_name == "live_url").config_value;
-                string pwd = db.settings.FirstOrDefault(c => c.config_name == "live_password").config_value;
+                string live_entries = get_config_item("live_entries_truncate");
+                string live_urls = get_config_item("live_url");
+                string pwd = get_config_item("live_password");
 
                 string[] urls = live_urls.Split(';');
                 string json = "{\"truncate\":\"yes\"," +
@@ -396,8 +403,8 @@ namespace h24
                 {
                     //send all entries
                     HttpClient client = new HttpClient();
-                    string live_urls = db.settings.FirstOrDefault(c => c.config_name == "live_url").config_value;
-                    string live_entries = db.settings.FirstOrDefault(c => c.config_name == "live_entries").config_value;
+                    string live_urls = get_config_item("live_url");
+                    string live_entries = get_config_item("live_entries");
 
                     string[] urls = live_urls.Split(';');
                     string entry;
@@ -444,9 +451,9 @@ namespace h24
             using (var db = new klc01())
             {
                 HttpClient client = new HttpClient();
-                string live_competitors = db.settings.FirstOrDefault(c => c.config_name == "live_competitors_truncate").config_value;
-                string live_urls = db.settings.FirstOrDefault(c => c.config_name == "live_url").config_value;
-                string pwd = db.settings.FirstOrDefault(c => c.config_name == "live_password").config_value;
+                string live_competitors = get_config_item("live_competitors_truncate");
+                string live_urls = get_config_item("live_url");
+                string pwd = get_config_item("live_password");
 
                 string[] urls = live_urls.Split(';');
                 string json = "{\"truncate\":\"yes\"," +
@@ -497,8 +504,8 @@ namespace h24
                 {
                     //send all entries
                     HttpClient client = new HttpClient();
-                    string live_urls = db.settings.FirstOrDefault(c => c.config_name == "live_url").config_value;
-                    string live_competitors = db.settings.FirstOrDefault(c => c.config_name == "live_competitors").config_value;
+                    string live_urls = get_config_item("live_url");
+                    string live_competitors = get_config_item("live_competitors");
 
                     string[] urls = live_urls.Split(';');
                     string entry;
@@ -548,7 +555,7 @@ namespace h24
             {
                 //get entries from Oris
                 HttpClient client = new HttpClient();
-                string url = db.settings.FirstOrDefault(c => c.config_name == "oris_entries").config_value;
+                string url = get_config_item("oris_entries");
 
                 //string entry;
                 HttpResponseMessage response = await client.GetAsync(url);
@@ -602,8 +609,8 @@ namespace h24
                 string filename = @"c:\temp\slip_post_" + readout_id + "_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".json";
                 File.WriteAllText(filename, OneSlip);
 
-                string live_urls = db.settings.FirstOrDefault(c => c.config_name == "live_url").config_value;
-                string url_slips = db.settings.FirstOrDefault(c => c.config_name == "live_slips").config_value;
+                string live_urls = get_config_item("live_url");
+                string url_slips = get_config_item("live_slips");
 
                 string[] urls = live_urls.Split(';');
 
@@ -697,10 +704,10 @@ namespace h24
             using (var db = new klc01())
             {
                 HttpClient client = new HttpClient();
-                string live_legs = db.settings.FirstOrDefault(c => c.config_name == "live_legs_truncate").config_value;
-                string live_urls = db.settings.FirstOrDefault(c => c.config_name == "live_url").config_value;
+                string live_legs = get_config_item("live_legs_truncate");
+                string live_urls = get_config_item("live_url");
                 string[] urls = live_urls.Split(';');
-                string pwd = db.settings.FirstOrDefault(c => c.config_name == "live_password").config_value;
+                string pwd = get_config_item("live_password");
                 string json = "{\"truncate\":\"yes\"," +
                                     "\"password\":\"" + pwd + "\"}";
 
@@ -739,11 +746,11 @@ namespace h24
                     service_config = "start_roc_service";
                 }
                 
-                string live_roc = db.settings.FirstOrDefault(c => c.config_name == service_config).config_value;
-                string live_urls = db.settings.FirstOrDefault(c => c.config_name == "live_url").config_value;
+                string live_roc = get_config_item(service_config);
+                string live_urls = get_config_item("live_url");
 
                 string[] urls = live_urls.Split(';');
-                string pwd = db.settings.FirstOrDefault(c => c.config_name == "live_password").config_value;
+                string pwd = get_config_item("live_password");
 
                 foreach (string oneUrl in urls)
                 {

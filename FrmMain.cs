@@ -16,8 +16,12 @@ using System.Drawing.Printing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Configuration;
+using System.Collections.Specialized;
+using Timer = System.Threading.Timer;
 
 namespace h24
 {
@@ -30,52 +34,7 @@ namespace h24
     private bool _connected;
     private Dictionary<int, DeviceInfo> _deviceInfoList;
 
-    private void _refreshDeviceList()
-    {
-      cmbSerialPort.Items.Clear();
-
-      _deviceInfoList = new Dictionary<int, DeviceInfo>();
-
-      var devList = DeviceInfo.GetAvailableDeviceList(true, (int)DeviceType.Serial | (int)DeviceType.UsbHid);
-
-      var n = 0;
-      DeviceInfo addItem;
-
-      foreach (var item in devList)
-      {
-        addItem = item;
-
-        var deviceName = DeviceInfo.GetPrettyDeviceName(item);
-        cmbSerialPort.Items.Add(deviceName);
-        _deviceInfoList.Add(n++, addItem);
-      }
-
-      var value = GetSettings(SerialPortSettingsName);
-      if (value != null)
-      {
-        cmbSerialPort.SelectedItem = value;
-        //Pokud je neco vybrano, zkusim to connectnout
-        if (cmbSerialPort.SelectedIndex >= 0)
-          _connectDisconnect();
-      }
-      else if (cmbSerialPort.Items.Count > 0) cmbSerialPort.SelectedIndex = 0;
-    }
-
-    private void SetSettings(string name, string value)
-    {
-      using (RegistryKey key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\H24", true))
-      {
-        key.SetValue(name, value);
-      }
-    }
-
-    private string GetSettings(string name)
-    {
-      using (RegistryKey key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\H24", false))
-      {
-        return (string)key.GetValue(name, null);
-      }
-    }
+        private Timer apiRequestTimer;
 
     public FrmMain()
     {
@@ -97,13 +56,67 @@ namespace h24
 
       _refreshDeviceList();
 
-      this.Resize += new EventHandler(FrmMain_Resize);
+            // Initialize the timer but don't start it immediately
+            apiRequestTimer = new Timer(CheckApiRequests, null, Timeout.Infinite, Timeout.Infinite);
+
+            // Attach the event handler for the checkbox
+            cbQueueProcess.CheckedChanged += cbQueueProcess_CheckedChanged;
+
+            this.Resize += new EventHandler(FrmMain_Resize);
     }
 
-    #region Reader event handlers
+        private void _refreshDeviceList()
+        {
+            cmbSerialPort.Items.Clear();
 
-    /// <summary>Handles the event that is thrown when the reader class read a card completely</summary>
-    private void _reader_CardRead(object sender, SportidentDataEventArgs readoutData)
+            _deviceInfoList = new Dictionary<int, DeviceInfo>();
+
+            var devList = DeviceInfo.GetAvailableDeviceList(true, (int)DeviceType.Serial | (int)DeviceType.UsbHid);
+
+            var n = 0;
+            DeviceInfo addItem;
+
+            foreach (var item in devList)
+            {
+                addItem = item;
+
+                var deviceName = DeviceInfo.GetPrettyDeviceName(item);
+                cmbSerialPort.Items.Add(deviceName);
+                _deviceInfoList.Add(n++, addItem);
+            }
+
+            var value = GetSettings(SerialPortSettingsName);
+            if (value != null)
+            {
+                cmbSerialPort.SelectedItem = value;
+                //Pokud je neco vybrano, zkusim to connectnout
+                if (cmbSerialPort.SelectedIndex >= 0)
+                    _connectDisconnect();
+            }
+            else if (cmbSerialPort.Items.Count > 0) cmbSerialPort.SelectedIndex = 0;
+        }
+
+        private void SetSettings(string name, string value)
+        {
+            using (RegistryKey key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\H24", true))
+            {
+                key.SetValue(name, value);
+            }
+        }
+
+        private string GetSettings(string name)
+        {
+            using (RegistryKey key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\H24", false))
+            {
+                return (string)key.GetValue(name, null);
+            }
+        }
+
+
+        #region Reader event handlers
+
+        /// <summary>Handles the event that is thrown when the reader class read a card completely</summary>
+        private void _reader_CardRead(object sender, SportidentDataEventArgs readoutData)
     {
       try
       {
@@ -463,6 +476,7 @@ namespace h24
       newDevice = new ReaderDeviceInfo(ReaderDeviceType.Textfile, string.Empty);
       newDevice.ListFormat = ListFormat.SiConfigReadout;
 
+      //var filePath = ConfigurationManager.AppSettings["folderLocation"];
       newDevice.FilePath = "c:\\Temp\\event.csv";
 
       try
@@ -530,7 +544,7 @@ namespace h24
       }
 
       string default_printer;
-      default_printer = db.settings.FirstOrDefault(c => c.config_name == "slip_printer").config_value;
+      default_printer = NewCard.get_config_item("slip_printer");
       cbPrinter.SelectedItem = default_printer;
 
     }
@@ -781,10 +795,10 @@ namespace h24
     {
       using (var db = new klc01())
       {
-        var result = db.settings.SingleOrDefault(b => b.config_name == "slip_printer");
+        var result = NewCard.get_config_item("slip_printer");
         if (result != null)
         {
-          result.config_value = cbPrinter.SelectedItem.ToString();
+          result = cbPrinter.SelectedItem.ToString();
           db.SaveChanges();
         }
       }
@@ -800,7 +814,7 @@ namespace h24
 
     private void PrintSlip(int readout_id)
     {
-      string printerName = db.settings.FirstOrDefault(c => c.config_name == "slip_printer").config_value;
+      string printerName = NewCard.get_config_item("slip_printer");
       if (cbPrinter.InvokeRequired)
       {
         //printerName = this.cbPrinter.Text; //"Microsoft Print to PDF";
@@ -1161,7 +1175,7 @@ namespace h24
               int team_id = (int)result.team_id;
               if (db.competitors.Where(b => b.team_id == team_id && b.comp_withdrawn == true).Count() > 1)
               {
-                dsk_penalty_min = Int16.Parse(db.settings.FirstOrDefault(c => c.config_name == "dsk_penalty_min").config_value);
+                dsk_penalty_min = Int32.Parse(NewCard.get_config_item("dsk_penalty_min"));
               }
 
               TimeSpan dsk_penalty = TimeSpan.FromMinutes(dsk_penalty_min);
@@ -1183,7 +1197,7 @@ namespace h24
               db.SaveChanges();
 
               //update race end on team
-              NewCard NewCard = new NewCard();
+              //NewCard NewCard = new NewCard();
               int y = NewCard.UpdateTeamRaceEnd(comp_id);
               //insert fake slip
               int cnt = int.Parse(db.sp_inset_wdr_slip(comp_id).ToString());
@@ -1308,6 +1322,85 @@ namespace h24
         SetSettings(SerialPortSettingsName, cmbSerialPort.SelectedItem.ToString());
     }
 
+        private List<api_queue> GetPendingApiRequestsFromDatabase()
+        {
+            db = new klc01();
+            string status_new = NewCard.get_config_item("q_status_to_sent");
+            string status_done = NewCard.get_config_item("q_status_done");
+
+            int queue_timeout = Int32.Parse(NewCard.get_config_item("api_queue_timeout"));
+            DateTime latest = DateTime.Now.AddSeconds(-queue_timeout);
+
+            var olderThanSeconds = db.api_queue
+                .Where(a => a.q_status == status_new || (a.q_status != status_done && a.as_of_date < latest))
+                .ToList();
+
+            return olderThanSeconds; // Replace with actual implementation
+        }
+
+        private void cbQueueProcess_CheckedChanged(object sender, EventArgs e)
+        {
+            db = new klc01();
+            int api_queue_timer = Int32.Parse(NewCard.get_config_item("api_queue_timer"));
+
+            if (cbQueueProcess.Checked)
+            {
+                // Start the timer with the desired interval (e.g., every 5 seconds)
+                apiRequestTimer.Change(TimeSpan.Zero, TimeSpan.FromSeconds(api_queue_timer));
+            }
+            else
+            {
+                // Stop the timer
+                apiRequestTimer.Change(Timeout.Infinite, Timeout.Infinite);
+            }
+        }
+
+        private void CheckApiRequests(object state)
+        {
+            // Check the database for pending requests
+            List<api_queue> pendingRequests = GetPendingApiRequestsFromDatabase();
+
+            foreach (api_queue apiRequest in pendingRequests)
+            {
+                // Update the status to In Progress
+                UpdateApiRequestStatus(apiRequest.q_id, "In Progress");
+
+                // Attempt to send the request to the API
+                bool success = SendApiRequest(apiRequest);
+
+                // Update the status based on the result
+                UpdateApiRequestStatus(apiRequest.q_id, success ? "Sent" : "Failed");
+
+/*                if (!success)
+                {
+                    // If the request fails, you can re-enqueue it or implement retry logic
+                    // For simplicity, let's assume requests are removed on failure
+                    MessageBox.Show("API request failed. Please check your internet connection.");
+                }*/
+            }
+        }
+
+        // Implement your method to send API requests here
+        private bool SendApiRequest(api_queue request)
+        {
+            // Your API request implementation logic here
+            // Return true if the request was successful, false if it failed
+            return false; // Replace with actual logic
+        }
+
+        private void UpdateApiRequestStatus(int requestId, string status)
+        {
+
+            using (var db = new klc01())
+            {
+                var result = db.api_queue.SingleOrDefault(b => b.q_id == requestId);
+                if (result != null)
+                {
+                    result.q_status = status;
+                    db.SaveChanges();
+                }
+            }
+        }
 
         /*
     private void Refresh_Readout(Object sender, EventArgs e)

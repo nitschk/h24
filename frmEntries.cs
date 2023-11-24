@@ -142,14 +142,14 @@ namespace h24
                                 //DateTime race_end;
                                 if (category == null)
                                 {
-                                    var start_time = db.settings.Where(b => b.config_name == "start_time").FirstOrDefault();
-                                    var time_limit = db.settings.Where(b => b.config_name == "default_time_limit").FirstOrDefault();
+                                    var start_time = NewCard.get_config_item("start_time");
+                                    var time_limit = NewCard.get_config_item("default_time_limit");
 
                                     var newCategory = new categories
                                     {
                                         cat_name = record.kat,
-                                        cat_start_time = DateTime.ParseExact(start_time.config_value, "yyyy-MM-dd HH:mm:ss.fff", null),
-                                        cat_time_limit = int.Parse(time_limit.config_value)
+                                        cat_start_time = DateTime.ParseExact(start_time, "yyyy-MM-dd HH:mm:ss.fff", null),
+                                        cat_time_limit = int.Parse(time_limit)
                                     };
 
                                     db.categories.Add(newCategory);
@@ -718,14 +718,14 @@ namespace h24
                     int affe = 0;
                     foreach (var oneClass in clasesToInsert)
                     {
-                        var start_time = db.settings.Where(b => b.config_name == "start_time").FirstOrDefault();
+                        var start_time = NewCard.get_config_item("start_time");
 
                         string digits = new string(oneClass.ToString().TakeWhile(c => !Char.IsLetter(c)).ToArray());
                         int time_limit;
                         if (Int16.Parse(digits) > 0)
                             time_limit = Int16.Parse(digits) * 60;
                         else
-                            time_limit = Int16.Parse(db.settings.Where(b => b.config_name == "default_time_limit").FirstOrDefault().config_value.ToString());
+                            time_limit = Int16.Parse(NewCard.get_config_item("default_time_limit"));
 
                         var newClass = new categories
                         {

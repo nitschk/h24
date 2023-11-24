@@ -126,6 +126,7 @@
             this.LbPenal = new System.Windows.Forms.Label();
             this.LbStatus = new System.Windows.Forms.Label();
             this.btnClearSearch = new System.Windows.Forms.Button();
+            this.cbQueueProcess = new System.Windows.Forms.CheckBox();
             this.grpInputDevice.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -288,14 +289,14 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(6, 3, 0, 3);
-            this.menuStrip1.Size = new System.Drawing.Size(1732, 35);
+            this.menuStrip1.Size = new System.Drawing.Size(1732, 36);
             this.menuStrip1.TabIndex = 103;
             this.menuStrip1.Text = "menuStrip1";
             // 
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(54, 29);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(54, 30);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // courseSetupToolStripMenuItem
@@ -308,7 +309,7 @@
             this.legsToolStripMenuItem,
             this.resultsToolStripMenuItem});
             this.courseSetupToolStripMenuItem.Name = "courseSetupToolStripMenuItem";
-            this.courseSetupToolStripMenuItem.Size = new System.Drawing.Size(116, 29);
+            this.courseSetupToolStripMenuItem.Size = new System.Drawing.Size(116, 30);
             this.courseSetupToolStripMenuItem.Text = "Race Setup";
             // 
             // setupToolStripMenuItem
@@ -1027,7 +1028,7 @@
             // btn_change_competitor
             // 
             this.btn_change_competitor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_change_competitor.Location = new System.Drawing.Point(1437, 318);
+            this.btn_change_competitor.Location = new System.Drawing.Point(1529, 318);
             this.btn_change_competitor.Name = "btn_change_competitor";
             this.btn_change_competitor.Size = new System.Drawing.Size(99, 29);
             this.btn_change_competitor.TabIndex = 116;
@@ -1060,7 +1061,7 @@
             // btnRefreshLegs
             // 
             this.btnRefreshLegs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnRefreshLegs.Location = new System.Drawing.Point(1564, 318);
+            this.btnRefreshLegs.Location = new System.Drawing.Point(1629, 318);
             this.btnRefreshLegs.Name = "btnRefreshLegs";
             this.btnRefreshLegs.Size = new System.Drawing.Size(84, 29);
             this.btnRefreshLegs.TabIndex = 119;
@@ -1139,11 +1140,25 @@
             this.btnClearSearch.UseVisualStyleBackColor = true;
             this.btnClearSearch.Click += new System.EventHandler(this.btnClearSearch_Click);
             // 
+            // cbQueueProcess
+            // 
+            this.cbQueueProcess.AccessibleRole = System.Windows.Forms.AccessibleRole.TitleBar;
+            this.cbQueueProcess.Appearance = System.Windows.Forms.Appearance.Button;
+            this.cbQueueProcess.AutoSize = true;
+            this.cbQueueProcess.Location = new System.Drawing.Point(1326, 288);
+            this.cbQueueProcess.Name = "cbQueueProcess";
+            this.cbQueueProcess.Size = new System.Drawing.Size(67, 30);
+            this.cbQueueProcess.TabIndex = 126;
+            this.cbQueueProcess.Text = "Queue";
+            this.cbQueueProcess.UseVisualStyleBackColor = true;
+            this.cbQueueProcess.CheckedChanged += new System.EventHandler(this.cbQueueProcess_CheckedChanged);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1732, 874);
+            this.Controls.Add(this.cbQueueProcess);
             this.Controls.Add(this.btnClearSearch);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.BtnPostAll);
@@ -1286,6 +1301,7 @@
         private System.Windows.Forms.Label LbStatus;
         private System.Windows.Forms.Button btnClearSearch;
         private System.Windows.Forms.ToolStripMenuItem resultsToolStripMenuItem;
+        private System.Windows.Forms.CheckBox cbQueueProcess;
     }
 }
 
