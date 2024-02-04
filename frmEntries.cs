@@ -731,7 +731,7 @@ namespace h24
                         {
                             cat_name = oneClass.ToString(),
                             as_of_date = DateTime.Now,
-                            cat_start_time = DateTime.ParseExact(start_time.config_value, "yyyy-MM-dd HH:mm:ss.fff", null),
+                            cat_start_time = DateTime.ParseExact(start_time, "yyyy-MM-dd HH:mm:ss.fff", null),
                             cat_time_limit = time_limit,
                             valid = true,
                         };

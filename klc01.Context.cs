@@ -20,7 +20,6 @@ namespace h24
         public klc01()
             : base("name=klc01")
         {
-            this.Database.CommandTimeout = 300;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -45,6 +44,10 @@ namespace h24
         public virtual DbSet<results> results { get; set; }
         public virtual DbSet<v_teams_results> v_teams_results { get; set; }
         public virtual DbSet<api_queue> api_queue { get; set; }
+        public virtual DbSet<v_readout_legs> v_readout_legs { get; set; }
+        public virtual DbSet<api_queue_link> api_queue_link { get; set; }
+        public virtual DbSet<v_new_roc_punches> v_new_roc_punches { get; set; }
+        public virtual DbSet<roc_punches> roc_punches { get; set; }
     
         public virtual ObjectResult<Nullable<int>> get_competitor(Nullable<int> chip_id)
         {

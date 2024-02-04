@@ -149,7 +149,7 @@ namespace h24
         public int insertWdrnCourse()
         {
             db = new klc01();
-            string wdrn_course = db.settings.FirstOrDefault(b => b.config_name == "wdrn_course").config_value;
+            string wdrn_course = NewCard.get_config_item("wdrn_course");
 
             if (db.courses.Where(b => b.course_name == wdrn_course).Count() > 0)
             {

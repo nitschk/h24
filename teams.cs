@@ -30,6 +30,7 @@ namespace h24
         public System.DateTime as_of_date { get; set; }
         public Nullable<System.DateTime> race_end { get; set; }
         public Nullable<int> oris_id { get; set; }
+        public string phone_number { get; set; }
     
         public virtual categories categories { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

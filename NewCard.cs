@@ -11,12 +11,14 @@ using System.Net;
 using System.IO;
 using System.Net.Http.Headers;
 using System.Xml.Linq;
+using Serilog;
 
 namespace h24
 {
     public class NewCard
     {
         //klc01 db;
+        private static List<string> _errors = new List<string>();
 
         public static string get_config_item(string cofnig_name)
         {
@@ -84,10 +86,10 @@ namespace h24
                 //course_id = (int)query.course_id;
 
                 //update or insert to legs
-//TODO - tohle nejak nefunguje
+                //TODO - tohle nejak nefunguje
                 //var aaa = db.sp_upsert_legs(readout_id, competitor_id, course_id, guessed_course, action);
                 leg_id = int.Parse(db.sp_upsert_legs(readout_id, competitor_id, course_id, guessed_course, action).FirstOrDefault().ToString());
-                int y= UpdateTeamRaceEnd(competitor_id);
+                int y = UpdateTeamRaceEnd(competitor_id);
             }
 
             int slip_id = this.InsertSlip(leg_id);
@@ -293,7 +295,7 @@ namespace h24
                 using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
                 {
                     string json = "{\"client_name\":\"" + uid + "\"," +
-                                  "\"password\":\""+ pwd + "\"}";
+                                  "\"password\":\"" + pwd + "\"}";
 
                     streamWriter.Write(json);
                 }
@@ -388,7 +390,7 @@ namespace h24
             using (var db = new klc01())
             {
                 List<int> AllTeams;
-                if(team == -1)
+                if (team == -1)
                 {
                     AllTeams = db.teams.Where(s => s.team_did_start == true)
                     .Select(s => s.team_id).ToList();
@@ -592,17 +594,161 @@ namespace h24
             }
         }
 
-        private static List<string> _errors = new List<string>();
-        public static async Task<string> PostSlip(int readout_id)
+
+        //API
+        public static List<api_queue> GetPendingApiRequestsFromDatabase()
         {
-            string url;
-            List<string> allResponses = new List<string>();
-            string oneResponse = "";
+            Log.Information("GetPendingApiRequestsFromDatabase");
+            var db = new klc01();
+            string status_new = NewCard.get_config_item("q_status_new");
+            string status_done = NewCard.get_config_item("q_status_completed");
+
+            int queue_timeout = Int32.Parse(NewCard.get_config_item("api_queue_timeout"));
+            DateTime latest = DateTime.Now.AddSeconds(-queue_timeout);
+
+            var olderThanSeconds = db.api_queue
+                .Where(a => a.q_status == status_new || (a.q_status != status_done && a.as_of_date < latest))
+                .ToList();
+
+            return olderThanSeconds; // Replace with actual implementation
+        }
+
+
+        public async void CheckApiRequests(object state)
+        {
+            Log.Information("CheckApiRequests");
+            //check new ROC punches
+            string a = CheckNewROC();
+
+            // Check the database for pending requests
+            List<api_queue> pendingRequests = GetPendingApiRequestsFromDatabase();
+            Log.Information("pendingRequests:" + pendingRequests.Count());
+
+            foreach (api_queue apiRequest in pendingRequests)
+            {
+                Log.Information("CheckApiRequests - process " + apiRequest.q_id);
+                try
+                {
+                    // Attempt to send the request to the API
+                    bool success = await SendApiRequest(apiRequest);
+                    Log.Information("SendApiRequest finished " + apiRequest.q_id);
+                }
+                catch (Exception e)
+                {
+                    WriteLog($"CheckApiRequests: {e.Message}\n q_id={apiRequest.q_id}", "CheckApiRequests");
+                    Log.Error($"CheckApiRequests E: {e.Message}\n q_id={apiRequest.q_id}");
+                }
+
+                // Update the status based on the result
+                //UpdateApiRequestStatus(apiRequest.q_id, success ? "Sent" : "Failed");
+
+                /*                if (!success)
+                                {
+                                    // If the request fails, you can re-enqueue it or implement retry logic
+                                    // For simplicity, let's assume requests are removed on failure
+                                    MessageBox.Show("API request failed. Please check your internet connection.");
+                                }*/
+            }
+        }
+
+        // Implement your method to send API requests here
+        public async Task<bool> SendApiRequest(api_queue request)
+        {
+            Log.Information("SendApiRequest " + request.q_id);
+
+            // Your API request implementation logic here
+            // Return true if the request was successful, false if it failed
+            string q_status_in_progress = get_config_item("q_status_in_progress");
+            string q_status_failed = get_config_item("q_status_failed");
+            string q_status_completed = get_config_item("q_status_completed");
+
+            UpdateApiRequestStatus(request.q_id, q_status_in_progress);
+
+            Log.Information("request "+ request.q_content);
+            //send
             HttpClient client = new HttpClient();
-            //int i = 0;
+            HttpContent content = new StringContent(
+            request.q_content,
+            System.Text.Encoding.UTF8,
+            "application/json"
+            );
+            string oneResponse = "";
+
+            if (request.q_header != "")
+            {
+                client.DefaultRequestHeaders.Add("Accept", "application/json");
+                content.Headers.ContentType = new MediaTypeHeaderValue("application/json");//.Add("Content-Type", "application/json");
+                //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", request.q_header);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Token", request.q_header);
+            }
+
+            //Log.Information("client: " + content.ToString());
+            var response = await client.PostAsync(request.q_url, content);
+            try
+            {
+                response.EnsureSuccessStatusCode();
+                oneResponse = await response.Content.ReadAsStringAsync();
+                UpdateApiResponse(request.q_id, oneResponse, q_status_completed);
+                return true;
+            }
+            catch (Exception e)
+            {
+
+                oneResponse = response.Content.ReadAsStringAsync().Result;
+                Log.Error(request.q_url + " " + response.Content.ReadAsStringAsync().Result + "; " + $"Sending error: {e.Message}");
+                UpdateApiResponse(request.q_id, oneResponse, q_status_failed);
+                return false;
+            }
+        }
+
+        private void UpdateApiRequestStatus(int requestId, string status)
+        {
+            Log.Information("UpdateApiRequestStatus " + requestId );
+            using (var db = new klc01())
+            {
+                var result = db.api_queue.SingleOrDefault(b => b.q_id == requestId);
+                if (result != null)
+                {
+                    result.q_status = status;
+                    db.SaveChanges();
+                }
+            }
+        }
+
+        private void UpdateApiResponse(int requestId, string response, string status)
+        {
+            Log.Information("UpdateApiResponse " + requestId + " " + response);
+            string q_response;
+            using (var db = new klc01())
+            {
+                try
+                {
+                    var result = db.api_queue.SingleOrDefault(b => b.q_id == requestId);
+                    if (result != null)
+                    {
+                        q_response = response + "; " + result.q_response;
+                        result.q_response = q_response.Left(3990);
+
+                        result.q_status = status;
+                        db.SaveChanges();
+                    }
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("UpdateApiResponse " + e.Message);
+                }
+            }
+        }
+
+        public async Task<string> PostSlip(int readout_id)
+        {
+            Log.Information("PostSlip " + readout_id);
+            //insert record to queue
             using (var db = new klc01())
             {
                 string OneSlip;
+                int q_id = 0;
+
                 OneSlip = db.get_slip_json(readout_id).FirstOrDefault();
 
                 //write punch log
@@ -611,55 +757,268 @@ namespace h24
 
                 string live_urls = get_config_item("live_url");
                 string url_slips = get_config_item("live_slips");
+                string q_status_in_progress = get_config_item("q_status_in_progress");
+                string q_status_failed = get_config_item("q_status_failed");
 
                 string[] urls = live_urls.Split(';');
-
                 foreach (string oneUrl in urls)
                 {
-                    url = oneUrl + url_slips;
-                    bool wasSent = false;
-                    //try to send 3 times
-                    for (int i = 0; i < 3; i++)
-                    {
-                        var content = new StringContent(
-                        OneSlip,
-                        System.Text.Encoding.UTF8,
-                        "application/json"
-                        );
+                    q_id = Insert_api_queue(oneUrl + url_slips, OneSlip != null ? OneSlip : "", q_status_in_progress, null);
+                    Insert_api_queue_link(q_id, "readout", readout_id);
 
+                    /*try
+                    {
+                        //fire queue processing
+                        bool success = await SendApiRequest(api_queue_request);
+                    }
+                    catch (Exception e)
+                    {
+                        UpdateApiRequestStatus(q_id, q_status_failed);
+                    }*/
+                }
+                return "";
+            }
+        }
+
+        public string CheckNewROC()
+        {
+            Log.Information("CheckNewROC");
+            //insert record to queue
+            using (var db = new klc01())
+            {
+                //write punch log
+                string filename;
+
+                
+                string sms_url = get_config_item("sms_url");
+                string url_roc = get_config_item("live_roc");
+                string q_status_completed = get_config_item("q_status_completed");
+                string q_status_new = get_config_item("q_status_new");
+
+                var new_punches = db.v_new_roc_punches.ToList();
+                int i = 0;
+                foreach (var punch in new_punches)
+                {
+                    string content = "{\"record_id\":" + punch.record_id +
+                        ", \"control_code\":" + punch.control_code +
+                        ", \"chip_id\":" + punch.chip_id +
+                        ",\"punch_date\":\"" + punch.punch_date.Value.ToString("yyyy-MM-dd HH:mm:ss") +
+                        "\", \"cat_name\":\"" + punch.cat_name +
+                        "\", \"team_nr\":" + punch.team_nr +
+                        ", \"team_name\":\"" + punch.team_name +
+                        "\", \"comp_name\":\"" + punch.comp_name +
+                        "\", \"comp_bib\":\"" + punch.bib + "\"}";
+
+                    filename = @"c:\temp\roc_post_" + i + "_" + punch.chip_id + "_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".json";
+                    if (File.Exists(filename))
+                        File.Delete(filename);
+                    try
+                    {
+                        File.WriteAllText(filename, content);
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error("ERROR: CheckNewROC " + e.Message);
+                        MessageBox.Show("CheckNewROC " + e.Message);
+                    }
+
+                    //different servers
+                    string live_urls = get_config_item("live_url");
+                    string[] urls = live_urls.Split(';');
+
+                    foreach (string oneUrl in urls)
+                    {
                         try
                         {
-                            var response = await client.PostAsync(url, content);
-                            response.EnsureSuccessStatusCode();
-                            oneResponse = url + " " + await response.Content.ReadAsStringAsync();
-                            allResponses.Add(oneResponse);
-                            wasSent = true;
-                            break;
+                            int q_id = Insert_api_queue(oneUrl + url_roc, content != null ? content : "", content != null ? q_status_new : q_status_completed, null);
+                            Insert_api_queue_link(q_id, "roc_sms", punch.record_id);
+
+                            var result = db.roc_punches.SingleOrDefault(x => x.p_id == punch.record_id);
+                            if (result != null)
+                            {
+                                result.status = q_status_completed;
+                                db.SaveChanges();
+                            }
+                            Log.Information("CheckNewROC q_id = " + q_id);
                         }
                         catch (Exception e)
                         {
-                            oneResponse = url + $"Sending error: attempt {i} - {e.Message}";
-                            allResponses.Add(oneResponse);
+                            MessageBox.Show("ERR save q_status: " + e.Message);
                         }
-
                     }
-                    if (!wasSent)
-                    {
-                        MessageBox.Show("Sending error:  all attempts failed");
-                        _errors.Add(OneSlip);
-
-                        oneResponse = url + "Sending error:  all attempts failed";
-                        allResponses.Add(oneResponse);
-                    }
+                    Insert_queue_SMS(punch);
                 }
+                return "";
             }
-            return string.Join(Environment.NewLine, allResponses);
+
+
+            /*
+                        //string url;
+                        List<string> allResponses = new List<string>();
+                        string oneResponse = "";
+                        HttpClient client = new HttpClient();
+                        //int i = 0;
+                        using (var db = new klc01())
+                        {
+                            string OneSlip;
+                            OneSlip = db.get_slip_json(readout_id).FirstOrDefault();
+
+                            //write punch log
+                            string filename = @"c:\temp\slip_post_" + readout_id + "_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".json";
+                            File.WriteAllText(filename, OneSlip);
+
+                            string live_urls = get_config_item("live_url");
+                            string url_slips = get_config_item("live_slips");
+
+                            string[] urls = live_urls.Split(';');
+
+                            foreach (string oneUrl in urls)
+                            {
+                                url = oneUrl + url_slips;
+                                bool wasSent = false;
+                                //try to send 3 times
+                                for (int i = 0; i < 3; i++)
+                                {
+                                    var content = new StringContent(
+                                    OneSlip,
+                                    System.Text.Encoding.UTF8,
+                                    "application/json"
+                                    );
+
+                                    try
+                                    {
+                                        var response = await client.PostAsync(url, content);
+                                        response.EnsureSuccessStatusCode();
+                                        oneResponse = url + " " + await response.Content.ReadAsStringAsync();
+                                        allResponses.Add(oneResponse);
+                                        wasSent = true;
+                                        break;
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        oneResponse = url + $"Sending error: attempt {i} - {e.Message}";
+                                        allResponses.Add(oneResponse);
+                                    }
+
+                                }
+                                if (!wasSent)
+                                {
+                                    MessageBox.Show("Sending error:  all attempts failed");
+                                    _errors.Add(OneSlip);
+
+                                    oneResponse = url + "Sending error:  all attempts failed";
+                                    allResponses.Add(oneResponse);
+                                }
+                            }
+                        }
+                        return string.Join(Environment.NewLine, allResponses);
+            */
         }
 
-        private void SetTxtInfo(EnvironmentVariableTarget result)
+        public string Insert_queue_SMS(v_new_roc_punches onePunch)
+        {
+            Log.Information("Insert_queue_SMS");
+            using (var db = new klc01())
+            {
+                string sms_url = get_config_item("sms_url");
+                string q_status_completed = get_config_item("q_status_completed");
+                string q_status_new = get_config_item("q_status_new");
+                //string sms_token = get_config_item("sms_token");
+
+                try
+                {
+                    string recipient = onePunch.phone_number;
+                    string originator = "24ol";
+                    string body = onePunch.comp_name + ", " + onePunch.bib + " from team " + onePunch.team_name + " punched radio control at " + onePunch.punch_date + ".";
+
+                    //var content = "{\"body\": \"" + body + "\",\n    \"encoding\": \"auto\",\n    \"originator\": \"" + originator + "\",\n    \"recipients\": [\"" + recipient + "\"],\n    \"route\": \"business\"\n}";
+                    var content = "{\"message\": \"" + body + "\",\n    \"sender\": \"" + originator + "\",\n    \"recipients\": [\"msisdn\":{\"" + recipient + "\"}]}";
+
+                    int q_id = Insert_api_queue(sms_url, content, content != null ? q_status_new : q_status_completed, null);
+
+                    Insert_api_queue_link(q_id, "roc_sms", onePunch.record_id);
+
+                    var result = db.roc_punches.SingleOrDefault(x => x.p_id == onePunch.record_id);
+                    if (result != null)
+                    {
+                        result.status = q_status_completed;
+                        db.SaveChanges();
+                    }
+                    Log.Information("Insert_queue_SMS q_id=" + q_id);
+                    return "";
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("ERR save q_status: " + e.Message);
+                    return "err";
+                }
+            }
+
+        }
+
+        public int Insert_api_queue(string q_url, string q_content, string q_status, string q_header)
+        {
+            using (var db = new klc01())
+            {
+                try
+                {
+                    var api_queue_request = new api_queue
+                    {
+                        q_dtime = DateTime.Now,
+                        q_url = q_url,
+                        q_content = q_content != null ? q_content : "",
+                        q_header = q_header,
+                        q_status = q_status,
+                        as_of_date = DateTime.Now
+                    };
+                    db.api_queue.Add(api_queue_request);
+                    db.SaveChanges();
+
+                    Log.Information("api_queue.Add " + api_queue_request.q_id);
+                    return api_queue_request.q_id;
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("ERR save api_queue: " + e.Message);
+                    Log.Error("ERR save api_queue: " + e.Message);
+                    return 0;
+                }
+            }
+        }
+
+        public int Insert_api_queue_link(int q_id, string link_to, int record_id)
+        {
+            using (var db = new klc01())
+            {
+                try
+                {
+                    var q_link = new api_queue_link
+                    {
+                        q_id = q_id,
+                        link_to = link_to,
+                        link_id = record_id,
+                        as_of_date = DateTime.Now
+                    };
+                    db.api_queue_link.Add(q_link);
+                    db.SaveChanges();
+                    Log.Information("api_queue_link.Add " + q_id);
+                    return q_link.link_id;
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("ERR save api_queue_link: " + e.Message);
+                    Log.Error("ERR save api_queue_link: " + e.Message);
+                    return 0;
+                }
+            }
+        }
+
+
+        //private void SetTxtInfo(EnvironmentVariableTarget result)
+        private void SetTxtInfo(string result)
         {
             FrmMain frmMain = new FrmMain();
-            frmMain.txtInfo.AppendText(result.ToString());
+            frmMain.txtInfo.AppendText(result);
         }
 
         /*        public DateTime GetStartTime(long competitor_id)
@@ -729,8 +1088,8 @@ namespace h24
                         return;
                     }
 
-                string info = await response.Content.ReadAsStringAsync();
-                MessageBox.Show("API response: " + info);
+                    string info = await response.Content.ReadAsStringAsync();
+                    MessageBox.Show("API response: " + info);
                 }
             }
         }
@@ -745,7 +1104,7 @@ namespace h24
                 {
                     service_config = "start_roc_service";
                 }
-                
+
                 string live_roc = get_config_item(service_config);
                 string live_urls = get_config_item("live_url");
 
@@ -779,5 +1138,27 @@ namespace h24
 
         }
 
+        public void WriteLog(string log_message, string log_type)
+        {
+            using (var db = new klc01())
+            {
+                var new_log = new logs
+                {
+                    logs_time = DateTime.Now,
+                    logs_message = log_message,
+                    logs_type = log_type,
+                    as_of_date = DateTime.Now
+                };
+                try
+                {
+                    db.logs.Add(new_log);
+                    db.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("WriteLog failed: " + e.Message);
+                }
+            }
+        }
     }
 }

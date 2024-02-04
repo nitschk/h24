@@ -12,15 +12,11 @@ namespace h24
     using System;
     using System.Collections.Generic;
     
-    public partial class api_queue
+    public partial class api_queue_link
     {
         public int q_id { get; set; }
-        public System.DateTime q_dtime { get; set; }
-        public string q_url { get; set; }
-        public string q_content { get; set; }
-        public string q_status { get; set; }
-        public string q_response { get; set; }
+        public string link_to { get; set; }
+        public int link_id { get; set; }
         public System.DateTime as_of_date { get; set; }
-        public string q_header { get; set; }
     }
 }

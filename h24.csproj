@@ -16,6 +16,7 @@
     <TargetFrameworkProfile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -28,7 +29,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -92,6 +92,12 @@
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Serilog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>packages\Serilog.2.12.0\lib\net46\Serilog.dll</HintPath>
+    </Reference>
+    <Reference Include="Serilog.Sinks.File, Version=5.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>packages\Serilog.Sinks.File.5.0.0\lib\net45\Serilog.Sinks.File.dll</HintPath>
+    </Reference>
     <Reference Include="SPORTident.Communication">
       <HintPath>References\SPORTident.Communication.dll</HintPath>
     </Reference>
@@ -145,6 +151,9 @@
     <Compile Include="api_queue.cs">
       <DependentUpon>klc01.tt</DependentUpon>
     </Compile>
+    <Compile Include="api_queue_link.cs">
+      <DependentUpon>klc01.tt</DependentUpon>
+    </Compile>
     <Compile Include="categories.cs">
       <DependentUpon>klc01.tt</DependentUpon>
     </Compile>
@@ -170,6 +179,12 @@
     <Compile Include="entry_xml.cs">
       <DependentUpon>klc01.tt</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="frmApiQueue.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmApiQueue.Designer.cs">
+      <DependentUpon>frmApiQueue.cs</DependentUpon>
     </Compile>
     <Compile Include="frmChipNotFound.cs">
       <SubType>Form</SubType>
@@ -258,11 +273,15 @@
     <Compile Include="logs.cs">
       <DependentUpon>klc01.tt</DependentUpon>
     </Compile>
+    <Compile Include="MyExtensions.cs" />
     <Compile Include="NewCard.cs" />
     <Compile Include="PrintReport.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="results.cs">
+      <DependentUpon>klc01.tt</DependentUpon>
+    </Compile>
+    <Compile Include="roc_punches.cs">
       <DependentUpon>klc01.tt</DependentUpon>
     </Compile>
     <Compile Include="rpt_results_Result.cs">
@@ -310,9 +329,18 @@
     <Compile Include="v_comp_teams.cs">
       <DependentUpon>klc01.tt</DependentUpon>
     </Compile>
+    <Compile Include="v_new_roc_punches.cs">
+      <DependentUpon>klc01.tt</DependentUpon>
+    </Compile>
+    <Compile Include="v_readout_legs.cs">
+      <DependentUpon>klc01.tt</DependentUpon>
+    </Compile>
     <Compile Include="v_teams_results.cs">
       <DependentUpon>klc01.tt</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="frmApiQueue.resx">
+      <DependentUpon>frmApiQueue.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmChipNotFound.resx">
       <DependentUpon>frmChipNotFound.cs</DependentUpon>
     </EmbeddedResource>
@@ -383,6 +411,7 @@
       <DependentUpon>klc01.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
+    <None Include="Properties\DataSources\api_queue.datasource" />
     <None Include="Properties\DataSources\categories.datasource" />
     <None Include="Properties\DataSources\competitors.datasource" />
     <None Include="Properties\DataSources\courses.datasource" />

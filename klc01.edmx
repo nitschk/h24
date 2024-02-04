@@ -13,9 +13,19 @@
           <Property Name="q_dtime" Type="datetime" Nullable="false" />
           <Property Name="q_url" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="q_content" Type="nvarchar" MaxLength="4000" Nullable="false" />
-          <Property Name="q_status" Type="nchar" MaxLength="10" />
+          <Property Name="q_header" Type="nvarchar" MaxLength="4000" />
+          <Property Name="q_status" Type="nchar" MaxLength="20" />
           <Property Name="q_response" Type="nvarchar" MaxLength="4000" />
-          <Property Name="as_of_date" Type="datetime" />
+          <Property Name="as_of_date" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="api_queue_link">
+          <Key>
+            <PropertyRef Name="q_id" />
+          </Key>
+          <Property Name="q_id" Type="int" Nullable="false" />
+          <Property Name="link_to" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="link_id" Type="int" Nullable="false" />
+          <Property Name="as_of_date" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="categories">
           <Key>
@@ -158,13 +168,24 @@
           <Property Name="sum_legs" Type="int" />
           <Property Name="max_finish" Type="varchar" MaxLength="20" />
         </EntityType>
+        <EntityType Name="roc_punches">
+          <Key>
+            <PropertyRef Name="p_id" />
+          </Key>
+          <Property Name="p_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CodeNr" Type="int" Nullable="false" />
+          <Property Name="ChipNr" Type="int" Nullable="false" />
+          <Property Name="PunchTime" Type="datetime" />
+          <Property Name="status" Type="varchar" MaxLength="50" />
+          <Property Name="as_of_date" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="settings">
           <Key>
             <PropertyRef Name="s_id" />
           </Key>
           <Property Name="s_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="config_name" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="config_value" Type="nvarchar" MaxLength="1000" />
+          <Property Name="config_value" Type="nvarchar" MaxLength="4000" />
           <Property Name="as_of_date" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="si_readout">
@@ -252,6 +273,7 @@
           <Property Name="team_status" Type="varchar" MaxLength="10" />
           <Property Name="race_end" Type="datetime" />
           <Property Name="oris_id" Type="int" />
+          <Property Name="phone_number" Type="nvarchar" MaxLength="20" />
           <Property Name="as_of_date" Type="datetime" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
@@ -289,6 +311,53 @@ warning 6002: The table/view 'klc01.dbo.v_comp_teams' does not have a primary ke
           <Property Name="cat_name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="cat_start_time" Type="datetime" />
           <Property Name="cat_time_limit" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'klc01.dbo.v_new_roc_punches' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="v_new_roc_punches">
+          <Key>
+            <PropertyRef Name="record_id" />
+            <PropertyRef Name="control_code" />
+            <PropertyRef Name="chip_id" />
+            <PropertyRef Name="cat_name" />
+            <PropertyRef Name="bib" />
+          </Key>
+          <Property Name="record_id" Type="int" Nullable="false" />
+          <Property Name="control_code" Type="int" Nullable="false" />
+          <Property Name="chip_id" Type="int" Nullable="false" />
+          <Property Name="punch_date" Type="datetime" />
+          <Property Name="cat_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="team_nr" Type="int" />
+          <Property Name="team_name" Type="nvarchar" MaxLength="255" />
+          <Property Name="comp_name" Type="nvarchar" MaxLength="50" />
+          <Property Name="bib" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="phone_number" Type="nvarchar" MaxLength="20" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'klc01.dbo.v_readout_legs' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="v_readout_legs">
+          <Key>
+            <PropertyRef Name="readout_id" />
+            <PropertyRef Name="chip_id" />
+            <PropertyRef Name="card_readout_datetime" />
+          </Key>
+          <Property Name="readout_id" Type="int" Nullable="false" />
+          <Property Name="chip_id" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="card_readout_datetime" Type="datetime" Nullable="false" />
+          <Property Name="comp_id" Type="int" />
+          <Property Name="start_time" Type="varchar" MaxLength="20" />
+          <Property Name="finish_time" Type="varchar" MaxLength="20" />
+          <Property Name="leg_time" Type="varchar" MaxLength="20" />
+          <Property Name="leg_status" Type="nvarchar" MaxLength="10" />
+          <Property Name="dsk_penalty" Type="time" Precision="7" />
+          <Property Name="comp_name" Type="nvarchar" MaxLength="50" />
+          <Property Name="rank_order" Type="int" />
+          <Property Name="bib" Type="nvarchar" MaxLength="10" />
+          <Property Name="course_name" Type="nvarchar" MaxLength="20" />
+          <Property Name="team" Type="nvarchar" MaxLength="255" />
+          <Property Name="leg_id" Type="int" />
+          <Property Name="valid_flag" Type="bit" />
+          <Property Name="race_valid" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'klc01.dbo.v_teams_results' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -443,6 +512,7 @@ warning 6002: The table/view 'klc01.dbo.v_teams_results' does not have a primary
         </Function>
         <EntityContainer Name="klc01ModelStoreContainer">
           <EntitySet Name="api_queue" EntityType="Self.api_queue" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="api_queue_link" EntityType="Self.api_queue_link" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="categories" EntityType="Self.categories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="competitors" EntityType="Self.competitors" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="controls" EntityType="Self.controls" Schema="dbo" store:Type="Tables" />
@@ -452,6 +522,7 @@ warning 6002: The table/view 'klc01.dbo.v_teams_results' does not have a primary
           <EntitySet Name="legs" EntityType="Self.legs" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="logs" EntityType="Self.logs" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="results" EntityType="Self.results" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="roc_punches" EntityType="Self.roc_punches" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="settings" EntityType="Self.settings" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="si_readout" EntityType="Self.si_readout" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="si_stamps" EntityType="Self.si_stamps" Schema="dbo" store:Type="Tables" />
@@ -482,6 +553,41 @@ warning 6002: The table/view 'klc01.dbo.v_teams_results' does not have a primary
     [v_comp_teams].[cat_start_time] AS [cat_start_time], 
     [v_comp_teams].[cat_time_limit] AS [cat_time_limit]
     FROM [dbo].[v_comp_teams] AS [v_comp_teams]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="v_new_roc_punches" EntityType="Self.v_new_roc_punches" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [v_new_roc_punches].[record_id] AS [record_id], 
+    [v_new_roc_punches].[control_code] AS [control_code], 
+    [v_new_roc_punches].[chip_id] AS [chip_id], 
+    [v_new_roc_punches].[punch_date] AS [punch_date], 
+    [v_new_roc_punches].[cat_name] AS [cat_name], 
+    [v_new_roc_punches].[team_nr] AS [team_nr], 
+    [v_new_roc_punches].[team_name] AS [team_name], 
+    [v_new_roc_punches].[comp_name] AS [comp_name], 
+    [v_new_roc_punches].[bib] AS [bib], 
+    [v_new_roc_punches].[phone_number] AS [phone_number]
+    FROM [dbo].[v_new_roc_punches] AS [v_new_roc_punches]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="v_readout_legs" EntityType="Self.v_readout_legs" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [v_readout_legs].[readout_id] AS [readout_id], 
+    [v_readout_legs].[chip_id] AS [chip_id], 
+    [v_readout_legs].[card_readout_datetime] AS [card_readout_datetime], 
+    [v_readout_legs].[comp_id] AS [comp_id], 
+    [v_readout_legs].[start_time] AS [start_time], 
+    [v_readout_legs].[finish_time] AS [finish_time], 
+    [v_readout_legs].[leg_time] AS [leg_time], 
+    [v_readout_legs].[leg_status] AS [leg_status], 
+    [v_readout_legs].[dsk_penalty] AS [dsk_penalty], 
+    [v_readout_legs].[comp_name] AS [comp_name], 
+    [v_readout_legs].[rank_order] AS [rank_order], 
+    [v_readout_legs].[bib] AS [bib], 
+    [v_readout_legs].[course_name] AS [course_name], 
+    [v_readout_legs].[team] AS [team], 
+    [v_readout_legs].[leg_id] AS [leg_id], 
+    [v_readout_legs].[valid_flag] AS [valid_flag], 
+    [v_readout_legs].[race_valid] AS [race_valid]
+    FROM [dbo].[v_readout_legs] AS [v_readout_legs]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="v_teams_results" EntityType="Self.v_teams_results" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -643,7 +749,7 @@ warning 6002: The table/view 'klc01.dbo.v_teams_results' does not have a primary
           </Key>
           <Property Name="s_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="config_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="config_value" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="config_value" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
           <Property Name="as_of_date" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
         <EntityType Name="si_readout">
@@ -736,6 +842,7 @@ warning 6002: The table/view 'klc01.dbo.v_teams_results' does not have a primary
           <NavigationProperty Name="competitors" Relationship="Self.FK_competitors_teams" FromRole="teams" ToRole="competitors" />
           <Property Name="race_end" Type="DateTime" Precision="3" />
           <Property Name="oris_id" Type="Int32" />
+          <Property Name="phone_number" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_teams_categories">
           <End Role="categories" Type="Self.categories" Multiplicity="0..1" />
@@ -966,6 +1073,10 @@ warning 6002: The table/view 'klc01.dbo.v_teams_results' does not have a primary
           <FunctionImport Name="get_course_results_json" ReturnType="Collection(String)">
           <Parameter Name="cat_name" Mode="In" Type="String" />
           </FunctionImport>
+          <EntitySet Name="v_readout_legs" EntityType="klc01Model.v_readout_legs" />
+          <EntitySet Name="api_queue_link" EntityType="klc01Model.api_queue_link" />
+          <EntitySet Name="v_new_roc_punches" EntityType="klc01Model.v_new_roc_punches" />
+          <EntitySet Name="roc_punches" EntityType="klc01Model.roc_punches" />
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -1120,9 +1231,73 @@ warning 6002: The table/view 'klc01.dbo.v_teams_results' does not have a primary
           <Property Name="q_dtime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="q_url" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="q_content" Type="String" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
-          <Property Name="q_status" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="q_status" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
           <Property Name="q_response" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
-          <Property Name="as_of_date" Type="DateTime" Precision="3" />
+          <Property Name="as_of_date" Type="DateTime" Precision="3" Nullable="false" />
+          <Property Name="q_header" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="v_readout_legs">
+          <Key>
+            <PropertyRef Name="readout_id" />
+            <PropertyRef Name="chip_id" />
+            <PropertyRef Name="card_readout_datetime" />
+          </Key>
+          <Property Name="readout_id" Type="Int32" Nullable="false" />
+          <Property Name="chip_id" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="card_readout_datetime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="comp_id" Type="Int32" />
+          <Property Name="start_time" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="finish_time" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="leg_time" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="leg_status" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="dsk_penalty" Type="Time" Precision="7" />
+          <Property Name="comp_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="rank_order" Type="Int32" />
+          <Property Name="bib" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="course_name" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="team" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="leg_id" Type="Int32" />
+          <Property Name="valid_flag" Type="Boolean" />
+          <Property Name="race_valid" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="api_queue_link">
+          <Key>
+            <PropertyRef Name="q_id" />
+          </Key>
+          <Property Name="q_id" Type="Int32" Nullable="false" />
+          <Property Name="link_to" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="link_id" Type="Int32" Nullable="false" />
+          <Property Name="as_of_date" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="v_new_roc_punches">
+          <Key>
+            <PropertyRef Name="record_id" />
+            <PropertyRef Name="control_code" />
+            <PropertyRef Name="chip_id" />
+            <PropertyRef Name="cat_name" />
+            <PropertyRef Name="bib" />
+          </Key>
+          <Property Name="record_id" Type="Int32" Nullable="false" />
+          <Property Name="control_code" Type="Int32" Nullable="false" />
+          <Property Name="chip_id" Type="Int32" Nullable="false" />
+          <Property Name="punch_date" Type="DateTime" Precision="3" />
+          <Property Name="cat_name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="team_nr" Type="Int32" />
+          <Property Name="team_name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="comp_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="bib" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="phone_number" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="roc_punches">
+          <Key>
+            <PropertyRef Name="p_id" />
+          </Key>
+          <Property Name="p_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CodeNr" Type="Int32" Nullable="false" />
+          <Property Name="ChipNr" Type="Int32" Nullable="false" />
+          <Property Name="PunchTime" Type="DateTime" Precision="3" />
+          <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="as_of_date" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1325,6 +1500,7 @@ warning 6002: The table/view 'klc01.dbo.v_teams_results' does not have a primary
           <EntitySetMapping Name="teams">
             <EntityTypeMapping TypeName="klc01Model.teams">
               <MappingFragment StoreEntitySet="teams">
+                <ScalarProperty Name="phone_number" ColumnName="phone_number" />
                 <ScalarProperty Name="oris_id" ColumnName="oris_id" />
                 <ScalarProperty Name="race_end" ColumnName="race_end" />
                 <ScalarProperty Name="team_id" ColumnName="team_id" />
@@ -1485,6 +1661,7 @@ warning 6002: The table/view 'klc01.dbo.v_teams_results' does not have a primary
           <EntitySetMapping Name="api_queue">
             <EntityTypeMapping TypeName="klc01Model.api_queue">
               <MappingFragment StoreEntitySet="api_queue">
+                <ScalarProperty Name="q_header" ColumnName="q_header" />
                 <ScalarProperty Name="as_of_date" ColumnName="as_of_date" />
                 <ScalarProperty Name="q_response" ColumnName="q_response" />
                 <ScalarProperty Name="q_status" ColumnName="q_status" />
@@ -1497,6 +1674,67 @@ warning 6002: The table/view 'klc01.dbo.v_teams_results' does not have a primary
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="sp_update_xml_entries_team_bib" FunctionName="klc01Model.Store.sp_update_xml_entries_team_bib" />
           <FunctionImportMapping FunctionImportName="get_course_results_json" FunctionName="klc01Model.Store.get_course_results_json" />
+          <EntitySetMapping Name="v_readout_legs">
+            <EntityTypeMapping TypeName="klc01Model.v_readout_legs">
+              <MappingFragment StoreEntitySet="v_readout_legs">
+                <ScalarProperty Name="race_valid" ColumnName="race_valid" />
+                <ScalarProperty Name="valid_flag" ColumnName="valid_flag" />
+                <ScalarProperty Name="leg_id" ColumnName="leg_id" />
+                <ScalarProperty Name="team" ColumnName="team" />
+                <ScalarProperty Name="course_name" ColumnName="course_name" />
+                <ScalarProperty Name="bib" ColumnName="bib" />
+                <ScalarProperty Name="rank_order" ColumnName="rank_order" />
+                <ScalarProperty Name="comp_name" ColumnName="comp_name" />
+                <ScalarProperty Name="dsk_penalty" ColumnName="dsk_penalty" />
+                <ScalarProperty Name="leg_status" ColumnName="leg_status" />
+                <ScalarProperty Name="leg_time" ColumnName="leg_time" />
+                <ScalarProperty Name="finish_time" ColumnName="finish_time" />
+                <ScalarProperty Name="start_time" ColumnName="start_time" />
+                <ScalarProperty Name="comp_id" ColumnName="comp_id" />
+                <ScalarProperty Name="card_readout_datetime" ColumnName="card_readout_datetime" />
+                <ScalarProperty Name="chip_id" ColumnName="chip_id" />
+                <ScalarProperty Name="readout_id" ColumnName="readout_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="api_queue_link">
+            <EntityTypeMapping TypeName="klc01Model.api_queue_link">
+              <MappingFragment StoreEntitySet="api_queue_link">
+                <ScalarProperty Name="as_of_date" ColumnName="as_of_date" />
+                <ScalarProperty Name="link_id" ColumnName="link_id" />
+                <ScalarProperty Name="link_to" ColumnName="link_to" />
+                <ScalarProperty Name="q_id" ColumnName="q_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="v_new_roc_punches">
+            <EntityTypeMapping TypeName="klc01Model.v_new_roc_punches">
+              <MappingFragment StoreEntitySet="v_new_roc_punches">
+                <ScalarProperty Name="phone_number" ColumnName="phone_number" />
+                <ScalarProperty Name="bib" ColumnName="bib" />
+                <ScalarProperty Name="comp_name" ColumnName="comp_name" />
+                <ScalarProperty Name="team_name" ColumnName="team_name" />
+                <ScalarProperty Name="team_nr" ColumnName="team_nr" />
+                <ScalarProperty Name="cat_name" ColumnName="cat_name" />
+                <ScalarProperty Name="punch_date" ColumnName="punch_date" />
+                <ScalarProperty Name="chip_id" ColumnName="chip_id" />
+                <ScalarProperty Name="control_code" ColumnName="control_code" />
+                <ScalarProperty Name="record_id" ColumnName="record_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="roc_punches">
+            <EntityTypeMapping TypeName="klc01Model.roc_punches">
+              <MappingFragment StoreEntitySet="roc_punches">
+                <ScalarProperty Name="as_of_date" ColumnName="as_of_date" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="PunchTime" ColumnName="PunchTime" />
+                <ScalarProperty Name="ChipNr" ColumnName="ChipNr" />
+                <ScalarProperty Name="CodeNr" ColumnName="CodeNr" />
+                <ScalarProperty Name="p_id" ColumnName="p_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
