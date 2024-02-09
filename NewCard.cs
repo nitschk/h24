@@ -23,8 +23,14 @@ namespace h24
         public static string get_config_item(string cofnig_name)
         {
             var db = new klc01();
-            string config_value = db.settings.FirstOrDefault(c => c.config_name == cofnig_name).config_value;
-            return config_value;
+            string config_value = "";
+            var config = db.settings.FirstOrDefault(c => c.config_name == cofnig_name);
+            if (config != null)
+            {
+                config_value = config.config_value;
+            }
+
+            return config_value;            
         }
 
         public int HandleNewCard(int readout_id)
@@ -831,7 +837,7 @@ namespace h24
                         try
                         {
                             int q_id = Insert_api_queue(oneUrl + url_roc, content != null ? content : "", content != null ? q_status_new : q_status_completed, null);
-                            Insert_api_queue_link(q_id, "roc_sms", punch.record_id);
+                            Insert_api_queue_link(q_id, "roc_web", punch.record_id);
 
                             var result = db.roc_punches.SingleOrDefault(x => x.p_id == punch.record_id);
                             if (result != null)
@@ -846,7 +852,11 @@ namespace h24
                             MessageBox.Show("ERR save q_status: " + e.Message);
                         }
                     }
-                    Insert_queue_SMS(punch);
+                    string sms_send = get_config_item("sms_send");
+                    if (sms_send == "true" )
+                    {
+                        Insert_queue_SMS(punch);
+                    }
                 }
                 return "";
             }
@@ -923,7 +933,7 @@ namespace h24
                 string sms_url = get_config_item("sms_url");
                 string q_status_completed = get_config_item("q_status_completed");
                 string q_status_new = get_config_item("q_status_new");
-                //string sms_token = get_config_item("sms_token");
+                string sms_token = get_config_item("sms_token");
 
                 try
                 {
@@ -932,9 +942,9 @@ namespace h24
                     string body = onePunch.comp_name + ", " + onePunch.bib + " from team " + onePunch.team_name + " punched radio control at " + onePunch.punch_date + ".";
 
                     //var content = "{\"body\": \"" + body + "\",\n    \"encoding\": \"auto\",\n    \"originator\": \"" + originator + "\",\n    \"recipients\": [\"" + recipient + "\"],\n    \"route\": \"business\"\n}";
-                    var content = "{\"message\": \"" + body + "\",\n    \"sender\": \"" + originator + "\",\n    \"recipients\": [\"msisdn\":{\"" + recipient + "\"}]}";
+                    var content = "{\"message\": \"" + body + "\",\n    \"sender\": \"" + originator + "\",\n    \"recipients\": [{\"msisdn\":" + recipient + "}]}";
 
-                    int q_id = Insert_api_queue(sms_url, content, content != null ? q_status_new : q_status_completed, null);
+                    int q_id = Insert_api_queue(sms_url, content, content != null ? q_status_new : q_status_completed, sms_token);
 
                     Insert_api_queue_link(q_id, "roc_sms", onePunch.record_id);
 
