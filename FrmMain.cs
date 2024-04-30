@@ -147,64 +147,68 @@ namespace h24
         private void RefreshLegs()
         {
             //dataGridView1.Table.... Bind data here (this method would be executed on UI thread)
-  /*          var query = (from r in db.si_readout
-                         join l in db.legs on r.readout_id equals l.readout_id into gl
-                         from x in gl.DefaultIfEmpty()
-                         join c in db.competitors on x.comp_id equals c.comp_id into gc
-                         from y in gc.DefaultIfEmpty()
-                             //join cr in db.courses on x.course_id equals cr.course_id into gr
-                             //from z in gr.DefaultIfEmpty()
-                             //join t in db.teams on y.team_id equals t.team_id into gt
-                             //from a in gt.DefaultIfEmpty()
-                         join s in db.slips on r.readout_id equals s.readout_id into gs
-                         from b in gs.DefaultIfEmpty()
-                             //orderby r.readout_id descending
-                         select new
-                         {
-                             readout_id = r.readout_id,
-                             chip_id = r.chip_id,
-                             card_readout_datetime = r.card_readout_datetime,
-                             comp_id = x != null ? x.comp_id : 0,
-                             start_time = x != null ? x.start_time : "",
-                             finish_time = x != null ? x.finish_time : "",
-                             leg_time = x != null ? x.leg_time : "",
-                             leg_status = x != null ? x.leg_status : "",
-                             dsk_penalty = x != null ? x.dsk_penalty : null,
-                             comp_name = y != null ? y.comp_name : "",
-                             rank_order = y != null ? y.rank_order : 0,
-                             bib = y != null ? y.bib : "",
-                             course = b != null ? b.course_name : "",
-                             team = b != null ? b.team_name : "",
-                             leg_id = x != null ? x.leg_id : 0,
-                             valid_flag = x != null ? x.valid_flag : true,
-                             race_valid = b != null ? b.valid_flag : true,
-                         } *//*into e
-                         group e by new
-                         {
-                            e.readout_id,
-                            e.chip_id,
-                            e.card_readout_datetime,
-                            e.comp_id,
-                            e.start_time,
-                            e.finish_time,
-                            e.leg_time,
-                            e.leg_status,
-                            e.dsk_penalty,
-                            e.comp_name,
-                            e.rank_order,
-                            e.bib,
-                            e.course,
-                            e.team,
-                            e.leg_id,
-                            e.valid_flag,
-                            e.race_valid
-                          }*/
-//                         ).Distinct().OrderByDescending(x => x.readout_id).ToList();
-            var query = db.v_readout_legs.OrderByDescending(x => x.readout_id).ToList();
-            dgLegs.DataSource = query;
-            dgLegs.Update();
-            dgLegs.Refresh();
-            dgLegs.Columns["card_readout_datetime"].DefaultCellStyle.Format = "dd. MM. yyyy HH:mm:ss";
+            /*          var query = (from r in db.si_readout
+                                   join l in db.legs on r.readout_id equals l.readout_id into gl
+                                   from x in gl.DefaultIfEmpty()
+                                   join c in db.competitors on x.comp_id equals c.comp_id into gc
+                                   from y in gc.DefaultIfEmpty()
+                                       //join cr in db.courses on x.course_id equals cr.course_id into gr
+                                       //from z in gr.DefaultIfEmpty()
+                                       //join t in db.teams on y.team_id equals t.team_id into gt
+                                       //from a in gt.DefaultIfEmpty()
+                                   join s in db.slips on r.readout_id equals s.readout_id into gs
+                                   from b in gs.DefaultIfEmpty()
+                                       //orderby r.readout_id descending
+                                   select new
+                                   {
+                                       readout_id = r.readout_id,
+                                       chip_id = r.chip_id,
+                                       card_readout_datetime = r.card_readout_datetime,
+                                       comp_id = x != null ? x.comp_id : 0,
+                                       start_time = x != null ? x.start_time : "",
+                                       finish_time = x != null ? x.finish_time : "",
+                                       leg_time = x != null ? x.leg_time : "",
+                                       leg_status = x != null ? x.leg_status : "",
+                                       dsk_penalty = x != null ? x.dsk_penalty : null,
+                                       comp_name = y != null ? y.comp_name : "",
+                                       rank_order = y != null ? y.rank_order : 0,
+                                       bib = y != null ? y.bib : "",
+                                       course = b != null ? b.course_name : "",
+                                       team = b != null ? b.team_name : "",
+                                       leg_id = x != null ? x.leg_id : 0,
+                                       valid_flag = x != null ? x.valid_flag : true,
+                                       race_valid = b != null ? b.valid_flag : true,
+                                   } *//*into e
+                                   group e by new
+                                   {
+                                      e.readout_id,
+                                      e.chip_id,
+                                      e.card_readout_datetime,
+                                      e.comp_id,
+                                      e.start_time,
+                                      e.finish_time,
+                                      e.leg_time,
+                                      e.leg_status,
+                                      e.dsk_penalty,
+                                      e.comp_name,
+                                      e.rank_order,
+                                      e.bib,
+                                      e.course,
+                                      e.team,
+                                      e.leg_id,
+                                      e.valid_flag,
+                                      e.race_valid
+                                    }*/
+            //                         ).Distinct().OrderByDescending(x => x.readout_id).ToList();
+
+            using (var db = new klc01())
+            {
+                var query = db.v_readout_legs.OrderByDescending(x => x.readout_id).ToList();
+                dgLegs.DataSource = query;
+                dgLegs.Update();
+                dgLegs.Refresh();
+                dgLegs.Columns["card_readout_datetime"].DefaultCellStyle.Format = "dd. MM. yyyy HH:mm:ss";
+            }
         }
 
         /// <summary>Handles the event that is thrown when the reader class read an online stamp completely</summary>
@@ -1364,6 +1368,14 @@ namespace h24
         {
             NewCard NewCard = new NewCard();
             NewCard.CheckApiRequests(null);
+        }
+
+        private void dgTeams_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            int curRow = dgTeams.CurrentRow.Index;
+            int team_id = Convert.ToInt32(dgTeams.Rows[curRow].Cells["team_id"].Value);
+            db.SaveChanges();
+            _ = NewCard.PostEntries(team_id);
         }
 
 

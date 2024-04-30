@@ -30,6 +30,7 @@ namespace h24
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.label1 = new System.Windows.Forms.Label();
             this.dgApiRequests = new System.Windows.Forms.DataGridView();
             this.link_to = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -62,7 +63,9 @@ namespace h24
             // 
             // dgApiRequests
             // 
-            this.dgApiRequests.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgApiRequests.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgApiRequests.AutoGenerateColumns = false;
             this.dgApiRequests.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgApiRequests.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -77,11 +80,20 @@ namespace h24
             this.link_id,
             this.q_header});
             this.dgApiRequests.DataSource = this.apiqueueBindingSource;
-            this.dgApiRequests.Location = new System.Drawing.Point(79, 110);
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.Format = "G";
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgApiRequests.DefaultCellStyle = dataGridViewCellStyle1;
+            this.dgApiRequests.Location = new System.Drawing.Point(32, 110);
             this.dgApiRequests.Name = "dgApiRequests";
             this.dgApiRequests.RowHeadersWidth = 30;
             this.dgApiRequests.RowTemplate.Height = 28;
-            this.dgApiRequests.Size = new System.Drawing.Size(1223, 493);
+            this.dgApiRequests.Size = new System.Drawing.Size(1278, 493);
             this.dgApiRequests.TabIndex = 1;
             // 
             // link_to
@@ -198,7 +210,7 @@ namespace h24
             // 
             this.q_header.DataPropertyName = "q_header";
             this.q_header.FillWeight = 63.72083F;
-            this.q_header.HeaderText = "q_header";
+            this.q_header.HeaderText = "Token";
             this.q_header.MinimumWidth = 8;
             this.q_header.Name = "q_header";
             this.q_header.Width = 109;
@@ -217,7 +229,7 @@ namespace h24
             this.Controls.Add(this.dgApiRequests);
             this.Controls.Add(this.label1);
             this.Name = "frmApiQueue";
-            this.Text = "frmApiQueue";
+            this.Text = "API Queue";
             ((System.ComponentModel.ISupportInitialize)(this.dgApiRequests)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.apiqueueBindingSource)).EndInit();
             this.ResumeLayout(false);
@@ -231,6 +243,8 @@ namespace h24
         private System.Windows.Forms.DataGridView dgApiRequests;
         private System.Windows.Forms.BindingSource apiqueueBindingSource;
         private System.Windows.Forms.Button brRefresh;
+        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.CheckBox cbRefresh;
         private System.Windows.Forms.DataGridViewTextBoxColumn q_id;
         private System.Windows.Forms.DataGridViewTextBoxColumn q_dtime;
         private System.Windows.Forms.DataGridViewTextBoxColumn q_url;
@@ -241,7 +255,5 @@ namespace h24
         private System.Windows.Forms.DataGridViewTextBoxColumn link_to;
         private System.Windows.Forms.DataGridViewTextBoxColumn link_id;
         private System.Windows.Forms.DataGridViewTextBoxColumn q_header;
-        private System.Windows.Forms.Timer timer1;
-        private System.Windows.Forms.CheckBox cbRefresh;
     }
 }

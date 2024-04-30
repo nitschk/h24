@@ -32,18 +32,19 @@ namespace h24
             this.components = new System.ComponentModel.Container();
             this.label1 = new System.Windows.Forms.Label();
             this.dgCourses = new System.Windows.Forms.DataGridView();
-            this.course_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.course_length = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.course_climb = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.control_count = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.course_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.coursesBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.btnSave = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.txSearch = new System.Windows.Forms.TextBox();
             this.btClear = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.coursesBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.course_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.course_length = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.course_climb = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.control_count = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.course_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgCourses)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.coursesBindingSource)).BeginInit();
             this.SuspendLayout();
@@ -72,7 +73,7 @@ namespace h24
             this.control_count,
             this.course_id});
             this.dgCourses.DataSource = this.coursesBindingSource;
-            this.dgCourses.Location = new System.Drawing.Point(78, 189);
+            this.dgCourses.Location = new System.Drawing.Point(78, 198);
             this.dgCourses.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.dgCourses.Name = "dgCourses";
             this.dgCourses.ReadOnly = true;
@@ -82,6 +83,78 @@ namespace h24
             this.dgCourses.TabIndex = 3;
             this.dgCourses.ColumnWidthChanged += new System.Windows.Forms.DataGridViewColumnEventHandler(this.dgCourses_ColumnWidthChanged);
             this.dgCourses.DoubleClick += new System.EventHandler(this.dgCourses_DoubleClick);
+            // 
+            // btnSave
+            // 
+            this.btnSave.Location = new System.Drawing.Point(415, 531);
+            this.btnSave.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(84, 29);
+            this.btnSave.TabIndex = 6;
+            this.btnSave.Text = "Save";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            // 
+            // btnCancel
+            // 
+            this.btnCancel.Location = new System.Drawing.Point(572, 531);
+            this.btnCancel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(84, 29);
+            this.btnCancel.TabIndex = 7;
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(84, 163);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(64, 20);
+            this.label2.TabIndex = 8;
+            this.label2.Text = "Search:";
+            // 
+            // txSearch
+            // 
+            this.txSearch.Location = new System.Drawing.Point(200, 159);
+            this.txSearch.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.txSearch.Name = "txSearch";
+            this.txSearch.Size = new System.Drawing.Size(112, 26);
+            this.txSearch.TabIndex = 0;
+            this.txSearch.TextChanged += new System.EventHandler(this.txSearch_TextChanged);
+            // 
+            // btClear
+            // 
+            this.btClear.Location = new System.Drawing.Point(342, 159);
+            this.btClear.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.btClear.Name = "btClear";
+            this.btClear.Size = new System.Drawing.Size(84, 29);
+            this.btClear.TabIndex = 10;
+            this.btClear.Text = "Clear";
+            this.btClear.UseVisualStyleBackColor = true;
+            this.btClear.Click += new System.EventHandler(this.btClear_Click);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(84, 78);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(0, 25);
+            this.label3.TabIndex = 11;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(85, 117);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(0, 20);
+            this.label4.TabIndex = 12;
+            // 
+            // coursesBindingSource
+            // 
+            this.coursesBindingSource.DataSource = typeof(h24.courses);
             // 
             // course_name
             // 
@@ -128,77 +201,13 @@ namespace h24
             this.course_id.MinimumWidth = 6;
             this.course_id.Name = "course_id";
             this.course_id.ReadOnly = true;
-            this.course_id.Visible = false;
-            // 
-            // coursesBindingSource
-            // 
-            this.coursesBindingSource.DataSource = typeof(h24.courses);
-            // 
-            // btnSave
-            // 
-            this.btnSave.Location = new System.Drawing.Point(415, 531);
-            this.btnSave.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(84, 29);
-            this.btnSave.TabIndex = 6;
-            this.btnSave.Text = "Save";
-            this.btnSave.UseVisualStyleBackColor = true;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
-            // 
-            // btnCancel
-            // 
-            this.btnCancel.Location = new System.Drawing.Point(572, 531);
-            this.btnCancel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(84, 29);
-            this.btnCancel.TabIndex = 7;
-            this.btnCancel.Text = "Cancel";
-            this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(84, 126);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(64, 20);
-            this.label2.TabIndex = 8;
-            this.label2.Text = "Search:";
-            // 
-            // txSearch
-            // 
-            this.txSearch.Location = new System.Drawing.Point(200, 122);
-            this.txSearch.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.txSearch.Name = "txSearch";
-            this.txSearch.Size = new System.Drawing.Size(112, 26);
-            this.txSearch.TabIndex = 0;
-            this.txSearch.TextChanged += new System.EventHandler(this.txSearch_TextChanged);
-            // 
-            // btClear
-            // 
-            this.btClear.Location = new System.Drawing.Point(342, 122);
-            this.btClear.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.btClear.Name = "btClear";
-            this.btClear.Size = new System.Drawing.Size(84, 29);
-            this.btClear.TabIndex = 10;
-            this.btClear.Text = "Clear";
-            this.btClear.UseVisualStyleBackColor = true;
-            this.btClear.Click += new System.EventHandler(this.btClear_Click);
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(84, 88);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(0, 25);
-            this.label3.TabIndex = 11;
             // 
             // frmCourseNotFound
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(900, 654);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.btClear);
             this.Controls.Add(this.txSearch);
@@ -223,16 +232,17 @@ namespace h24
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DataGridView dgCourses;
         private System.Windows.Forms.BindingSource coursesBindingSource;
-        private System.Windows.Forms.DataGridViewTextBoxColumn course_name;
-        private System.Windows.Forms.DataGridViewTextBoxColumn course_length;
-        private System.Windows.Forms.DataGridViewTextBoxColumn course_climb;
-        private System.Windows.Forms.DataGridViewTextBoxColumn control_count;
-        private System.Windows.Forms.DataGridViewTextBoxColumn course_id;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txSearch;
         private System.Windows.Forms.Button btClear;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn course_name;
+        private System.Windows.Forms.DataGridViewTextBoxColumn course_length;
+        private System.Windows.Forms.DataGridViewTextBoxColumn course_climb;
+        private System.Windows.Forms.DataGridViewTextBoxColumn control_count;
+        private System.Windows.Forms.DataGridViewTextBoxColumn course_id;
     }
 }

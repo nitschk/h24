@@ -163,18 +163,19 @@ namespace h24
                         course_id = guessed_courses[0];
                     else
                     {
-                        using (var db = new klc01())
-                        {
-                            course_id = db.slips.Where(b => b.readout_id == readout_id).Select(s => s.course_id).FirstOrDefault();
-                        }
+                        course_id = 0;
                     }
                     while (course_id == 0)
                     {
-                        //unknown course
-                        frmCourseNotFound frm = new frmCourseNotFound(competitor_id, readout_id);
-                        frm.ShowDialog();
-                        course_id = frm.course;
-                        frm.course = 0;
+                        using (var db = new klc01())
+                        {
+                            int course_id_from_slips = db.slips.Where(b => b.readout_id == readout_id).Select(s => s.course_id).FirstOrDefault();
+                            //unknown course
+                            frmCourseNotFound frm = new frmCourseNotFound(competitor_id, readout_id, course_id_from_slips);
+                            frm.ShowDialog();
+                            course_id = frm.course;
+                            frm.course = 0;
+                        }
                     }
                 }
 
@@ -685,7 +686,8 @@ namespace h24
                 client.DefaultRequestHeaders.Add("Accept", "application/json");
                 content.Headers.ContentType = new MediaTypeHeaderValue("application/json");//.Add("Content-Type", "application/json");
                 //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", request.q_header);
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Token", request.q_header);
+                //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Token", request.q_header);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", request.q_header);
             }
 
             //Log.Information("client: " + content.ToString());
@@ -716,6 +718,7 @@ namespace h24
                 if (result != null)
                 {
                     result.q_status = status;
+                    result.as_of_date = DateTime.Now;
                     db.SaveChanges();
                 }
             }
@@ -772,15 +775,16 @@ namespace h24
                     q_id = Insert_api_queue(oneUrl + url_slips, OneSlip != null ? OneSlip : "", q_status_in_progress, null);
                     Insert_api_queue_link(q_id, "readout", readout_id);
 
-                    /*try
+                    try
                     {
+                        api_queue api_queue_request = db.api_queue.FirstOrDefault(a => a.q_id == q_id);
                         //fire queue processing
                         bool success = await SendApiRequest(api_queue_request);
                     }
                     catch (Exception e)
                     {
                         UpdateApiRequestStatus(q_id, q_status_failed);
-                    }*/
+                    }
                 }
                 return "";
             }
@@ -805,6 +809,13 @@ namespace h24
                 int i = 0;
                 foreach (var punch in new_punches)
                 {
+                    //sms
+                    string sms_send = get_config_item("sms_send");
+                    if (sms_send == "true")
+                    {
+                        Insert_queue_SMS(punch);
+                    }
+                    //online results
                     string content = "{\"record_id\":" + punch.record_id +
                         ", \"control_code\":" + punch.control_code +
                         ", \"chip_id\":" + punch.chip_id +
@@ -851,11 +862,6 @@ namespace h24
                         {
                             MessageBox.Show("ERR save q_status: " + e.Message);
                         }
-                    }
-                    string sms_send = get_config_item("sms_send");
-                    if (sms_send == "true" )
-                    {
-                        Insert_queue_SMS(punch);
                     }
                 }
                 return "";
@@ -930,20 +936,50 @@ namespace h24
             Log.Information("Insert_queue_SMS");
             using (var db = new klc01())
             {
-                string sms_url = get_config_item("sms_url");
+                string sms_method = get_config_item("sms_method");
+                string sms_url;
                 string q_status_completed = get_config_item("q_status_completed");
                 string q_status_new = get_config_item("q_status_new");
-                string sms_token = get_config_item("sms_token");
+                string sms_token;
+                string sms_originator = get_config_item("sms_originator");
 
                 try
                 {
                     string recipient = onePunch.phone_number;
-                    string originator = "24ol";
+                    if (recipient == "")
+                    {
+                        return "m";
+                    }
                     string body = onePunch.comp_name + ", " + onePunch.bib + " from team " + onePunch.team_name + " punched radio control at " + onePunch.punch_date + ".";
-
-                    //var content = "{\"body\": \"" + body + "\",\n    \"encoding\": \"auto\",\n    \"originator\": \"" + originator + "\",\n    \"recipients\": [\"" + recipient + "\"],\n    \"route\": \"business\"\n}";
-                    var content = "{\"message\": \"" + body + "\",\n    \"sender\": \"" + originator + "\",\n    \"recipients\": [{\"msisdn\":" + recipient + "}]}";
-
+                    body = body.RemoveDiacritics();
+                    string content;
+                    switch (sms_method) {
+                        case "local":
+                            sms_url = get_config_item("sms_url");
+                            content = "{\"message\": \"" + body + "\",\n    \"phoneNumbers\": [" + recipient + "], \"id\": \"" + onePunch.record_id + "\"}";
+                            sms_token = get_config_item("sms_token");
+                            break;
+                        case "spryngsms":
+                            sms_url = get_config_item("sms_url_spryng");
+                            content = "{\"body\": \"" + body + "\",\n    \"encoding\": \"auto\",\n    \"originator\": \"" + sms_originator + "\",\n    \"recipients\": [\"" + recipient + "\"],\n    \"route\": \"business\"\n}";
+                            sms_token = get_config_item("sms_token_spryng");
+                            break;
+                        case "gatewayapi":
+                            sms_url = get_config_item("sms_url_gatewayapi");
+                            content = "{\"message\": \"" + body + "\",\n    \"sender\": \"" + sms_originator + "\",\n    \"recipients\": [{\"msisdn\":\"" + recipient + "\"}]}";
+                            sms_token = get_config_item("sms_token_gatewayapi");
+                            break;
+                        case "clickatel":
+                            sms_url = get_config_item("sms_url_clickatel");
+                            content = "{\"content\": \"" + body + "\",\n    \"from\": \"" + sms_originator + "\",\n    \"to\": [{" + recipient + "}]}";
+                            sms_token = get_config_item("sms_token_clickatel");
+                            break;
+                        default://seven.io
+                            sms_url = get_config_item("sms_url3");
+                            content = "{\"text\": \"" + body + "\",\n    \"from\": \"" + sms_originator + "\",\n    \"to\": \"" + recipient + "\"}";
+                            sms_token = get_config_item("sms_token3");
+                            break;
+                    }
                     int q_id = Insert_api_queue(sms_url, content, content != null ? q_status_new : q_status_completed, sms_token);
 
                     Insert_api_queue_link(q_id, "roc_sms", onePunch.record_id);

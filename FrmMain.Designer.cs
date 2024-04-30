@@ -102,6 +102,7 @@
             this.btnClearSearch = new System.Windows.Forms.Button();
             this.cbQueueProcess = new System.Windows.Forms.CheckBox();
             this.button2 = new System.Windows.Forms.Button();
+            this.phone_number = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.readout_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.start_time = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.leg_status = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -292,14 +293,14 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(6, 3, 0, 3);
-            this.menuStrip1.Size = new System.Drawing.Size(1732, 35);
+            this.menuStrip1.Size = new System.Drawing.Size(1732, 36);
             this.menuStrip1.TabIndex = 103;
             this.menuStrip1.Text = "menuStrip1";
             // 
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(54, 29);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(54, 30);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // courseSetupToolStripMenuItem
@@ -313,7 +314,7 @@
             this.aPIRequestsToolStripMenuItem,
             this.resultsToolStripMenuItem});
             this.courseSetupToolStripMenuItem.Name = "courseSetupToolStripMenuItem";
-            this.courseSetupToolStripMenuItem.Size = new System.Drawing.Size(116, 29);
+            this.courseSetupToolStripMenuItem.Size = new System.Drawing.Size(116, 30);
             this.courseSetupToolStripMenuItem.Text = "Race Setup";
             // 
             // setupToolStripMenuItem
@@ -485,7 +486,8 @@
             this.dataGridViewTextBoxColumn4,
             this.dataGridViewTextBoxColumn5,
             this.dataGridViewTextBoxColumn8,
-            this.dataGridViewTextBoxColumn9});
+            this.dataGridViewTextBoxColumn9,
+            this.phone_number});
             this.dgTeams.DataSource = this.teamsBindingSource;
             dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
@@ -509,6 +511,7 @@
             this.dgTeams.RowTemplate.Height = 24;
             this.dgTeams.Size = new System.Drawing.Size(591, 247);
             this.dgTeams.TabIndex = 103;
+            this.dgTeams.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgTeams_CellEndEdit);
             this.dgTeams.SelectionChanged += new System.EventHandler(this.dgTeams_SelectionChanged);
             // 
             // BtDisplaySlip
@@ -668,7 +671,7 @@
             // course
             // 
             this.course.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.course.DataPropertyName = "course";
+            this.course.DataPropertyName = "course_name";
             this.course.HeaderText = "Course";
             this.course.MinimumWidth = 6;
             this.course.Name = "course";
@@ -937,6 +940,15 @@
             this.button2.Text = "Q one time";
             this.button2.UseVisualStyleBackColor = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // phone_number
+            // 
+            this.phone_number.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.phone_number.DataPropertyName = "phone_number";
+            this.phone_number.HeaderText = "phone_number";
+            this.phone_number.MinimumWidth = 8;
+            this.phone_number.Name = "phone_number";
+            this.phone_number.Width = 153;
             // 
             // readout_id
             // 
@@ -1270,11 +1282,6 @@
         private System.Windows.Forms.Button btnPrintSlip;
         private System.Windows.Forms.TextBox txSearch;
         private System.Windows.Forms.Button btSearch;
-        private System.Windows.Forms.DataGridViewTextBoxColumn team_id;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn dataGridViewTextBoxColumn8;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn9;
         private System.Windows.Forms.Button btn_delete_leg;
         private System.Windows.Forms.Button btReloadAll;
         private System.Windows.Forms.Button btnPostSlip;
@@ -1285,21 +1292,6 @@
         private System.Windows.Forms.Button btnRefreshLegs;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Button BtnPostAll;
-        private System.Windows.Forms.DataGridViewTextBoxColumn readout_id;
-        private System.Windows.Forms.DataGridViewTextBoxColumn chip_id;
-        private System.Windows.Forms.DataGridViewTextBoxColumn card_readout_datetime;
-        private System.Windows.Forms.DataGridViewTextBoxColumn name_comp;
-        private System.Windows.Forms.DataGridViewTextBoxColumn bib;
-        private System.Windows.Forms.DataGridViewTextBoxColumn start_time;
-        private System.Windows.Forms.DataGridViewTextBoxColumn leg_time;
-        private System.Windows.Forms.DataGridViewTextBoxColumn finish_time;
-        private System.Windows.Forms.DataGridViewTextBoxColumn course;
-        private System.Windows.Forms.DataGridViewTextBoxColumn leg_status;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dsk_penalty;
-        private System.Windows.Forms.DataGridViewTextBoxColumn comp_id;
-        private System.Windows.Forms.DataGridViewTextBoxColumn race_valid;
-        private System.Windows.Forms.DataGridViewTextBoxColumn valid_flag;
-        private System.Windows.Forms.DataGridViewTextBoxColumn leg_id;
         private System.Windows.Forms.DataGridViewTextBoxColumn competitor_id;
         private System.Windows.Forms.DataGridViewTextBoxColumn bibDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn comp_name;
@@ -1328,6 +1320,27 @@
         private System.Windows.Forms.CheckBox cbQueueProcess;
         private System.Windows.Forms.ToolStripMenuItem aPIRequestsToolStripMenuItem;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn readout_id;
+        private System.Windows.Forms.DataGridViewTextBoxColumn chip_id;
+        private System.Windows.Forms.DataGridViewTextBoxColumn card_readout_datetime;
+        private System.Windows.Forms.DataGridViewTextBoxColumn name_comp;
+        private System.Windows.Forms.DataGridViewTextBoxColumn bib;
+        private System.Windows.Forms.DataGridViewTextBoxColumn start_time;
+        private System.Windows.Forms.DataGridViewTextBoxColumn leg_time;
+        private System.Windows.Forms.DataGridViewTextBoxColumn finish_time;
+        private System.Windows.Forms.DataGridViewTextBoxColumn course;
+        private System.Windows.Forms.DataGridViewTextBoxColumn leg_status;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dsk_penalty;
+        private System.Windows.Forms.DataGridViewTextBoxColumn comp_id;
+        private System.Windows.Forms.DataGridViewTextBoxColumn race_valid;
+        private System.Windows.Forms.DataGridViewTextBoxColumn valid_flag;
+        private System.Windows.Forms.DataGridViewTextBoxColumn leg_id;
+        private System.Windows.Forms.DataGridViewTextBoxColumn team_id;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn dataGridViewTextBoxColumn8;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn9;
+        private System.Windows.Forms.DataGridViewTextBoxColumn phone_number;
     }
 }
 

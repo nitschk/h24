@@ -128,6 +128,7 @@ namespace h24
 
                 // Close the StreamWriter.
                 fileStream.Close();
+                MessageBox.Show("Team results created");
             }
         }
 
@@ -145,7 +146,7 @@ namespace h24
 
                 // Close the StreamWriter.
                 fileStream.Close();
-                MessageBox.Show("Done");
+                MessageBox.Show("Course Results created");
             }
         }
     }

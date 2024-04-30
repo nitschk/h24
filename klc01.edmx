@@ -12,7 +12,7 @@
           <Property Name="q_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="q_dtime" Type="datetime" Nullable="false" />
           <Property Name="q_url" Type="nvarchar" MaxLength="150" Nullable="false" />
-          <Property Name="q_content" Type="nvarchar" MaxLength="4000" Nullable="false" />
+          <Property Name="q_content" Type="nvarchar(max)" Nullable="false" />
           <Property Name="q_header" Type="nvarchar" MaxLength="4000" />
           <Property Name="q_status" Type="nchar" MaxLength="20" />
           <Property Name="q_response" Type="nvarchar" MaxLength="4000" />
@@ -1230,7 +1230,7 @@ warning 6002: The table/view 'klc01.dbo.v_teams_results' does not have a primary
           <Property Name="q_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="q_dtime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="q_url" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="q_content" Type="String" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="q_content" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="q_status" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
           <Property Name="q_response" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
           <Property Name="as_of_date" Type="DateTime" Precision="3" Nullable="false" />
