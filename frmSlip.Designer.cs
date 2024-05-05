@@ -35,7 +35,7 @@ namespace h24
             this.slip = new h24.slip();
             this.reportViewer1 = new Microsoft.Reporting.WinForms.ReportViewer();
             this.slipsTableAdapter = new h24.slipTableAdapters.slipsTableAdapter();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btRefresh = new System.Windows.Forms.Button();
             this.reportViewer2 = new Microsoft.Reporting.WinForms.ReportViewer();
             ((System.ComponentModel.ISupportInitialize)(this.slipsBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.slip)).BeginInit();
@@ -67,16 +67,16 @@ namespace h24
             // 
             this.slipsTableAdapter.ClearBeforeFill = true;
             // 
-            // button1
+            // btRefresh
             // 
-            this.button1.Location = new System.Drawing.Point(400, 21);
-            this.button1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(84, 29);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btRefresh.Location = new System.Drawing.Point(400, 21);
+            this.btRefresh.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.btRefresh.Name = "btRefresh";
+            this.btRefresh.Size = new System.Drawing.Size(84, 29);
+            this.btRefresh.TabIndex = 1;
+            this.btRefresh.Text = "Refresh";
+            this.btRefresh.UseVisualStyleBackColor = true;
+            this.btRefresh.Click += new System.EventHandler(this.button1_Click);
             // 
             // reportViewer2
             // 
@@ -91,7 +91,7 @@ namespace h24
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(1335, 797);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btRefresh);
             this.Controls.Add(this.reportViewer1);
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "frmSlip";
@@ -109,7 +109,7 @@ namespace h24
         private System.Windows.Forms.BindingSource slipsBindingSource;
         private slip slip;
         private slipTableAdapters.slipsTableAdapter slipsTableAdapter;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btRefresh;
         private Microsoft.Reporting.WinForms.ReportViewer reportViewer2;
     }
 }

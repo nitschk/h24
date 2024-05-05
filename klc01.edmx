@@ -118,6 +118,17 @@
           <Property Name="si_chip" Type="int" />
           <Property Name="note" Type="nvarchar" MaxLength="500" />
         </EntityType>
+        <EntityType Name="leg_exceptions">
+          <Key>
+            <PropertyRef Name="ex_id" />
+          </Key>
+          <Property Name="ex_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="leg_id" Type="int" Nullable="false" />
+          <Property Name="ex_leg_status" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="ex_valid_flag" Type="bit" Nullable="false" />
+          <Property Name="ex_dsk_penalty" Type="time" Precision="7" Nullable="false" />
+          <Property Name="as_of_date" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="legs">
           <Key>
             <PropertyRef Name="leg_id" />
@@ -492,6 +503,10 @@ warning 6002: The table/view 'klc01.dbo.v_teams_results' does not have a primary
         <Function Name="sp_inset_wdr_slip" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="comp_id" Type="int" Mode="In" />
         </Function>
+        <Function Name="sp_legs_assign_first" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="course_prefix" Type="varchar" Mode="In" />
+          <Parameter Name="category_id" Type="int" Mode="In" />
+        </Function>
         <Function Name="sp_search_competitors" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="s" Type="nvarchar" Mode="In" />
         </Function>
@@ -519,6 +534,7 @@ warning 6002: The table/view 'klc01.dbo.v_teams_results' does not have a primary
           <EntitySet Name="course_codes" EntityType="Self.course_codes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="courses" EntityType="Self.courses" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="entry_xml" EntityType="Self.entry_xml" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="leg_exceptions" EntityType="Self.leg_exceptions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="legs" EntityType="Self.legs" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="logs" EntityType="Self.logs" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="results" EntityType="Self.results" Schema="dbo" store:Type="Tables" />
@@ -1077,6 +1093,11 @@ warning 6002: The table/view 'klc01.dbo.v_teams_results' does not have a primary
           <EntitySet Name="api_queue_link" EntityType="klc01Model.api_queue_link" />
           <EntitySet Name="v_new_roc_punches" EntityType="klc01Model.v_new_roc_punches" />
           <EntitySet Name="roc_punches" EntityType="klc01Model.roc_punches" />
+          <FunctionImport Name="sp_legs_assign_first" ReturnType="Collection(Int32)">
+            <Parameter Name="course_prefix" Mode="In" Type="String" />
+            <Parameter Name="category_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="leg_exceptions" EntityType="klc01Model.leg_exceptions" />
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -1297,6 +1318,17 @@ warning 6002: The table/view 'klc01.dbo.v_teams_results' does not have a primary
           <Property Name="ChipNr" Type="Int32" Nullable="false" />
           <Property Name="PunchTime" Type="DateTime" Precision="3" />
           <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="as_of_date" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="leg_exceptions">
+          <Key>
+            <PropertyRef Name="ex_id" />
+          </Key>
+          <Property Name="ex_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="leg_id" Type="Int32" Nullable="false" />
+          <Property Name="ex_leg_status" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ex_valid_flag" Type="Boolean" Nullable="false" />
+          <Property Name="ex_dsk_penalty" Type="Time" Nullable="false" Precision="7" />
           <Property Name="as_of_date" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
       </Schema>
@@ -1732,6 +1764,19 @@ warning 6002: The table/view 'klc01.dbo.v_teams_results' does not have a primary
                 <ScalarProperty Name="ChipNr" ColumnName="ChipNr" />
                 <ScalarProperty Name="CodeNr" ColumnName="CodeNr" />
                 <ScalarProperty Name="p_id" ColumnName="p_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_legs_assign_first" FunctionName="klc01Model.Store.sp_legs_assign_first" />
+          <EntitySetMapping Name="leg_exceptions">
+            <EntityTypeMapping TypeName="klc01Model.leg_exceptions">
+              <MappingFragment StoreEntitySet="leg_exceptions">
+                <ScalarProperty Name="as_of_date" ColumnName="as_of_date" />
+                <ScalarProperty Name="ex_dsk_penalty" ColumnName="ex_dsk_penalty" />
+                <ScalarProperty Name="ex_valid_flag" ColumnName="ex_valid_flag" />
+                <ScalarProperty Name="ex_leg_status" ColumnName="ex_leg_status" />
+                <ScalarProperty Name="leg_id" ColumnName="leg_id" />
+                <ScalarProperty Name="ex_id" ColumnName="ex_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

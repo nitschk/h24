@@ -36,6 +36,8 @@ namespace h24
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnAssign = new System.Windows.Forms.Button();
             this.dgCompetitors = new System.Windows.Forms.DataGridView();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.bibDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.compnameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.teamnameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -51,17 +53,16 @@ namespace h24
             this.compvalidflagDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.withdrawndatetimeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.vcompteamsBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgCompetitors)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.vcompteamsBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // btClear
             // 
-            this.btClear.Location = new System.Drawing.Point(404, 56);
+            this.btClear.Location = new System.Drawing.Point(454, 70);
+            this.btClear.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btClear.Name = "btClear";
-            this.btClear.Size = new System.Drawing.Size(115, 34);
+            this.btClear.Size = new System.Drawing.Size(129, 42);
             this.btClear.TabIndex = 8;
             this.btClear.Text = "Clear";
             this.btClear.UseVisualStyleBackColor = true;
@@ -69,25 +70,29 @@ namespace h24
             // 
             // tbSearch
             // 
-            this.tbSearch.Location = new System.Drawing.Point(209, 59);
+            this.tbSearch.Location = new System.Drawing.Point(235, 74);
+            this.tbSearch.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tbSearch.Name = "tbSearch";
-            this.tbSearch.Size = new System.Drawing.Size(151, 22);
+            this.tbSearch.Size = new System.Drawing.Size(169, 26);
             this.tbSearch.TabIndex = 6;
+            this.tbSearch.TextChanged += new System.EventHandler(this.tbSearch_TextChanged);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(98, 62);
+            this.label3.Location = new System.Drawing.Point(110, 78);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(53, 17);
+            this.label3.Size = new System.Drawing.Size(60, 20);
             this.label3.TabIndex = 7;
             this.label3.Text = "Search";
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(684, 380);
+            this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCancel.Location = new System.Drawing.Point(778, 475);
+            this.btnCancel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(75, 23);
+            this.btnCancel.Size = new System.Drawing.Size(84, 29);
             this.btnCancel.TabIndex = 11;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -95,9 +100,11 @@ namespace h24
             // 
             // btnAssign
             // 
-            this.btnAssign.Location = new System.Drawing.Point(684, 322);
+            this.btnAssign.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAssign.Location = new System.Drawing.Point(778, 420);
+            this.btnAssign.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnAssign.Name = "btnAssign";
-            this.btnAssign.Size = new System.Drawing.Size(75, 23);
+            this.btnAssign.Size = new System.Drawing.Size(84, 29);
             this.btnAssign.TabIndex = 10;
             this.btnAssign.Text = "Save";
             this.btnAssign.UseVisualStyleBackColor = true;
@@ -105,6 +112,9 @@ namespace h24
             // 
             // dgCompetitors
             // 
+            this.dgCompetitors.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgCompetitors.AutoGenerateColumns = false;
             this.dgCompetitors.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgCompetitors.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -123,13 +133,32 @@ namespace h24
             this.compvalidflagDataGridViewTextBoxColumn,
             this.withdrawndatetimeDataGridViewTextBoxColumn});
             this.dgCompetitors.DataSource = this.vcompteamsBindingSource;
-            this.dgCompetitors.Location = new System.Drawing.Point(30, 228);
+            this.dgCompetitors.Location = new System.Drawing.Point(34, 262);
+            this.dgCompetitors.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.dgCompetitors.Name = "dgCompetitors";
             this.dgCompetitors.RowHeadersWidth = 51;
             this.dgCompetitors.RowTemplate.Height = 24;
-            this.dgCompetitors.Size = new System.Drawing.Size(582, 157);
+            this.dgCompetitors.Size = new System.Drawing.Size(707, 242);
             this.dgCompetitors.TabIndex = 6;
             this.dgCompetitors.DoubleClick += new System.EventHandler(this.dgCompetitors_DoubleClick);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(69, 149);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(148, 20);
+            this.label1.TabIndex = 12;
+            this.label1.Text = "Change competitor:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(69, 184);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(51, 20);
+            this.label2.TabIndex = 13;
+            this.label2.Text = "label2";
             // 
             // bibDataGridViewTextBoxColumn
             // 
@@ -249,29 +278,11 @@ namespace h24
             // 
             this.vcompteamsBindingSource.DataSource = typeof(h24.v_comp_teams);
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(61, 119);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(131, 17);
-            this.label1.TabIndex = 12;
-            this.label1.Text = "Change competitor:";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(61, 147);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(46, 17);
-            this.label2.TabIndex = 13;
-            this.label2.Text = "label2";
-            // 
             // frmLegCompChange
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(900, 562);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnCancel);
@@ -280,6 +291,7 @@ namespace h24
             this.Controls.Add(this.btClear);
             this.Controls.Add(this.tbSearch);
             this.Controls.Add(this.label3);
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "frmLegCompChange";
             this.Text = "frmLegCompChange";
             this.Load += new System.EventHandler(this.frmLegCompChange_Load);

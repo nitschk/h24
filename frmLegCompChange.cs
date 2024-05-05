@@ -94,5 +94,17 @@ namespace h24
             this.update_leg_comp(id_leg, comp_id);
             this.Close();
         }
+
+        private void tbSearch_TextChanged(object sender, EventArgs e)
+        {
+            db = new klc01();
+            string searchStr = this.tbSearch.Text;
+
+            dgCompetitors.DataSource = db.v_comp_teams.Where(x => x.comp_name.Contains(searchStr)
+            || x.bib.Contains(searchStr)
+            || x.team_name.Contains(searchStr)
+            ).ToList();
+            dgCompetitors.Refresh();
+        }
     }
 }

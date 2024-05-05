@@ -1,0 +1,169 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Results 24-h Thuringian Orienteering Relay 2024</title>
+	<meta name="description" content="Results 2024 - 24-h Thuringian Orienteering Relay">
+	<meta name="author" content="24h-ol.de">
+
+	<style>
+	/*general styles*/
+		.printable{display:none;}
+	/* print styles*/
+	@media print { 
+		.printable {display:block;} 
+		.nonprintable {display:none;}
+	}
+	</style>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.8/handlebars.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.16.22/dist/css/uikit.min.css" />
+
+	<!-- UIkit JS -->
+	<script src="https://cdn.jsdelivr.net/npm/uikit@3.16.22/dist/js/uikit.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/uikit@3.16.22/dist/js/uikit-icons.min.js"></script>
+</head>
+<body>
+	<header class="uk-box-shadow-small" style="background-color: #252525">
+		<div class="uk-container uk-container-expand">
+		<nav class="uk-navbar" id="navbar" data-uk-navbar>
+			<div class="uk-navbar-left">
+			<a class="uk-navbar-item uk-logo" href="/" style="color: #fff;font-family: Verdana, Geneva, Tahoma, sans-serif;">Course Results 24-h Thuringian Orienteering Relay 2024</a>
+			<span id="a"></span>
+			</div>
+		</nav>
+		</div>
+	</header>
+	<div id="content" data-uk-height-viewport="expand: true">
+    <div class="uk-container uk-container-expand">
+
+
+<div id="quoteData"></div>
+
+      <footer class="uk-section uk-section-small uk-text-center">
+        <hr>
+        <p class="uk-text-small uk-text-center">© 2024 <a href="https://24h-ol.de">24h OL</a></p>
+      </footer>
+    </div>
+	</div>      
+<div class=”printable”></div>
+
+<script id="quote-template" type="text/x-handlebars-template">
+
+{{#each r}}
+    <h2 uk-toggle="target: #t-{{leg_course}}">{{leg_course}}</h2>
+    <table class="uk-table uk-table-divider uk-table-small" id="t-{{leg_course}}">
+		<thead class="thead-light">
+			<tr><th></th><th>Rank</th><th>Comp Name</th><th>Comp #</th><th>Class</th><th>Time</th><th>Status</th></tr>
+			</thead>
+			<tbody>
+		{{#each legs}}
+			<tr class="{{#if leg_valid}}{{else}}uk-text-muted{{/if}}"><td scope="row"></td>
+				<td>{{tRank @index}}</td>
+				<td>{{comp_name}}</td><td>{{comp_bib}}</td><td>{{class_name}}</td>
+				<td><a href="#modal-slip{{leg_id}}" uk-toggle>{{leg_time}}</a></td>
+				<td>{{leg_status}}</td>
+			</tr>
+		{{else}}
+		   <tr><td>No Items</td></tr>
+		{{/each}}
+	</tbody>
+	</table>
+{{/each}}
+
+
+{{#each r}}
+	{{#each legs}}
+<div id="modal-slip{{leg_id}}" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body">
+        <h2 class="uk-modal-title">Splits</h2>
+		<a href="" class="uk-icon-link uk-position-small uk-position-top-right print-button" id="slip{{leg_id}}" uk-icon="print"></a>
+        <ul>
+          <li>{{team_name}}</li>
+          <li>{{comp_bib}} - {{comp_name}}</li>
+          <li>{{../leg_course}}</li>
+          <li>Started at: {{leg_start}}</li>
+		  <li>{{leg_status}} - <b>{{leg_time}}</b></li>
+			{{#if (isDskPenalty dsk_penalty)}}<li><i>Penalty: {{dsk_penalty}}</i></li>{{/if}}		  
+        </ul>
+		<table class="uk-table uk-table-hover uk-table-divider uk-table-small">
+		<tr><th>Position</th><th>Code</th><th>Time</th><th>Lap</th></tr>
+		{{#each splits}}
+		<tr><td>{{position}}</td><td>{{control_code}}</td><td>{{punch_time}}</td><td>{{lap_time}}</td></tr>
+		{{/each}}
+		</table>
+		<p>Finished at: {{leg_finish}}</p>
+		<p class="uk-text-right"><button class="uk-button uk-button-default uk-modal-close" type="button">Close</button></p>
+    </div>
+</div>
+
+	{{/each}}
+{{/each}}
+
+</script>
+<script>
+
+$(document).ready(function(){
+    $(".print-button").click(function(){
+        // Get class list string
+        var classList = $(".print-button").attr("id");
+        $("#modal-"+ classList).addClass("printable");
+		$("header").addClass("nonprintable");
+		$("#content").addClass("nonprintable");
+
+		 //fire the print method 
+		window.print();
+		$("#modal-"+ classList).class("printable");
+		$("header").removeClass("nonprintable");
+		$("#content").removeClass("nonprintable");
+    });
+});
+
+</script>
+
+<script type="text/javascript">
+
+Handlebars.registerHelper('tRank', (idx) => {
+	return  idx + 1;
+});
+Handlebars.registerHelper('kmRound', (km) => {
+	return Math.round(km * 10) /10000;
+});
+Handlebars.registerHelper('isDskPenalty', (name) => {
+	return name != "00:00:00";
+});
+
+
+    var quoteInfo = document.getElementById("quote-template").innerHTML;
+    var template = Handlebars.compile(quoteInfo);
+
+    var quoteData = template(
+        {
+			r:<!-- placeholder -->
+
+        });
+	document.getElementById("quoteData").innerHTML = quoteData;
+
+/*
+$document.ready(function(){
+   $.get('template.hbs', function( source ) {
+      var template = Handlebars.compile(source);
+      document.querySelector("#quote-template").innerHTML = template({});
+   })
+});
+*/    
+/*
+$.get('templates.hbs', function (data) {
+    var template = Handlebars.compile(data);
+    $("#quote-template").html(template(quoteData));
+}, 'html')
+*/
+    //document.getElementById("quoteData").innerHTML += quoteData;
+</script>
+</body>
+
+</html>

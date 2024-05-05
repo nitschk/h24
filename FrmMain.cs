@@ -587,12 +587,7 @@ namespace h24
         private void dgTeams_SelectionChanged(object sender, EventArgs e)
         {
             RefreshDgCompetitors();
-            /*            int curRow = dgTeams.CurrentRow.Index;
-                        int team_id = Convert.ToInt32(dgTeams.Rows[curRow].Cells["team_id"].Value);
 
-                        db.Configuration.ProxyCreationEnabled = false;
-                        db.competitors.Load();
-                        this.competitorsBindingSource1.DataSource = db.competitors.Local.ToBindingList().Where(c => c.team_id == team_id);*/
         }
 
         /// <summary>
@@ -950,7 +945,7 @@ namespace h24
 
             db.Configuration.ProxyCreationEnabled = false;
             db.competitors.Load();
-            this.competitorsBindingSource.DataSource = db.competitors.Local.ToBindingList().Where(c => c.team_id == team_id);
+            this.competitorsBindingSource.DataSource = db.competitors.Local.ToBindingList().Where(c => c.team_id == team_id).OrderBy(x=> x.rank_order);
 
         }
 
@@ -1257,12 +1252,12 @@ namespace h24
             {
                 ContextMenu m = new ContextMenu();
                 m.MenuItems.Add(new MenuItem("Reload Stamps", new System.EventHandler(this.btnReloadReadout_Click)));
+                m.MenuItems.Add(new MenuItem("Change Competitor", new System.EventHandler(this.btn_change_competitor_Click)));
                 m.MenuItems.Add(new MenuItem("Slip", new System.EventHandler(this.SlipCurrentRow_Click)));
                 m.MenuItems.Add(new MenuItem("Print", new System.EventHandler(this.btnPrintSlip_Click)));
                 m.MenuItems.Add(new MenuItem("Delete", new System.EventHandler(this.btn_delete_leg_Click)));
                 m.MenuItems.Add(new MenuItem("Reload All", new System.EventHandler(this.btReloadAll_Click)));
-                m.MenuItems.Add(new MenuItem("Change Competitor", new System.EventHandler(this.btn_change_competitor_Click)));
-                m.MenuItems.Add(new MenuItem("Change Competitor", new System.EventHandler(this.btnRefreshLegs_Click)));
+                m.MenuItems.Add(new MenuItem("Change Status", new System.EventHandler(this.btChangeStatus_Click)));
 
                 /*
                                 int currentMouseOverRow = dgLegs.HitTest(e.X, e.Y).RowIndex;
@@ -1376,6 +1371,50 @@ namespace h24
             int team_id = Convert.ToInt32(dgTeams.Rows[curRow].Cells["team_id"].Value);
             db.SaveChanges();
             _ = NewCard.PostEntries(team_id);
+        }
+
+        private void tbSearchReadout_TextChanged(object sender, EventArgs e)
+        {
+            string search_string;
+            if (tbSearchReadout.Text.Length > 0)
+            {
+                search_string = tbSearchReadout.Text;
+                using (var db = new klc01())
+                {
+                    var query = db.v_readout_legs.OrderByDescending(x => x.readout_id).Where(
+                        x=> x.team.Contains(search_string)
+                    || x.comp_name.Contains(search_string)
+                    || x.bib.Contains(search_string)
+                    || x.chip_id.ToString().Contains(search_string)
+                    || x.course_name.Contains(search_string))
+                        .ToList();
+                    dgLegs.DataSource = query;
+                    dgLegs.Update();
+                    dgLegs.Refresh();
+                    dgLegs.Columns["card_readout_datetime"].DefaultCellStyle.Format = "dd. MM. yyyy HH:mm:ss";
+                }
+            }
+        }
+
+        private void btReadot_cancel_Click(object sender, EventArgs e)
+        {
+            tbSearchReadout.Text = "";
+            RefreshLegs();
+        }
+
+        private void btChangeStatus_Click(object sender, EventArgs e)
+        {
+            int curRow = dgLegs.CurrentRow.Index;
+            if (curRow > -1)
+            {
+                int readout_id = Convert.ToInt32(dgLegs.Rows[curRow].Cells["readout_id"].Value);
+                int leg_id = Convert.ToInt32(dgLegs.Rows[curRow].Cells["leg_id"].Value);
+
+                FrmStatusChange f2 = new FrmStatusChange(leg_id, this.cbPost_Slips.Checked);
+                f2.ShowDialog();
+            }
+            RefreshLegs();
+
         }
 
 

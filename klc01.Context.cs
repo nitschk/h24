@@ -48,6 +48,7 @@ namespace h24
         public virtual DbSet<api_queue_link> api_queue_link { get; set; }
         public virtual DbSet<v_new_roc_punches> v_new_roc_punches { get; set; }
         public virtual DbSet<roc_punches> roc_punches { get; set; }
+        public virtual DbSet<leg_exceptions> leg_exceptions { get; set; }
     
         public virtual ObjectResult<Nullable<int>> get_competitor(Nullable<int> chip_id)
         {
@@ -373,6 +374,19 @@ namespace h24
                 new ObjectParameter("cat_name", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("get_course_results_json", cat_nameParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<int>> sp_legs_assign_first(string course_prefix, Nullable<int> category_id)
+        {
+            var course_prefixParameter = course_prefix != null ?
+                new ObjectParameter("course_prefix", course_prefix) :
+                new ObjectParameter("course_prefix", typeof(string));
+    
+            var category_idParameter = category_id.HasValue ?
+                new ObjectParameter("category_id", category_id) :
+                new ObjectParameter("category_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("sp_legs_assign_first", course_prefixParameter, category_idParameter);
         }
     }
 }

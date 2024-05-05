@@ -32,12 +32,18 @@ namespace h24
         {
             try
             {
-                db = new klc01();
-                dgCourses.DataSource = db.courses.ToList();
+                using (db = new klc01())
+                {
+                    dgCourses.DataSource = db.courses.ToList();
 
-                legsBindingSource.DataSource = db.legs.ToList();
-                competitorsBindingSource.DataSource = db.competitors.ToList();
-                coursesBindingSource1.DataSource = db.courses.ToList();
+                    legsBindingSource.DataSource = db.legs.ToList();
+                    competitorsBindingSource.DataSource = db.competitors.ToList();
+                    coursesBindingSource1.DataSource = db.courses.ToList();
+
+                    cbCategory.DataSource = db.categories.ToList();
+                    cbCategory.ValueMember = "cat_id";
+                    cbCategory.DisplayMember = "cat_name";
+                }
 
             }
             catch (Exception ex)
@@ -60,6 +66,32 @@ namespace h24
         {
             if (this.CbDeleteLegs.Checked)
                 _ = NewCard.TruncateLegs();
+        }
+
+        private void btAssignFirstLeg_Click(object sender, EventArgs e)
+        {
+            string prefix = txPrefix.Text;
+            int category = int.Parse(cbCategory.SelectedValue.ToString());
+            if (prefix == "")
+            {
+                MessageBox.Show("No prefix filled!");
+            }
+            else
+            {
+                try
+                {
+                    using (db = new klc01())
+                    {
+                        var a = db.sp_legs_assign_first(prefix, category);
+                        MessageBox.Show("Inserted: " + a.ToString());
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: " + ex.Message);
+                }
+                dgLegs.Refresh();
+            }
         }
     }
 }

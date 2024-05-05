@@ -37,6 +37,22 @@ namespace h24
             this.BtInsertCatagories = new System.Windows.Forms.Button();
             this.BtInsertXmlEntries = new System.Windows.Forms.Button();
             this.dgEntry_xml = new System.Windows.Forms.DataGridView();
+            this.idDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.classnameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.teamshortnameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.team_bib = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.teamnameDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.legDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.bib = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.familyDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.givenDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.genderDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.countryDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.birthdateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.sichipDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.noteDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.oristeamidDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.entryxmlBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.TbOrisId = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.BtnFetchOrisXML = new System.Windows.Forms.Button();
@@ -49,6 +65,10 @@ namespace h24
             this.BtnStarListXml = new System.Windows.Forms.Button();
             this.btnPost = new System.Windows.Forms.Button();
             this.dgEntries = new System.Windows.Forms.DataGridView();
+            this.teamnrDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.teamnameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.teamdidstartDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.teamstatusDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.race_end = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.comp_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.rented_chip = new System.Windows.Forms.DataGridViewCheckBoxColumn();
@@ -60,39 +80,19 @@ namespace h24
             this.cat_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cat_start_time = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cat_time_limit = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.teamsBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.btnClearCompetitors = new System.Windows.Forms.Button();
             this.cbAllowDeletion = new System.Windows.Forms.CheckBox();
             this.btClose = new System.Windows.Forms.Button();
             this.BtnRegisterClient = new System.Windows.Forms.Button();
             this.ChbTruncate = new System.Windows.Forms.CheckBox();
-            this.team_bib = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.bib = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.teamnrDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.teamnameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.teamdidstartDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.teamstatusDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.teamsBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.idDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.classnameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.teamshortnameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.teamnameDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.legDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.familyDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.givenDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.genderDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.countryDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.birthdateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.sichipDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.noteDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.oristeamidDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.entryxmlBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.coursesBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.coursecodesBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgEntry_xml)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.entryxmlBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgEntries)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.teamsBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.entryxmlBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.coursesBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.coursecodesBindingSource)).BeginInit();
             this.SuspendLayout();
@@ -203,6 +203,143 @@ namespace h24
             this.dgEntry_xml.TabIndex = 17;
             this.dgEntry_xml.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgEntry_xml_CellEndEdit);
             // 
+            // idDataGridViewTextBoxColumn
+            // 
+            this.idDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.idDataGridViewTextBoxColumn.DataPropertyName = "id";
+            this.idDataGridViewTextBoxColumn.HeaderText = "ID";
+            this.idDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.idDataGridViewTextBoxColumn.Name = "idDataGridViewTextBoxColumn";
+            this.idDataGridViewTextBoxColumn.Width = 62;
+            // 
+            // classnameDataGridViewTextBoxColumn
+            // 
+            this.classnameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.classnameDataGridViewTextBoxColumn.DataPropertyName = "class_name";
+            this.classnameDataGridViewTextBoxColumn.HeaderText = "Class";
+            this.classnameDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.classnameDataGridViewTextBoxColumn.Name = "classnameDataGridViewTextBoxColumn";
+            this.classnameDataGridViewTextBoxColumn.Width = 84;
+            // 
+            // teamshortnameDataGridViewTextBoxColumn
+            // 
+            this.teamshortnameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
+            this.teamshortnameDataGridViewTextBoxColumn.DataPropertyName = "team_name";
+            this.teamshortnameDataGridViewTextBoxColumn.HeaderText = "Team";
+            this.teamshortnameDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.teamshortnameDataGridViewTextBoxColumn.Name = "teamshortnameDataGridViewTextBoxColumn";
+            this.teamshortnameDataGridViewTextBoxColumn.Width = 27;
+            // 
+            // team_bib
+            // 
+            this.team_bib.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.team_bib.DataPropertyName = "team_bib";
+            this.team_bib.HeaderText = "Team bib";
+            this.team_bib.MinimumWidth = 8;
+            this.team_bib.Name = "team_bib";
+            this.team_bib.Width = 110;
+            // 
+            // teamnameDataGridViewTextBoxColumn1
+            // 
+            this.teamnameDataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
+            this.teamnameDataGridViewTextBoxColumn1.DataPropertyName = "team_short_name";
+            this.teamnameDataGridViewTextBoxColumn1.HeaderText = "Club";
+            this.teamnameDataGridViewTextBoxColumn1.MinimumWidth = 6;
+            this.teamnameDataGridViewTextBoxColumn1.Name = "teamnameDataGridViewTextBoxColumn1";
+            this.teamnameDataGridViewTextBoxColumn1.Width = 27;
+            // 
+            // legDataGridViewTextBoxColumn
+            // 
+            this.legDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.legDataGridViewTextBoxColumn.DataPropertyName = "leg";
+            this.legDataGridViewTextBoxColumn.HeaderText = "Leg";
+            this.legDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.legDataGridViewTextBoxColumn.Name = "legDataGridViewTextBoxColumn";
+            this.legDataGridViewTextBoxColumn.Width = 72;
+            // 
+            // bib
+            // 
+            this.bib.DataPropertyName = "bib";
+            this.bib.HeaderText = "bib";
+            this.bib.MinimumWidth = 6;
+            this.bib.Name = "bib";
+            this.bib.Width = 125;
+            // 
+            // familyDataGridViewTextBoxColumn
+            // 
+            this.familyDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.familyDataGridViewTextBoxColumn.DataPropertyName = "family";
+            this.familyDataGridViewTextBoxColumn.HeaderText = "Family";
+            this.familyDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.familyDataGridViewTextBoxColumn.Name = "familyDataGridViewTextBoxColumn";
+            this.familyDataGridViewTextBoxColumn.Width = 90;
+            // 
+            // givenDataGridViewTextBoxColumn
+            // 
+            this.givenDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.givenDataGridViewTextBoxColumn.DataPropertyName = "given";
+            this.givenDataGridViewTextBoxColumn.HeaderText = "Given";
+            this.givenDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.givenDataGridViewTextBoxColumn.Name = "givenDataGridViewTextBoxColumn";
+            this.givenDataGridViewTextBoxColumn.Width = 86;
+            // 
+            // genderDataGridViewTextBoxColumn
+            // 
+            this.genderDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.genderDataGridViewTextBoxColumn.DataPropertyName = "gender";
+            this.genderDataGridViewTextBoxColumn.HeaderText = "Gender";
+            this.genderDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.genderDataGridViewTextBoxColumn.Name = "genderDataGridViewTextBoxColumn";
+            this.genderDataGridViewTextBoxColumn.Width = 99;
+            // 
+            // countryDataGridViewTextBoxColumn
+            // 
+            this.countryDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.countryDataGridViewTextBoxColumn.DataPropertyName = "country";
+            this.countryDataGridViewTextBoxColumn.HeaderText = "Country";
+            this.countryDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.countryDataGridViewTextBoxColumn.Name = "countryDataGridViewTextBoxColumn";
+            // 
+            // birthdateDataGridViewTextBoxColumn
+            // 
+            this.birthdateDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.birthdateDataGridViewTextBoxColumn.DataPropertyName = "birth_date";
+            this.birthdateDataGridViewTextBoxColumn.HeaderText = "BirthDate";
+            this.birthdateDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.birthdateDataGridViewTextBoxColumn.Name = "birthdateDataGridViewTextBoxColumn";
+            this.birthdateDataGridViewTextBoxColumn.Width = 113;
+            // 
+            // sichipDataGridViewTextBoxColumn
+            // 
+            this.sichipDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.sichipDataGridViewTextBoxColumn.DataPropertyName = "si_chip";
+            this.sichipDataGridViewTextBoxColumn.HeaderText = "SI";
+            this.sichipDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.sichipDataGridViewTextBoxColumn.Name = "sichipDataGridViewTextBoxColumn";
+            this.sichipDataGridViewTextBoxColumn.Width = 61;
+            // 
+            // noteDataGridViewTextBoxColumn
+            // 
+            this.noteDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.noteDataGridViewTextBoxColumn.DataPropertyName = "note";
+            this.noteDataGridViewTextBoxColumn.HeaderText = "Note";
+            this.noteDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.noteDataGridViewTextBoxColumn.Name = "noteDataGridViewTextBoxColumn";
+            this.noteDataGridViewTextBoxColumn.Width = 79;
+            // 
+            // oristeamidDataGridViewTextBoxColumn
+            // 
+            this.oristeamidDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.oristeamidDataGridViewTextBoxColumn.DataPropertyName = "oris_team_id";
+            this.oristeamidDataGridViewTextBoxColumn.HeaderText = "OrisID";
+            this.oristeamidDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.oristeamidDataGridViewTextBoxColumn.Name = "oristeamidDataGridViewTextBoxColumn";
+            this.oristeamidDataGridViewTextBoxColumn.Width = 90;
+            // 
+            // entryxmlBindingSource
+            // 
+            this.entryxmlBindingSource.DataSource = typeof(h24.entry_xml);
+            // 
             // TbOrisId
             // 
             this.TbOrisId.Location = new System.Drawing.Point(954, 38);
@@ -232,6 +369,7 @@ namespace h24
             this.BtnFetchOrisXML.TabIndex = 14;
             this.BtnFetchOrisXML.Text = "Fetch Oris XML";
             this.BtnFetchOrisXML.UseVisualStyleBackColor = true;
+            this.BtnFetchOrisXML.Visible = false;
             this.BtnFetchOrisXML.Click += new System.EventHandler(this.BtnFetchOrisXML_Click);
             // 
             // btnUpload
@@ -347,6 +485,38 @@ namespace h24
             this.dgEntries.Size = new System.Drawing.Size(1329, 279);
             this.dgEntries.TabIndex = 9;
             // 
+            // teamnrDataGridViewTextBoxColumn
+            // 
+            this.teamnrDataGridViewTextBoxColumn.DataPropertyName = "team_nr";
+            this.teamnrDataGridViewTextBoxColumn.HeaderText = "team_nr";
+            this.teamnrDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.teamnrDataGridViewTextBoxColumn.Name = "teamnrDataGridViewTextBoxColumn";
+            this.teamnrDataGridViewTextBoxColumn.Width = 125;
+            // 
+            // teamnameDataGridViewTextBoxColumn
+            // 
+            this.teamnameDataGridViewTextBoxColumn.DataPropertyName = "team_name";
+            this.teamnameDataGridViewTextBoxColumn.HeaderText = "team_name";
+            this.teamnameDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.teamnameDataGridViewTextBoxColumn.Name = "teamnameDataGridViewTextBoxColumn";
+            this.teamnameDataGridViewTextBoxColumn.Width = 125;
+            // 
+            // teamdidstartDataGridViewTextBoxColumn
+            // 
+            this.teamdidstartDataGridViewTextBoxColumn.DataPropertyName = "team_did_start";
+            this.teamdidstartDataGridViewTextBoxColumn.HeaderText = "team_did_start";
+            this.teamdidstartDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.teamdidstartDataGridViewTextBoxColumn.Name = "teamdidstartDataGridViewTextBoxColumn";
+            this.teamdidstartDataGridViewTextBoxColumn.Width = 125;
+            // 
+            // teamstatusDataGridViewTextBoxColumn
+            // 
+            this.teamstatusDataGridViewTextBoxColumn.DataPropertyName = "team_status";
+            this.teamstatusDataGridViewTextBoxColumn.HeaderText = "team_status";
+            this.teamstatusDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.teamstatusDataGridViewTextBoxColumn.Name = "teamstatusDataGridViewTextBoxColumn";
+            this.teamstatusDataGridViewTextBoxColumn.Width = 125;
+            // 
             // race_end
             // 
             this.race_end.DataPropertyName = "race_end";
@@ -439,6 +609,10 @@ namespace h24
             this.cat_time_limit.Name = "cat_time_limit";
             this.cat_time_limit.Width = 125;
             // 
+            // teamsBindingSource
+            // 
+            this.teamsBindingSource.DataSource = typeof(h24.v_comp_teams);
+            // 
             // btnClearCompetitors
             // 
             this.btnClearCompetitors.Enabled = false;
@@ -497,179 +671,6 @@ namespace h24
             this.ChbTruncate.Text = "Truncate";
             this.ChbTruncate.UseVisualStyleBackColor = true;
             // 
-            // team_bib
-            // 
-            this.team_bib.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.team_bib.DataPropertyName = "team_bib";
-            this.team_bib.HeaderText = "Team bib";
-            this.team_bib.MinimumWidth = 8;
-            this.team_bib.Name = "team_bib";
-            this.team_bib.Width = 110;
-            // 
-            // bib
-            // 
-            this.bib.DataPropertyName = "bib";
-            this.bib.HeaderText = "bib";
-            this.bib.MinimumWidth = 6;
-            this.bib.Name = "bib";
-            this.bib.Width = 125;
-            // 
-            // teamnrDataGridViewTextBoxColumn
-            // 
-            this.teamnrDataGridViewTextBoxColumn.DataPropertyName = "team_nr";
-            this.teamnrDataGridViewTextBoxColumn.HeaderText = "team_nr";
-            this.teamnrDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.teamnrDataGridViewTextBoxColumn.Name = "teamnrDataGridViewTextBoxColumn";
-            this.teamnrDataGridViewTextBoxColumn.Width = 125;
-            // 
-            // teamnameDataGridViewTextBoxColumn
-            // 
-            this.teamnameDataGridViewTextBoxColumn.DataPropertyName = "team_name";
-            this.teamnameDataGridViewTextBoxColumn.HeaderText = "team_name";
-            this.teamnameDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.teamnameDataGridViewTextBoxColumn.Name = "teamnameDataGridViewTextBoxColumn";
-            this.teamnameDataGridViewTextBoxColumn.Width = 125;
-            // 
-            // teamdidstartDataGridViewTextBoxColumn
-            // 
-            this.teamdidstartDataGridViewTextBoxColumn.DataPropertyName = "team_did_start";
-            this.teamdidstartDataGridViewTextBoxColumn.HeaderText = "team_did_start";
-            this.teamdidstartDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.teamdidstartDataGridViewTextBoxColumn.Name = "teamdidstartDataGridViewTextBoxColumn";
-            this.teamdidstartDataGridViewTextBoxColumn.Width = 125;
-            // 
-            // teamstatusDataGridViewTextBoxColumn
-            // 
-            this.teamstatusDataGridViewTextBoxColumn.DataPropertyName = "team_status";
-            this.teamstatusDataGridViewTextBoxColumn.HeaderText = "team_status";
-            this.teamstatusDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.teamstatusDataGridViewTextBoxColumn.Name = "teamstatusDataGridViewTextBoxColumn";
-            this.teamstatusDataGridViewTextBoxColumn.Width = 125;
-            // 
-            // teamsBindingSource
-            // 
-            this.teamsBindingSource.DataSource = typeof(h24.v_comp_teams);
-            // 
-            // idDataGridViewTextBoxColumn
-            // 
-            this.idDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.idDataGridViewTextBoxColumn.DataPropertyName = "id";
-            this.idDataGridViewTextBoxColumn.HeaderText = "ID";
-            this.idDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.idDataGridViewTextBoxColumn.Name = "idDataGridViewTextBoxColumn";
-            this.idDataGridViewTextBoxColumn.Width = 62;
-            // 
-            // classnameDataGridViewTextBoxColumn
-            // 
-            this.classnameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.classnameDataGridViewTextBoxColumn.DataPropertyName = "class_name";
-            this.classnameDataGridViewTextBoxColumn.HeaderText = "Class";
-            this.classnameDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.classnameDataGridViewTextBoxColumn.Name = "classnameDataGridViewTextBoxColumn";
-            this.classnameDataGridViewTextBoxColumn.Width = 84;
-            // 
-            // teamshortnameDataGridViewTextBoxColumn
-            // 
-            this.teamshortnameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
-            this.teamshortnameDataGridViewTextBoxColumn.DataPropertyName = "team_name";
-            this.teamshortnameDataGridViewTextBoxColumn.HeaderText = "Team";
-            this.teamshortnameDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.teamshortnameDataGridViewTextBoxColumn.Name = "teamshortnameDataGridViewTextBoxColumn";
-            this.teamshortnameDataGridViewTextBoxColumn.Width = 27;
-            // 
-            // teamnameDataGridViewTextBoxColumn1
-            // 
-            this.teamnameDataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
-            this.teamnameDataGridViewTextBoxColumn1.DataPropertyName = "team_short_name";
-            this.teamnameDataGridViewTextBoxColumn1.HeaderText = "Club";
-            this.teamnameDataGridViewTextBoxColumn1.MinimumWidth = 6;
-            this.teamnameDataGridViewTextBoxColumn1.Name = "teamnameDataGridViewTextBoxColumn1";
-            this.teamnameDataGridViewTextBoxColumn1.Width = 27;
-            // 
-            // legDataGridViewTextBoxColumn
-            // 
-            this.legDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.legDataGridViewTextBoxColumn.DataPropertyName = "leg";
-            this.legDataGridViewTextBoxColumn.HeaderText = "Leg";
-            this.legDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.legDataGridViewTextBoxColumn.Name = "legDataGridViewTextBoxColumn";
-            this.legDataGridViewTextBoxColumn.Width = 72;
-            // 
-            // familyDataGridViewTextBoxColumn
-            // 
-            this.familyDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.familyDataGridViewTextBoxColumn.DataPropertyName = "family";
-            this.familyDataGridViewTextBoxColumn.HeaderText = "Family";
-            this.familyDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.familyDataGridViewTextBoxColumn.Name = "familyDataGridViewTextBoxColumn";
-            this.familyDataGridViewTextBoxColumn.Width = 90;
-            // 
-            // givenDataGridViewTextBoxColumn
-            // 
-            this.givenDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.givenDataGridViewTextBoxColumn.DataPropertyName = "given";
-            this.givenDataGridViewTextBoxColumn.HeaderText = "Given";
-            this.givenDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.givenDataGridViewTextBoxColumn.Name = "givenDataGridViewTextBoxColumn";
-            this.givenDataGridViewTextBoxColumn.Width = 86;
-            // 
-            // genderDataGridViewTextBoxColumn
-            // 
-            this.genderDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.genderDataGridViewTextBoxColumn.DataPropertyName = "gender";
-            this.genderDataGridViewTextBoxColumn.HeaderText = "Gender";
-            this.genderDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.genderDataGridViewTextBoxColumn.Name = "genderDataGridViewTextBoxColumn";
-            this.genderDataGridViewTextBoxColumn.Width = 99;
-            // 
-            // countryDataGridViewTextBoxColumn
-            // 
-            this.countryDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.countryDataGridViewTextBoxColumn.DataPropertyName = "country";
-            this.countryDataGridViewTextBoxColumn.HeaderText = "Country";
-            this.countryDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.countryDataGridViewTextBoxColumn.Name = "countryDataGridViewTextBoxColumn";
-            // 
-            // birthdateDataGridViewTextBoxColumn
-            // 
-            this.birthdateDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.birthdateDataGridViewTextBoxColumn.DataPropertyName = "birth_date";
-            this.birthdateDataGridViewTextBoxColumn.HeaderText = "BirthDate";
-            this.birthdateDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.birthdateDataGridViewTextBoxColumn.Name = "birthdateDataGridViewTextBoxColumn";
-            this.birthdateDataGridViewTextBoxColumn.Width = 113;
-            // 
-            // sichipDataGridViewTextBoxColumn
-            // 
-            this.sichipDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.sichipDataGridViewTextBoxColumn.DataPropertyName = "si_chip";
-            this.sichipDataGridViewTextBoxColumn.HeaderText = "SI";
-            this.sichipDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.sichipDataGridViewTextBoxColumn.Name = "sichipDataGridViewTextBoxColumn";
-            this.sichipDataGridViewTextBoxColumn.Width = 61;
-            // 
-            // noteDataGridViewTextBoxColumn
-            // 
-            this.noteDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.noteDataGridViewTextBoxColumn.DataPropertyName = "note";
-            this.noteDataGridViewTextBoxColumn.HeaderText = "Note";
-            this.noteDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.noteDataGridViewTextBoxColumn.Name = "noteDataGridViewTextBoxColumn";
-            this.noteDataGridViewTextBoxColumn.Width = 79;
-            // 
-            // oristeamidDataGridViewTextBoxColumn
-            // 
-            this.oristeamidDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.oristeamidDataGridViewTextBoxColumn.DataPropertyName = "oris_team_id";
-            this.oristeamidDataGridViewTextBoxColumn.HeaderText = "OrisID";
-            this.oristeamidDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.oristeamidDataGridViewTextBoxColumn.Name = "oristeamidDataGridViewTextBoxColumn";
-            this.oristeamidDataGridViewTextBoxColumn.Width = 90;
-            // 
-            // entryxmlBindingSource
-            // 
-            this.entryxmlBindingSource.DataSource = typeof(h24.entry_xml);
-            // 
             // coursesBindingSource
             // 
             this.coursesBindingSource.DataSource = typeof(h24.courses);
@@ -699,9 +700,9 @@ namespace h24
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgEntry_xml)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.entryxmlBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgEntries)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.teamsBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.entryxmlBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.coursesBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.coursecodesBindingSource)).EndInit();
             this.ResumeLayout(false);

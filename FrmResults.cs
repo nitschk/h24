@@ -116,37 +116,66 @@ namespace h24
 
         private void BtnJson_Click(object sender, EventArgs e)
         {
+            string stringToInsert;
+
+            // Define the string to insert
             using (var db = new klc01())
             {
-                // Create a StreamWriter to the output file.
-                var fileStream = new StreamWriter("team_results.json");
-
-                string results;
-                // Execute the stored procedure and get the results.
-                results = db.get_results_json("").FirstOrDefault();
-                fileStream.WriteLine(results.ToString());
-
-                // Close the StreamWriter.
-                fileStream.Close();
-                MessageBox.Show("Team results created");
+                stringToInsert = db.get_results_json("").FirstOrDefault();
             }
+            save_json(stringToInsert);
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
+            string stringToInsert;
+
+            // Define the string to insert
             using (var db = new klc01())
             {
-                // Create a StreamWriter to the output file.
-                var fileStream = new StreamWriter("course_results.json");
+                stringToInsert = db.get_course_results_json("").FirstOrDefault();
+            }
+            save_json(stringToInsert);
+        }
 
-                string results;
-                // Execute the stored procedure and get the results.
-                results = db.get_course_results_json("").FirstOrDefault();
-                fileStream.WriteLine(results.ToString());
+        public void save_json(string stringToInsert)
+        { 
+            OpenFileDialog openFileDialog1 = new OpenFileDialog
+            {
+                Title = "Browse Template File - ; html",
 
-                // Close the StreamWriter.
-                fileStream.Close();
-                MessageBox.Show("Course Results created");
+                CheckFileExists = true,
+                CheckPathExists = true,
+
+                DefaultExt = "html",
+                Filter = "html files (*.html)|*.html|htm files (*.htm)|*.htm|All files (*.*)|*.*",
+                FilterIndex = 1,
+                RestoreDirectory = true,
+
+                ReadOnlyChecked = true,
+                ShowReadOnly = true
+            };
+            string templateFilePath = "";
+            string templateContent = "";
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                templateFilePath = openFileDialog1.FileName;
+                // Read the HTML template file
+                templateContent = File.ReadAllText(templateFilePath);
+            }
+
+            string placeholder = "<!-- placeholder -->";
+            string modifiedContent = templateContent.Replace(placeholder, stringToInsert);
+
+            // Write the modified content back to the HTML file
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "HTML Files|*.html;*.htm|All Files|*.*";
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                string outputFilePath = saveFileDialog.FileName;
+                File.WriteAllText(outputFilePath, modifiedContent);
+                MessageBox.Show("Output saved successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
     }

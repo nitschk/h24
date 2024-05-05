@@ -31,19 +31,21 @@ namespace h24
         {
             this.components = new System.ComponentModel.Container();
             this.dgSettings = new System.Windows.Forms.DataGridView();
-            this.label1 = new System.Windows.Forms.Label();
-            this.CbROC = new System.Windows.Forms.CheckBox();
-            this.BtUpdateROC = new System.Windows.Forms.Button();
             this.sidDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.confignameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.configvalueDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.settingsBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.label1 = new System.Windows.Forms.Label();
+            this.CbROC = new System.Windows.Forms.CheckBox();
+            this.BtUpdateROC = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgSettings)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.settingsBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // dgSettings
             // 
+            this.dgSettings.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgSettings.AutoGenerateColumns = false;
             this.dgSettings.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgSettings.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -51,44 +53,14 @@ namespace h24
             this.confignameDataGridViewTextBoxColumn,
             this.configvalueDataGridViewTextBoxColumn});
             this.dgSettings.DataSource = this.settingsBindingSource;
-            this.dgSettings.Location = new System.Drawing.Point(53, 67);
+            this.dgSettings.Location = new System.Drawing.Point(60, 84);
+            this.dgSettings.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.dgSettings.Name = "dgSettings";
             this.dgSettings.RowHeadersWidth = 51;
             this.dgSettings.RowTemplate.Height = 24;
-            this.dgSettings.Size = new System.Drawing.Size(1070, 361);
+            this.dgSettings.Size = new System.Drawing.Size(1204, 451);
             this.dgSettings.TabIndex = 0;
             this.dgSettings.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgSettings_CellEndEdit);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(288, 9);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(148, 39);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Settings";
-            // 
-            // CbROC
-            // 
-            this.CbROC.AutoSize = true;
-            this.CbROC.Location = new System.Drawing.Point(66, 473);
-            this.CbROC.Name = "CbROC";
-            this.CbROC.Size = new System.Drawing.Size(111, 21);
-            this.CbROC.TabIndex = 4;
-            this.CbROC.Text = "ROC Service";
-            this.CbROC.UseVisualStyleBackColor = true;
-            this.CbROC.CheckedChanged += new System.EventHandler(this.CbROC_CheckedChanged);
-            // 
-            // BtUpdateROC
-            // 
-            this.BtUpdateROC.Location = new System.Drawing.Point(207, 468);
-            this.BtUpdateROC.Name = "BtUpdateROC";
-            this.BtUpdateROC.Size = new System.Drawing.Size(75, 28);
-            this.BtUpdateROC.TabIndex = 5;
-            this.BtUpdateROC.Text = "Stop";
-            this.BtUpdateROC.UseVisualStyleBackColor = true;
-            this.BtUpdateROC.Click += new System.EventHandler(this.BtUpdateROC_Click);
             // 
             // sidDataGridViewTextBoxColumn
             // 
@@ -97,7 +69,7 @@ namespace h24
             this.sidDataGridViewTextBoxColumn.HeaderText = "s_id";
             this.sidDataGridViewTextBoxColumn.MinimumWidth = 6;
             this.sidDataGridViewTextBoxColumn.Name = "sidDataGridViewTextBoxColumn";
-            this.sidDataGridViewTextBoxColumn.Width = 63;
+            this.sidDataGridViewTextBoxColumn.Width = 74;
             // 
             // confignameDataGridViewTextBoxColumn
             // 
@@ -106,7 +78,7 @@ namespace h24
             this.confignameDataGridViewTextBoxColumn.HeaderText = "config_name";
             this.confignameDataGridViewTextBoxColumn.MinimumWidth = 6;
             this.confignameDataGridViewTextBoxColumn.Name = "confignameDataGridViewTextBoxColumn";
-            this.confignameDataGridViewTextBoxColumn.Width = 118;
+            this.confignameDataGridViewTextBoxColumn.Width = 137;
             // 
             // configvalueDataGridViewTextBoxColumn
             // 
@@ -115,21 +87,55 @@ namespace h24
             this.configvalueDataGridViewTextBoxColumn.HeaderText = "config_value";
             this.configvalueDataGridViewTextBoxColumn.MinimumWidth = 6;
             this.configvalueDataGridViewTextBoxColumn.Name = "configvalueDataGridViewTextBoxColumn";
-            this.configvalueDataGridViewTextBoxColumn.Width = 117;
+            this.configvalueDataGridViewTextBoxColumn.Width = 134;
             // 
             // settingsBindingSource
             // 
             this.settingsBindingSource.DataSource = typeof(h24.settings);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(324, 11);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(172, 46);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Settings";
+            // 
+            // CbROC
+            // 
+            this.CbROC.AutoSize = true;
+            this.CbROC.Location = new System.Drawing.Point(74, 591);
+            this.CbROC.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.CbROC.Name = "CbROC";
+            this.CbROC.Size = new System.Drawing.Size(126, 24);
+            this.CbROC.TabIndex = 4;
+            this.CbROC.Text = "ROC Service";
+            this.CbROC.UseVisualStyleBackColor = true;
+            this.CbROC.CheckedChanged += new System.EventHandler(this.CbROC_CheckedChanged);
+            // 
+            // BtUpdateROC
+            // 
+            this.BtUpdateROC.Location = new System.Drawing.Point(233, 585);
+            this.BtUpdateROC.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.BtUpdateROC.Name = "BtUpdateROC";
+            this.BtUpdateROC.Size = new System.Drawing.Size(84, 35);
+            this.BtUpdateROC.TabIndex = 5;
+            this.BtUpdateROC.Text = "Stop";
+            this.BtUpdateROC.UseVisualStyleBackColor = true;
+            this.BtUpdateROC.Click += new System.EventHandler(this.BtUpdateROC_Click);
+            // 
             // frmSetup
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1183, 650);
+            this.ClientSize = new System.Drawing.Size(1331, 645);
             this.Controls.Add(this.BtUpdateROC);
             this.Controls.Add(this.CbROC);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.dgSettings);
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "frmSetup";
             this.Text = "frmSetup";
             this.Load += new System.EventHandler(this.frmSetup_Load);
