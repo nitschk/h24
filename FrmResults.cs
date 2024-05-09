@@ -178,5 +178,19 @@ namespace h24
                 MessageBox.Show("Output saved successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            using (var db = new klc01())
+            {
+                List<v_teams_results> results = db.v_teams_results.ToList();
+                foreach(var result in results)
+                {
+                    //textBox1.Text += "\n" + result.res_pos + " " + result.team_nr + " " + result.team_name + " " + result.race_time + " " + result.legs_count;
+                    textBox1.AppendText($"Team ID: {result.team_nr}, Team Name: {result.team_name}" + Environment.NewLine);
+
+                }
+            }
+        }
     }
 }

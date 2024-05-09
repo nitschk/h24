@@ -24,11 +24,12 @@ namespace h24
         {
             var db = new klc01();
             string config_value = "";
-            var config = db.settings.FirstOrDefault(c => c.config_name == cofnig_name);
+            /*var config = db.settings.FirstOrDefault(c => c.config_name == cofnig_name);
             if (config != null)
             {
                 config_value = config.config_value;
-            }
+            }*/
+            config_value = SettingsManager.GetSetting(cofnig_name);
 
             return config_value;            
         }
@@ -828,7 +829,8 @@ namespace h24
 
                     filename = @"c:\temp\roc_post_" + i + "_" + punch.chip_id + "_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".json";
                     if (File.Exists(filename))
-                        File.Delete(filename);
+                        filename = @"c:\temp\roc_post_" + i + "_" + punch.chip_id + "a_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".json";
+                    //File.Delete(filename);
                     try
                     {
                         File.WriteAllText(filename, content);

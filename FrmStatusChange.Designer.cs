@@ -153,7 +153,7 @@ namespace h24
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(1255, 797);
+            this.ClientSize = new System.Drawing.Size(1281, 797);
             this.Controls.Add(this.btClose);
             this.Controls.Add(this.btSave);
             this.Controls.Add(this.tbPenalty);
@@ -165,6 +165,7 @@ namespace h24
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "FrmStatusChange";
             this.Text = "FrmStatusChange";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmStatusChange_FormClosing);
             this.Load += new System.EventHandler(this.FrmStatusChange_Load);
             ((System.ComponentModel.ISupportInitialize)(this.slipsBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.slip)).EndInit();

@@ -668,7 +668,7 @@ Format(CDate(First(Fields!dsk_penalty.Value, "dsSlip").ToString()), "mm:ss"), ""
         </Style>
       </Textbox>
       <Textbox Name="cat_name">
-        <CanGrow>true</CanGrow>
+
         <KeepTogether>true</KeepTogether>
         <Paragraphs>
           <Paragraph>
@@ -687,10 +687,10 @@ Format(CDate(First(Fields!dsk_penalty.Value, "dsSlip").ToString()), "mm:ss"), ""
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>cat_name</rd:DefaultName>
-        <Top>0.50829cm</Top>
-        <Left>5.89365cm</Left>
+        <Top>0.5028cm</Top>
+        <Left>5.82662cm</Left>
         <Height>0.4cm</Height>
-        <Width>1.49162cm</Width>
+        <Width>1.55865cm</Width>
         <ZIndex>11</ZIndex>
         <Style>
           <Border>
@@ -723,7 +723,7 @@ Format(CDate(First(Fields!dsk_penalty.Value, "dsSlip").ToString()), "mm:ss"), ""
         <Top>1.38995cm</Top>
         <Left>1.68014cm</Left>
         <Height>0.4cm</Height>
-        <Width>1.61572cm</Width>
+        <Width>1.93322cm</Width>
         <ZIndex>12</ZIndex>
         <Style>
           <Border>
@@ -754,9 +754,9 @@ Format(CDate(First(Fields!dsk_penalty.Value, "dsSlip").ToString()), "mm:ss"), ""
         </Paragraphs>
         <rd:DefaultName>stamp_readout_dtime</rd:DefaultName>
         <Top>1.82444cm</Top>
-        <Left>5.80178cm</Left>
+        <Left>5.48428cm</Left>
         <Height>0.4cm</Height>
-        <Width>1.58349cm</Width>
+        <Width>1.90099cm</Width>
         <ZIndex>13</ZIndex>
         <Style>
           <Border>
@@ -820,9 +820,9 @@ Format(CDate(First(Fields!dsk_penalty.Value, "dsSlip").ToString()), "mm:ss"), ""
         </Paragraphs>
         <rd:DefaultName>finish_time1</rd:DefaultName>
         <Top>1.38995cm</Top>
-        <Left>5.80178cm</Left>
+        <Left>5.48428cm</Left>
         <Height>0.4cm</Height>
-        <Width>1.58349cm</Width>
+        <Width>1.90099cm</Width>
         <ZIndex>15</ZIndex>
         <Style>
           <Border>
@@ -855,7 +855,7 @@ Format(CDate(First(Fields!dsk_penalty.Value, "dsSlip").ToString()), "mm:ss"), ""
         <Top>1.82444cm</Top>
         <Left>1.70018cm</Left>
         <Height>0.4cm</Height>
-        <Width>1.59568cm</Width>
+        <Width>1.91318cm</Width>
         <ZIndex>16</ZIndex>
         <Style>
           <Border>
@@ -919,7 +919,7 @@ Format(CDate(First(Fields!dsk_penalty.Value, "dsSlip").ToString()), "mm:ss"), ""
         </Paragraphs>
         <rd:DefaultName>Textbox1</rd:DefaultName>
         <Top>1.38995cm</Top>
-        <Left>4.04967cm</Left>
+        <Left>3.73217cm</Left>
         <Height>0.4cm</Height>
         <Width>1.62881cm</Width>
         <ZIndex>18</ZIndex>
@@ -952,7 +952,7 @@ Format(CDate(First(Fields!dsk_penalty.Value, "dsSlip").ToString()), "mm:ss"), ""
         </Paragraphs>
         <rd:DefaultName>Textbox4</rd:DefaultName>
         <Top>1.82444cm</Top>
-        <Left>4.05303cm</Left>
+        <Left>3.73553cm</Left>
         <Height>0.4cm</Height>
         <Width>1.60764cm</Width>
         <ZIndex>19</ZIndex>

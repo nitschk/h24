@@ -16,6 +16,8 @@ namespace h24
     {
         int leg_id;
         bool post_slip;
+        int readout_id;
+        bool form_dirty = false;
         public FrmStatusChange(int id_leg, bool postSlip )
         {
             InitializeComponent();
@@ -65,14 +67,14 @@ namespace h24
             this.Close();
         }
 
-        private async void btSave_Click(object sender, EventArgs e)
+        private void btSave_Click(object sender, EventArgs e)
         {
             int i;
             using (var db = new klc01())
             {
                 legs leg = db.legs.Where(a => a.leg_id == leg_id).FirstOrDefault();
                 int competitor_id = leg.comp_id;
-                int readout_id = (int)leg.readout_id;
+                readout_id = (int)leg.readout_id;
                 leg.dsk_penalty = TimeSpan.Parse(tbPenalty.Text);
                 leg.leg_status = cmStatus.SelectedItem?.ToString();
                 db.SaveChanges();
@@ -92,13 +94,22 @@ namespace h24
                 NewCard NewCard = new NewCard();
                 int y = NewCard.UpdateTeamRaceEnd(competitor_id);
                 int slip_id = NewCard.InsertSlip(leg_id);
-
-                if (post_slip)
+                form_dirty = true;
+                /*if (post_slip)
                 {
                     var result = await NewCard.PostSlip(readout_id);
-                }
+                }*/
             }
             RefreshSlip();
+        }
+
+        private async void FrmStatusChange_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            NewCard NewCard = new NewCard();
+            if (post_slip && form_dirty)
+            {
+                var result = await NewCard.PostSlip(readout_id);
+            }
         }
     }
 }
