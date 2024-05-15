@@ -23,6 +23,7 @@ using System.Configuration;
 using System.Collections.Specialized;
 using Timer = System.Threading.Timer;
 using Serilog;
+using System.Data.Entity.SqlServer;
 
 namespace h24
 {
@@ -536,7 +537,7 @@ namespace h24
         private void Form1_Load(object sender, EventArgs e)
         {
             db = new klc01();
-            dgTeams.DataSource = db.teams.ToList();
+            dgTeams.DataSource = db.teams.OrderBy(c => c.team_nr).ToList();
 
             dgTeams.Columns[1].Width = Properties.Settings.Default.dgTeams_Column1;
             dgTeams.Columns[2].Width = Properties.Settings.Default.dgTeams_Column2;
@@ -702,7 +703,7 @@ namespace h24
                 sStamp.chip_id = Int32.Parse(card.Siid);
                 sStamp.control_code = punchData.CodeNumber.ToString();
                 sStamp.control_mode = 2;
-                sStamp.punch_datetime = punchData.PunchDateTime;
+                sStamp.punch_datetime = punchData.PunchDateTime < DateTime.Parse("01/01/1900") ? DateTime.Parse("01/01/1900") : punchData.PunchDateTime;
                 sStamp.punch_wday = punchData.DayOfWeek.ToString();
                 sStamp.punch_index = i;
                 sStamp.as_of_date = DateTime.Now;
@@ -849,7 +850,16 @@ namespace h24
                 //tady budu muset udelat novou funkci UpdateLeg(leg_id), aby se nepridaval novy leg, ale upravoval ten stavajici...
                 r = NewCard.UpdateLeg(readout_id);
             }
-            RefreshLegs();
+            if (tbSearchReadout.Text.Length > 0)
+            {
+                string search_string = tbSearchReadout.Text;
+                RefreshLegsFiltered(search_string);
+            }
+            else
+            {
+                RefreshLegs();
+            }
+                
             dgLegs.CurrentCell = dgLegs.Rows[curRow].Cells[1];
         }
 
@@ -954,21 +964,35 @@ namespace h24
             using (var db = new klc01())
             {
                 tx = txSearch.Text;
-                string q = "SELECT DISTINCT t.* FROM teams AS t " +
-        "INNER JOIN competitors AS c ON t.team_id = c.team_id " +
-         " WHERE t.team_name LIKE '%" + tx + "%'" +
-        " OR c.comp_name LIKE '%" + tx + "%'" +
-        " OR c.bib LIKE '%" + tx + "%'" +
-        " OR cast(c.comp_chip_id as varchar(10)) LIKE '%" + tx + "%'";
-                var tms = db.teams.SqlQuery(q).ToList();
+                //TODO change to linq
+                var query = (
+                        from t in db.teams
+                        join c in db.competitors on t.team_id equals c.team_id
+                        where c.comp_name.Contains(tx)
+                            || t.team_name.Contains(tx)
+                            || c.bib.Contains(tx)
+                            || SqlFunctions.StringConvert((double)c.comp_chip_id).Contains(tx)
+                        select new
+                        {
+                            t.team_id,
+                            t.team_name,
+                            t.team_nr,
+                            t.team_status,
+                            t.team_did_start,
+                            t.race_end
+                        });
+
+                var orderedTeams = query
+                    .Distinct()
+                    .OrderBy(t=> t.team_nr)
+                    .ToList();
+
+                var tms = orderedTeams;
 
                 dgTeams.DataSource = tms;
                 dgTeams.Refresh();
-
             }
-
         }
-
 
         private void txSearch_TextChanged(object sender, EventArgs e)
         {
@@ -1054,6 +1078,8 @@ namespace h24
         {
             long r;
             int curRow = dgLegs.CurrentRow.Index;
+            string wdrn_course = NewCard.get_config_item("wdrn_course");
+            int wdrn_course_id = db.courses.Where(b => b.course_name == wdrn_course).Select(b => b.course_id).First();
             if (curRow > -1)
             {
                 int comp_id = Convert.ToInt32(dgLegs.Rows[curRow].Cells["comp_id"].Value);
@@ -1066,6 +1092,7 @@ namespace h24
                         join ct in db.competitors on c.team_id equals ct.team_id
                         join l in db.legs on ct.comp_id equals l.comp_id
                         where c.comp_id == comp_id
+                            && l.course_id != wdrn_course_id
                         select new
                         {
                             readout_id = l.readout_id != null ? l.readout_id : 0,
@@ -1084,7 +1111,18 @@ namespace h24
                         }
                     }
                 }
-                RefreshLegs();
+                if (tbSearchReadout.Text.Length > 0)
+                {
+                    string search_string = tbSearchReadout.Text;
+                    RefreshLegsFiltered(search_string);
+                }
+                else
+                {
+                    RefreshLegs();
+                }
+
+                dgLegs.CurrentCell = dgLegs.Rows[curRow].Cells[1];
+
             }
         }
 
@@ -1139,6 +1177,7 @@ namespace h24
 
         private void btnWithdrawn_Click(object sender, EventArgs e)
         {
+            string wdrn_course = NewCard.get_config_item("wdrn_course");
             int curRow = dgCompetitors.CurrentRow.Index;
             if (curRow > -1)
             {
@@ -1175,7 +1214,7 @@ namespace h24
                             //insert fake leg with 0 time and 30' penalty
                             int dsk_penalty_min = 0;
 
-                            int course_id = db.courses.Where(b => b.course_name == "WDRN").Select(b => b.course_id).First();
+                            int course_id = db.courses.Where(b => b.course_name == wdrn_course).Select(b => b.course_id).First();
                             int team_id = (int)result.team_id;
                             if (db.competitors.Where(b => b.team_id == team_id && b.comp_withdrawn == true).Count() > 1)
                             {
@@ -1213,7 +1252,7 @@ namespace h24
                             db.SaveChanges();
 
                             //remove fake slip
-                            int course_id = db.courses.Where(b => b.course_name == "WDRN").Select(b => b.course_id).First();
+                            int course_id = db.courses.Where(b => b.course_name == wdrn_course).Select(b => b.course_id).First();
                             slips oldSlip = db.slips.Where(b => b.comp_id == comp_id && b.course_id == course_id).First();
                             int leg_id = oldSlip.leg_id;
                             int readout_id = oldSlip.readout_id;
@@ -1379,22 +1418,28 @@ namespace h24
             if (tbSearchReadout.Text.Length > 0)
             {
                 search_string = tbSearchReadout.Text;
-                using (var db = new klc01())
-                {
-                    var query = db.v_readout_legs.OrderByDescending(x => x.readout_id).Where(
-                        x=> x.team.Contains(search_string)
-                    || x.comp_name.Contains(search_string)
-                    || x.bib.Contains(search_string)
-                    || x.chip_id.ToString().Contains(search_string)
-                    || x.course_name.Contains(search_string))
-                        .ToList();
-                    dgLegs.DataSource = query;
-                    dgLegs.Update();
-                    dgLegs.Refresh();
-                    dgLegs.Columns["card_readout_datetime"].DefaultCellStyle.Format = "dd. MM. yyyy HH:mm:ss";
-                }
+                RefreshLegsFiltered(search_string);
             }
         }
+
+        private void RefreshLegsFiltered(string search_string)
+        {
+            using (var db = new klc01())
+            {
+                var query = db.v_readout_legs.OrderByDescending(x => x.readout_id).Where(
+                    x => x.team.Contains(search_string)
+                || x.comp_name.Contains(search_string)
+                || x.bib.Contains(search_string)
+                || x.chip_id.ToString().Contains(search_string)
+                || x.course_name.Contains(search_string))
+                    .ToList();
+                dgLegs.DataSource = query;
+                dgLegs.Update();
+                dgLegs.Refresh();
+                dgLegs.Columns["card_readout_datetime"].DefaultCellStyle.Format = "dd. MM. yyyy HH:mm:ss";
+            }
+        }
+
 
         private void btReadot_cancel_Click(object sender, EventArgs e)
         {
@@ -1415,6 +1460,30 @@ namespace h24
             }
             RefreshLegs();
 
+        }
+
+        private void btnTopSearchBottom_Click(object sender, EventArgs e)
+        {
+            if(txSearch.Text.Length > 0)
+            {
+                tbSearchReadout.Text = txSearch.Text;
+                RefreshLegsFiltered(tbSearchReadout.Text);
+            }
+        }
+
+        private void btFilterReadout_Click(object sender, EventArgs e)
+        {
+            int curRow = dgTeams.CurrentRow.Index;
+            int team_id = Convert.ToInt32(dgTeams.Rows[curRow].Cells["team_id"].Value);
+            using (var db = new klc01())
+            {
+                var query = db.v_readout_legs.OrderByDescending(x => x.readout_id).Where(
+                    x => x.team_id == team_id)
+                    .ToList();
+                dgLegs.DataSource = query;
+                dgLegs.Update();
+                dgLegs.Refresh();
+            }
         }
 
 

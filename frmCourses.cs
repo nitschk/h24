@@ -158,7 +158,7 @@ namespace h24
 
             courses newCourse = new courses
             {
-                course_name = "WDRN",
+                course_name = wdrn_course,
                 as_of_date = DateTime.Now
             };
 

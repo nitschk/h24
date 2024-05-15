@@ -243,6 +243,7 @@ namespace h24
                 try
                 {
                     int cnt = int.Parse(db.update_team_race_end(competitor_id).ToString());
+                    //int cnt = int.Parse(db.update_team_race_end_increment(competitor_id).ToString());
                     return cnt;
                 }
                 catch (Exception ex)
@@ -838,7 +839,7 @@ namespace h24
                     catch (Exception e)
                     {
                         Log.Error("ERROR: CheckNewROC " + e.Message);
-                        MessageBox.Show("CheckNewROC " + e.Message);
+                        //MessageBox.Show("CheckNewROC " + e.Message);
                     }
 
                     //different servers

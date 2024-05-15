@@ -30,13 +30,14 @@ namespace h24
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            Microsoft.Reporting.WinForms.ReportDataSource reportDataSource1 = new Microsoft.Reporting.WinForms.ReportDataSource();
+            Microsoft.Reporting.WinForms.ReportDataSource reportDataSource3 = new Microsoft.Reporting.WinForms.ReportDataSource();
             this.slipsBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.slip = new h24.slip();
             this.reportViewer1 = new Microsoft.Reporting.WinForms.ReportViewer();
             this.slipsTableAdapter = new h24.slipTableAdapters.slipsTableAdapter();
             this.btRefresh = new System.Windows.Forms.Button();
             this.reportViewer2 = new Microsoft.Reporting.WinForms.ReportViewer();
+            this.btClose = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.slipsBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.slip)).BeginInit();
             this.SuspendLayout();
@@ -53,9 +54,9 @@ namespace h24
             // 
             // reportViewer1
             // 
-            reportDataSource1.Name = "dsSlip";
-            reportDataSource1.Value = this.slipsBindingSource;
-            this.reportViewer1.LocalReport.DataSources.Add(reportDataSource1);
+            reportDataSource3.Name = "dsSlip";
+            reportDataSource3.Value = this.slipsBindingSource;
+            this.reportViewer1.LocalReport.DataSources.Add(reportDataSource3);
             this.reportViewer1.LocalReport.ReportEmbeddedResource = "h24.rptSlip1.rdlc";
             this.reportViewer1.Location = new System.Drawing.Point(141, 55);
             this.reportViewer1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -85,18 +86,31 @@ namespace h24
             this.reportViewer2.Size = new System.Drawing.Size(396, 246);
             this.reportViewer2.TabIndex = 0;
             // 
+            // btClose
+            // 
+            this.btClose.Location = new System.Drawing.Point(1040, 363);
+            this.btClose.Name = "btClose";
+            this.btClose.Size = new System.Drawing.Size(75, 23);
+            this.btClose.TabIndex = 2;
+            this.btClose.Text = "Close";
+            this.btClose.UseVisualStyleBackColor = true;
+            this.btClose.Click += new System.EventHandler(this.btClose_Click);
+            // 
             // frmSlip
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(1335, 797);
+            this.Controls.Add(this.btClose);
             this.Controls.Add(this.btRefresh);
             this.Controls.Add(this.reportViewer1);
+            this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "frmSlip";
             this.Text = "frmSlip";
             this.Load += new System.EventHandler(this.frmSlip_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmSlip_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.slipsBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.slip)).EndInit();
             this.ResumeLayout(false);
@@ -111,5 +125,6 @@ namespace h24
         private slipTableAdapters.slipsTableAdapter slipsTableAdapter;
         private System.Windows.Forms.Button btRefresh;
         private Microsoft.Reporting.WinForms.ReportViewer reportViewer2;
+        private System.Windows.Forms.Button btClose;
     }
 }

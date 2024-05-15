@@ -30,7 +30,7 @@ namespace h24
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            Microsoft.Reporting.WinForms.ReportDataSource reportDataSource2 = new Microsoft.Reporting.WinForms.ReportDataSource();
+            Microsoft.Reporting.WinForms.ReportDataSource reportDataSource1 = new Microsoft.Reporting.WinForms.ReportDataSource();
             this.bindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.ds_result = new h24.ds_result();
             this.reportViewer1 = new Microsoft.Reporting.WinForms.ReportViewer();
@@ -41,6 +41,7 @@ namespace h24
             this.rpt_resultsTableAdapter = new h24.ds_resultTableAdapters.rpt_resultsTableAdapter();
             this.button3 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.cbCategory = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ds_result)).BeginInit();
             this.SuspendLayout();
@@ -57,9 +58,9 @@ namespace h24
             // 
             // reportViewer1
             // 
-            reportDataSource2.Name = "dsSlip";
-            reportDataSource2.Value = this.bindingSource;
-            this.reportViewer1.LocalReport.DataSources.Add(reportDataSource2);
+            reportDataSource1.Name = "dsSlip";
+            reportDataSource1.Value = this.bindingSource;
+            this.reportViewer1.LocalReport.DataSources.Add(reportDataSource1);
             this.reportViewer1.LocalReport.ReportEmbeddedResource = "h24.rptSlip1.rdlc";
             this.reportViewer1.Location = new System.Drawing.Point(125, 44);
             this.reportViewer1.Name = "reportViewer1";
@@ -131,11 +132,20 @@ namespace h24
             this.textBox1.Size = new System.Drawing.Size(233, 282);
             this.textBox1.TabIndex = 5;
             // 
+            // cbCategory
+            // 
+            this.cbCategory.FormattingEnabled = true;
+            this.cbCategory.Location = new System.Drawing.Point(480, 70);
+            this.cbCategory.Name = "cbCategory";
+            this.cbCategory.Size = new System.Drawing.Size(121, 28);
+            this.cbCategory.TabIndex = 6;
+            // 
             // FrmResults
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(790, 562);
+            this.Controls.Add(this.cbCategory);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
@@ -165,5 +175,6 @@ namespace h24
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.ComboBox cbCategory;
     }
 }

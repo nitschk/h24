@@ -66,6 +66,7 @@
             this.withdrawn_datetime = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.rented_chip = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.dgTeams = new System.Windows.Forms.DataGridView();
+            this.phone_number = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.BtDisplaySlip = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
@@ -106,7 +107,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.btReadot_cancel = new System.Windows.Forms.Button();
             this.btChangeStatus = new System.Windows.Forms.Button();
-            this.phone_number = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.btnTopSearchBottom = new System.Windows.Forms.Button();
+            this.btFilterReadout = new System.Windows.Forms.Button();
             this.readout_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.start_time = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.leg_status = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -517,6 +519,15 @@
             this.dgTeams.TabIndex = 103;
             this.dgTeams.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgTeams_CellEndEdit);
             this.dgTeams.SelectionChanged += new System.EventHandler(this.dgTeams_SelectionChanged);
+            // 
+            // phone_number
+            // 
+            this.phone_number.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.phone_number.DataPropertyName = "phone_number";
+            this.phone_number.HeaderText = "phone_number";
+            this.phone_number.MinimumWidth = 8;
+            this.phone_number.Name = "phone_number";
+            this.phone_number.Width = 153;
             // 
             // BtDisplaySlip
             // 
@@ -984,14 +995,25 @@
             this.btChangeStatus.UseVisualStyleBackColor = true;
             this.btChangeStatus.Click += new System.EventHandler(this.btChangeStatus_Click);
             // 
-            // phone_number
+            // btnTopSearchBottom
             // 
-            this.phone_number.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.phone_number.DataPropertyName = "phone_number";
-            this.phone_number.HeaderText = "phone_number";
-            this.phone_number.MinimumWidth = 8;
-            this.phone_number.Name = "phone_number";
-            this.phone_number.Width = 153;
+            this.btnTopSearchBottom.Location = new System.Drawing.Point(387, 656);
+            this.btnTopSearchBottom.Name = "btnTopSearchBottom";
+            this.btnTopSearchBottom.Size = new System.Drawing.Size(35, 48);
+            this.btnTopSearchBottom.TabIndex = 132;
+            this.btnTopSearchBottom.Text = " |\r\nV";
+            this.btnTopSearchBottom.UseVisualStyleBackColor = true;
+            this.btnTopSearchBottom.Click += new System.EventHandler(this.btnTopSearchBottom_Click);
+            // 
+            // btFilterReadout
+            // 
+            this.btFilterReadout.Location = new System.Drawing.Point(533, 656);
+            this.btFilterReadout.Name = "btFilterReadout";
+            this.btFilterReadout.Size = new System.Drawing.Size(54, 39);
+            this.btFilterReadout.TabIndex = 133;
+            this.btFilterReadout.Text = "-->";
+            this.btFilterReadout.UseVisualStyleBackColor = true;
+            this.btFilterReadout.Click += new System.EventHandler(this.btFilterReadout_Click);
             // 
             // readout_id
             // 
@@ -1235,6 +1257,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1732, 984);
+            this.Controls.Add(this.btFilterReadout);
+            this.Controls.Add(this.btnTopSearchBottom);
             this.Controls.Add(this.btChangeStatus);
             this.Controls.Add(this.btReadot_cancel);
             this.Controls.Add(this.label1);
@@ -1391,6 +1415,8 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn dataGridViewTextBoxColumn8;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn9;
         private System.Windows.Forms.DataGridViewTextBoxColumn phone_number;
+        private System.Windows.Forms.Button btnTopSearchBottom;
+        private System.Windows.Forms.Button btFilterReadout;
     }
 }
 

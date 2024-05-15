@@ -132,6 +132,19 @@ namespace h24
             }
         }
 
+        private void btClose_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void frmSlip_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                this.Close();
+            }
+        }
+
         /*        private void PrintPage(object sender, PrintPageEventArgs ev)
                 {
                     Metafile pageImage = new Metafile(m_streams[m_currentPageIndex]);

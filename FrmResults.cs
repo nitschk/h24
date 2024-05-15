@@ -34,6 +34,21 @@ namespace h24
                 this.reportViewer1.LocalReport.DataSources.Add(rdc);
 
                 this.reportViewer1.RefreshReport();
+
+                var categories_list = db.categories.Where(a=> a.valid == true)
+                    .OrderBy(t => t.cat_name)
+                    .ToList();
+                var cat_all = new List<KeyValuePair<string, int>>();
+                cat_all.Add(new KeyValuePair<string, int>("All", -1));
+                foreach (var cat in categories_list)
+                {
+                    cat_all.Add(new KeyValuePair<string, int>(cat.cat_name, cat.cat_id));
+                }
+
+                this.cbCategory.DataSource = cat_all;
+                this.cbCategory.SelectedIndex = 0;
+                this.cbCategory.ValueMember = "Key";
+                this.cbCategory.DisplayMember = "Key";
             }
         }
 
@@ -121,7 +136,10 @@ namespace h24
             // Define the string to insert
             using (var db = new klc01())
             {
-                stringToInsert = db.get_results_json("").FirstOrDefault();
+                db.Database.CommandTimeout = 360;
+
+                string cat = cbCategory.Text== "All" ? "" : cbCategory.Text;
+                stringToInsert = db.get_results_json(cat).FirstOrDefault();
             }
             save_json(stringToInsert);
         }
@@ -133,6 +151,7 @@ namespace h24
             // Define the string to insert
             using (var db = new klc01())
             {
+                db.Database.CommandTimeout = 360;
                 stringToInsert = db.get_course_results_json("").FirstOrDefault();
             }
             save_json(stringToInsert);

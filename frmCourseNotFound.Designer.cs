@@ -32,11 +32,6 @@ namespace h24
             this.components = new System.ComponentModel.Container();
             this.label1 = new System.Windows.Forms.Label();
             this.dgCourses = new System.Windows.Forms.DataGridView();
-            this.course_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.course_length = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.course_climb = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.control_count = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.course_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.coursesBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.btnSave = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
@@ -45,6 +40,11 @@ namespace h24
             this.btClear = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.course_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.course_length = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.course_climb = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.control_count = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.course_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgCourses)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.coursesBindingSource)).BeginInit();
             this.SuspendLayout();
@@ -86,52 +86,6 @@ namespace h24
             this.dgCourses.TabIndex = 3;
             this.dgCourses.ColumnWidthChanged += new System.Windows.Forms.DataGridViewColumnEventHandler(this.dgCourses_ColumnWidthChanged);
             this.dgCourses.DoubleClick += new System.EventHandler(this.dgCourses_DoubleClick);
-            // 
-            // course_name
-            // 
-            this.course_name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.course_name.DataPropertyName = "course_name";
-            this.course_name.HeaderText = "Course";
-            this.course_name.MinimumWidth = 6;
-            this.course_name.Name = "course_name";
-            this.course_name.ReadOnly = true;
-            this.course_name.Width = 96;
-            // 
-            // course_length
-            // 
-            this.course_length.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.course_length.DataPropertyName = "course_length";
-            this.course_length.HeaderText = "Length";
-            this.course_length.MinimumWidth = 6;
-            this.course_length.Name = "course_length";
-            this.course_length.ReadOnly = true;
-            // 
-            // course_climb
-            // 
-            this.course_climb.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.course_climb.DataPropertyName = "course_climb";
-            this.course_climb.HeaderText = "Climb";
-            this.course_climb.MinimumWidth = 6;
-            this.course_climb.Name = "course_climb";
-            this.course_climb.ReadOnly = true;
-            // 
-            // control_count
-            // 
-            this.control_count.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.control_count.DataPropertyName = "control_count";
-            this.control_count.HeaderText = "control_count";
-            this.control_count.MinimumWidth = 6;
-            this.control_count.Name = "control_count";
-            this.control_count.ReadOnly = true;
-            // 
-            // course_id
-            // 
-            this.course_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.course_id.DataPropertyName = "course_id";
-            this.course_id.HeaderText = "course_id";
-            this.course_id.MinimumWidth = 6;
-            this.course_id.Name = "course_id";
-            this.course_id.ReadOnly = true;
             // 
             // coursesBindingSource
             // 
@@ -208,6 +162,56 @@ namespace h24
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(0, 20);
             this.label4.TabIndex = 12;
+            // 
+            // course_name
+            // 
+            this.course_name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.course_name.DataPropertyName = "course_name";
+            this.course_name.HeaderText = "Course";
+            this.course_name.MinimumWidth = 6;
+            this.course_name.Name = "course_name";
+            this.course_name.ReadOnly = true;
+            this.course_name.Width = 96;
+            // 
+            // course_length
+            // 
+            this.course_length.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.course_length.DataPropertyName = "course_length";
+            this.course_length.HeaderText = "Length";
+            this.course_length.MinimumWidth = 6;
+            this.course_length.Name = "course_length";
+            this.course_length.ReadOnly = true;
+            this.course_length.Width = 95;
+            // 
+            // course_climb
+            // 
+            this.course_climb.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.course_climb.DataPropertyName = "course_climb";
+            this.course_climb.HeaderText = "Climb";
+            this.course_climb.MinimumWidth = 6;
+            this.course_climb.Name = "course_climb";
+            this.course_climb.ReadOnly = true;
+            this.course_climb.Width = 84;
+            // 
+            // control_count
+            // 
+            this.control_count.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.control_count.DataPropertyName = "control_count";
+            this.control_count.HeaderText = "control_count";
+            this.control_count.MinimumWidth = 6;
+            this.control_count.Name = "control_count";
+            this.control_count.ReadOnly = true;
+            this.control_count.Width = 142;
+            // 
+            // course_id
+            // 
+            this.course_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.course_id.DataPropertyName = "course_id";
+            this.course_id.HeaderText = "course_id";
+            this.course_id.MinimumWidth = 6;
+            this.course_id.Name = "course_id";
+            this.course_id.ReadOnly = true;
+            this.course_id.Width = 114;
             // 
             // frmCourseNotFound
             // 

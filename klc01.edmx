@@ -288,7 +288,7 @@
           <Property Name="as_of_date" Type="datetime" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'klc01.dbo.v_comp_teams' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'klc01_de.dbo.v_comp_teams' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="v_comp_teams">
           <Key>
             <PropertyRef Name="team_id" />
@@ -324,7 +324,7 @@ warning 6002: The table/view 'klc01.dbo.v_comp_teams' does not have a primary ke
           <Property Name="cat_time_limit" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'klc01.dbo.v_new_roc_punches' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'klc01_de.dbo.v_new_roc_punches' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="v_new_roc_punches">
           <Key>
             <PropertyRef Name="record_id" />
@@ -345,7 +345,7 @@ warning 6002: The table/view 'klc01.dbo.v_new_roc_punches' does not have a prima
           <Property Name="phone_number" Type="nvarchar" MaxLength="20" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'klc01.dbo.v_readout_legs' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'klc01_de.dbo.v_readout_legs' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="v_readout_legs">
           <Key>
             <PropertyRef Name="readout_id" />
@@ -369,9 +369,10 @@ warning 6002: The table/view 'klc01.dbo.v_readout_legs' does not have a primary 
           <Property Name="leg_id" Type="int" />
           <Property Name="valid_flag" Type="bit" />
           <Property Name="race_valid" Type="bit" />
+          <Property Name="team_id" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'klc01.dbo.v_teams_results' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'klc01_de.dbo.v_teams_results' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="v_teams_results">
           <Key>
             <PropertyRef Name="cat_name" />
@@ -602,7 +603,8 @@ warning 6002: The table/view 'klc01.dbo.v_teams_results' does not have a primary
     [v_readout_legs].[team] AS [team], 
     [v_readout_legs].[leg_id] AS [leg_id], 
     [v_readout_legs].[valid_flag] AS [valid_flag], 
-    [v_readout_legs].[race_valid] AS [race_valid]
+    [v_readout_legs].[race_valid] AS [race_valid], 
+    [v_readout_legs].[team_id] AS [team_id]
     FROM [dbo].[v_readout_legs] AS [v_readout_legs]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="v_teams_results" EntityType="Self.v_teams_results" store:Type="Views" store:Schema="dbo">
@@ -1280,6 +1282,7 @@ warning 6002: The table/view 'klc01.dbo.v_teams_results' does not have a primary
           <Property Name="leg_id" Type="Int32" />
           <Property Name="valid_flag" Type="Boolean" />
           <Property Name="race_valid" Type="Boolean" />
+          <Property Name="team_id" Type="Int32" />
         </EntityType>
         <EntityType Name="api_queue_link">
           <Key>
@@ -1709,6 +1712,7 @@ warning 6002: The table/view 'klc01.dbo.v_teams_results' does not have a primary
           <EntitySetMapping Name="v_readout_legs">
             <EntityTypeMapping TypeName="klc01Model.v_readout_legs">
               <MappingFragment StoreEntitySet="v_readout_legs">
+                <ScalarProperty Name="team_id" ColumnName="team_id" />
                 <ScalarProperty Name="race_valid" ColumnName="race_valid" />
                 <ScalarProperty Name="valid_flag" ColumnName="valid_flag" />
                 <ScalarProperty Name="leg_id" ColumnName="leg_id" />
