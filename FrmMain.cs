@@ -828,7 +828,7 @@ namespace h24
             List<slips> slip = null;
             using (var db = new klc01())
             {
-                slip = db.slips.Where(a => a.readout_id == readout_id).ToList();
+                slip = db.slips.Where(a => a.readout_id == readout_id).OrderBy(a => a.punch_index).ToList();
 
                 LocalReport report = new LocalReport();
                 report.ReportPath = @"rptSlip1.rdlc";
@@ -1128,16 +1128,57 @@ namespace h24
 
         private async void btnPostSlip_Click(object sender, EventArgs e)
         {
+            Log.Information("btnPostSlip_Click");
             int curRow = dgLegs.CurrentRow.Index;
             if (curRow > -1)
             {
                 int readout_id = Convert.ToInt32(dgLegs.Rows[curRow].Cells["readout_id"].Value);
 
                 NewCard NewCard = new NewCard();
+Log.Information("pred PostSlip");
                 var result = await NewCard.PostSlip(readout_id);
                 this.txtInfo.AppendText(Environment.NewLine);
                 this.txtInfo.AppendText(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + result.ToString());
             }
+        }
+
+        private async void btPostTeam_Click(object sender, EventArgs e)
+        {
+            Log.Information("btnPostSlip_Click");
+            int curRow = dgLegs.CurrentRow.Index;
+            if (curRow > -1)
+            {
+                int comp_id = Convert.ToInt32(dgLegs.Rows[curRow].Cells["comp_id"].Value);
+
+                var query = (
+                    from c in db.competitors
+                    join co in db.competitors on c.team_id equals co.team_id
+                    join l in db.legs on co.comp_id equals l.comp_id
+                    where c.comp_id == comp_id
+                    select new
+                    {
+                        readout_id = l.readout_id != null ? l.readout_id : 0,
+                        l.finish_dtime
+                    } into selection
+                    orderby selection.finish_dtime
+                    select new { selection.readout_id, selection.finish_dtime });
+                var readout_ids = query.ToList();
+                int i = 0;
+                //var timeout = DateTime.Now.AddHours(-11);
+
+                foreach (var readout in readout_ids)
+                {
+                    if ((readout.readout_id ?? 0) == 0) continue;
+                    NewCard NewCard = new NewCard();
+                    var result = await NewCard.PostSlip(readout.readout_id.Value);
+                    this.txtInfo.AppendText(Environment.NewLine);
+                    this.txtInfo.AppendText(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + result.ToString());
+                    i++;
+                    System.Threading.Thread.Sleep(500);
+                }
+                MessageBox.Show("Sent " + i + " legs");
+            }
+
         }
 
         private void btn_change_competitor_Click(object sender, EventArgs e)
@@ -1485,6 +1526,8 @@ namespace h24
                 dgLegs.Refresh();
             }
         }
+
+
 
 
 

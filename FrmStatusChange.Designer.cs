@@ -43,6 +43,7 @@ namespace h24
             this.btSave = new System.Windows.Forms.Button();
             this.btClose = new System.Windows.Forms.Button();
             this.slipsTableAdapter = new h24.slipTableAdapters.slipsTableAdapter();
+            this.cbLegValid = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.slipsBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.slip)).BeginInit();
             this.SuspendLayout();
@@ -63,18 +64,18 @@ namespace h24
             reportDataSource1.Value = this.slipsBindingSource;
             this.reportViewer1.LocalReport.DataSources.Add(reportDataSource1);
             this.reportViewer1.LocalReport.ReportEmbeddedResource = "h24.rptSlip1.rdlc";
-            this.reportViewer1.Location = new System.Drawing.Point(80, 55);
-            this.reportViewer1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.reportViewer1.Location = new System.Drawing.Point(53, 36);
+            this.reportViewer1.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.reportViewer1.Name = "reportViewer1";
-            this.reportViewer1.Size = new System.Drawing.Size(675, 1000);
+            this.reportViewer1.Size = new System.Drawing.Size(451, 651);
             this.reportViewer1.TabIndex = 0;
             // 
             // btRefreshSlip
             // 
-            this.btRefreshSlip.Location = new System.Drawing.Point(342, 21);
-            this.btRefreshSlip.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.btRefreshSlip.Location = new System.Drawing.Point(228, 14);
+            this.btRefreshSlip.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.btRefreshSlip.Name = "btRefreshSlip";
-            this.btRefreshSlip.Size = new System.Drawing.Size(142, 29);
+            this.btRefreshSlip.Size = new System.Drawing.Size(95, 19);
             this.btRefreshSlip.TabIndex = 1;
             this.btRefreshSlip.Text = "Refresh Slip";
             this.btRefreshSlip.UseVisualStyleBackColor = true;
@@ -94,41 +95,46 @@ namespace h24
             "OK",
             "DSK",
             "DNF"});
-            this.cmStatus.Location = new System.Drawing.Point(926, 235);
+            this.cmStatus.Location = new System.Drawing.Point(617, 153);
+            this.cmStatus.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.cmStatus.Name = "cmStatus";
-            this.cmStatus.Size = new System.Drawing.Size(173, 28);
+            this.cmStatus.Size = new System.Drawing.Size(118, 21);
             this.cmStatus.TabIndex = 3;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(817, 238);
+            this.label1.Location = new System.Drawing.Point(547, 156);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(91, 20);
+            this.label1.Size = new System.Drawing.Size(61, 13);
             this.label1.TabIndex = 4;
             this.label1.Text = "Leg Status:";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(821, 288);
+            this.label2.Location = new System.Drawing.Point(547, 190);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(65, 20);
+            this.label2.Size = new System.Drawing.Size(45, 13);
             this.label2.TabIndex = 5;
             this.label2.Text = "Penalty:";
             // 
             // tbPenalty
             // 
-            this.tbPenalty.Location = new System.Drawing.Point(926, 288);
+            this.tbPenalty.Location = new System.Drawing.Point(617, 187);
+            this.tbPenalty.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tbPenalty.Name = "tbPenalty";
-            this.tbPenalty.Size = new System.Drawing.Size(173, 26);
+            this.tbPenalty.Size = new System.Drawing.Size(118, 20);
             this.tbPenalty.TabIndex = 6;
             // 
             // btSave
             // 
-            this.btSave.Location = new System.Drawing.Point(982, 343);
+            this.btSave.Location = new System.Drawing.Point(655, 250);
+            this.btSave.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btSave.Name = "btSave";
-            this.btSave.Size = new System.Drawing.Size(75, 32);
+            this.btSave.Size = new System.Drawing.Size(50, 21);
             this.btSave.TabIndex = 7;
             this.btSave.Text = "Save";
             this.btSave.UseVisualStyleBackColor = true;
@@ -136,9 +142,10 @@ namespace h24
             // 
             // btClose
             // 
-            this.btClose.Location = new System.Drawing.Point(982, 402);
+            this.btClose.Location = new System.Drawing.Point(655, 281);
+            this.btClose.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btClose.Name = "btClose";
-            this.btClose.Size = new System.Drawing.Size(75, 34);
+            this.btClose.Size = new System.Drawing.Size(50, 22);
             this.btClose.TabIndex = 8;
             this.btClose.Text = "Close";
             this.btClose.UseVisualStyleBackColor = true;
@@ -148,12 +155,23 @@ namespace h24
             // 
             this.slipsTableAdapter.ClearBeforeFill = true;
             // 
+            // cbLegValid
+            // 
+            this.cbLegValid.AutoSize = true;
+            this.cbLegValid.Location = new System.Drawing.Point(617, 220);
+            this.cbLegValid.Name = "cbLegValid";
+            this.cbLegValid.Size = new System.Drawing.Size(70, 17);
+            this.cbLegValid.TabIndex = 9;
+            this.cbLegValid.Text = "Leg Valid";
+            this.cbLegValid.UseVisualStyleBackColor = true;
+            // 
             // FrmStatusChange
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(1281, 797);
+            this.ClientSize = new System.Drawing.Size(854, 518);
+            this.Controls.Add(this.cbLegValid);
             this.Controls.Add(this.btClose);
             this.Controls.Add(this.btSave);
             this.Controls.Add(this.tbPenalty);
@@ -162,7 +180,7 @@ namespace h24
             this.Controls.Add(this.cmStatus);
             this.Controls.Add(this.btRefreshSlip);
             this.Controls.Add(this.reportViewer1);
-            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.Name = "FrmStatusChange";
             this.Text = "FrmStatusChange";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmStatusChange_FormClosing);
@@ -188,5 +206,6 @@ namespace h24
         private System.Windows.Forms.TextBox tbPenalty;
         private System.Windows.Forms.Button btSave;
         private System.Windows.Forms.Button btClose;
+        private System.Windows.Forms.CheckBox cbLegValid;
     }
 }

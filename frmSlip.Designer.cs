@@ -30,7 +30,7 @@ namespace h24
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            Microsoft.Reporting.WinForms.ReportDataSource reportDataSource3 = new Microsoft.Reporting.WinForms.ReportDataSource();
+            Microsoft.Reporting.WinForms.ReportDataSource reportDataSource1 = new Microsoft.Reporting.WinForms.ReportDataSource();
             this.slipsBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.slip = new h24.slip();
             this.reportViewer1 = new Microsoft.Reporting.WinForms.ReportViewer();
@@ -54,9 +54,9 @@ namespace h24
             // 
             // reportViewer1
             // 
-            reportDataSource3.Name = "dsSlip";
-            reportDataSource3.Value = this.slipsBindingSource;
-            this.reportViewer1.LocalReport.DataSources.Add(reportDataSource3);
+            reportDataSource1.Name = "dsSlip";
+            reportDataSource1.Value = this.slipsBindingSource;
+            this.reportViewer1.LocalReport.DataSources.Add(reportDataSource1);
             this.reportViewer1.LocalReport.ReportEmbeddedResource = "h24.rptSlip1.rdlc";
             this.reportViewer1.Location = new System.Drawing.Point(141, 55);
             this.reportViewer1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -88,9 +88,9 @@ namespace h24
             // 
             // btClose
             // 
-            this.btClose.Location = new System.Drawing.Point(1040, 363);
+            this.btClose.Location = new System.Drawing.Point(1051, 75);
             this.btClose.Name = "btClose";
-            this.btClose.Size = new System.Drawing.Size(75, 23);
+            this.btClose.Size = new System.Drawing.Size(92, 41);
             this.btClose.TabIndex = 2;
             this.btClose.Text = "Close";
             this.btClose.UseVisualStyleBackColor = true;

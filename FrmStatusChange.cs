@@ -37,6 +37,7 @@ namespace h24
                     // Select the status in the combo box
                     cmStatus.SelectedItem = leg.leg_status;
                 }
+                cbLegValid.Checked = (bool)leg.valid_flag;
             }
 
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
 using System.Windows.Forms;
 
 namespace h24
@@ -15,10 +16,31 @@ namespace h24
 
         private void frmChipNotFound_Load(object sender, EventArgs e)
         {
-            db = new klc01();
-
-            dgCompetitors.DataSource = db.v_comp_teams.ToList();
-            dgCompetitors.Refresh();
+            using (var db = new klc01())
+            {
+                var result = from t in db.teams
+                             join c in db.competitors on t.team_id equals c.team_id
+                             join ca in db.categories on t.cat_id equals ca.cat_id
+                             select new
+                             {
+                                 c.bib,
+                                 c.comp_name,
+                                 t.team_name,
+                                 c.comp_chip_id,
+                                 t.team_nr,
+                                 t.team_did_start,
+                                 t.team_status,
+                                 c.comp_id,
+                                 c.comp_withdrawn,
+                                 c.comp_status,
+                                 c.comp_valid_flag,
+                                 c.withdrawn_datetime
+                             };
+                var resultList = result.ToList();
+                dgCompetitors.DataSource = resultList;
+                //dgCompetitors.DataSource = db.v_comp_teams.ToList();
+                dgCompetitors.Refresh();
+            }
         }
 
         private void btnCancel_Click(object sender, EventArgs e)

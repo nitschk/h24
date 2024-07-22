@@ -12,6 +12,9 @@ using System.IO;
 using System.Net.Http.Headers;
 using System.Xml.Linq;
 using Serilog;
+using System.Data.Entity;
+using System.Runtime.Remoting.Contexts;
+using System.Reflection;
 
 namespace h24
 {
@@ -83,7 +86,7 @@ namespace h24
                     action = "I";
 
                 if (query.comp_id == 0)
-                    competitor_id = db.competitors.First(a => a.comp_chip_id == chip_id).comp_id;
+                    competitor_id = db.competitors.First(x => x.comp_chip_id == chip_id).comp_id;
                 else
                     competitor_id = query.comp_id;
 
@@ -96,6 +99,7 @@ namespace h24
                 //TODO - tohle nejak nefunguje
                 //var aaa = db.sp_upsert_legs(readout_id, competitor_id, course_id, guessed_course, action);
                 leg_id = int.Parse(db.sp_upsert_legs(readout_id, competitor_id, course_id, guessed_course, action).FirstOrDefault().ToString());
+                int a = ApplyLegException(leg_id);
                 int y = UpdateTeamRaceEnd(competitor_id);
             }
 
@@ -203,6 +207,37 @@ namespace h24
 
         }
 
+        public int UpsertLeg( int readout_id, int competitor_id, int course_id, int guessed_course, string action)
+        {
+            int dsk_penalty = int.Parse(get_config_item("dsk_penalty"));
+
+            using (var db = new klc01())
+            {
+                var query = from co in db.competitors
+                             join t in db.teams on co.team_id equals t.team_id
+                             join ca in db.categories on t.cat_id equals ca.cat_id
+                             where co.comp_id == competitor_id
+                             select new { ca.force_order,
+                                 ca.cat_start_time,
+                                 t.team_id
+                             };
+                var result = query.FirstOrDefault();
+                bool force_order = (bool)result.force_order;
+                DateTime start_time = (DateTime)result.cat_start_time;
+                int team_id = (int)result.team_id;
+
+                //previous finish + previous competitor
+                /*var query_legs_teams = from l in db.legs
+                                       join co in db.competitors on l.comp_id equals co.comp_id
+                                       where co.team_id == team_id;
+                //if force_order
+                */
+
+            }
+            int leg_id = 0;
+
+            return leg_id;
+        }
 
         public int InsertLeg(int readout_id, int competitor_id, out int guessed_course)
         {
@@ -234,6 +269,30 @@ namespace h24
                     throw;
                 }
             }
+        }
+
+        public static int ApplyLegException(int leg_id)
+        {
+            int i = 0;
+            using (var db = new klc01())
+            {
+                //legs leg = db.legs.Where(x => x.leg_id == leg_id).FirstOrDefault();
+                var legsUpdate = from l in db.legs
+                                 join le in db.leg_exceptions
+                                 on l.leg_id equals le.leg_id
+                                 where l.leg_id == leg_id
+                                 select new { Legs = l, ex_leg_status = le.ex_leg_status, ex_dsk_penalty = le.ex_dsk_penalty, ex_valid_flag = le.ex_valid_flag };
+            
+                foreach(var item in legsUpdate)
+                {
+                    item.Legs.leg_status = item.ex_leg_status;
+                    item.Legs.dsk_penalty = item.ex_dsk_penalty;
+                    item.Legs.valid_flag = item.ex_valid_flag;
+                    i++;
+                }
+                db.SaveChanges();
+            }
+            return i;
         }
 
         public static int UpdateTeamRaceEnd(int competitor_id)
@@ -675,7 +734,11 @@ namespace h24
 
             Log.Information("request "+ request.q_content);
             //send
-            HttpClient client = new HttpClient();
+            HttpClientHandler _httpHandler = new HttpClientHandler();
+            _httpHandler.Proxy = null;
+            _httpHandler.UseProxy = false;
+            _httpHandler.AutomaticDecompression = System.Net.DecompressionMethods.GZip;
+            HttpClient client = new HttpClient(_httpHandler);
             HttpContent content = new StringContent(
             request.q_content,
             System.Text.Encoding.UTF8,
@@ -808,6 +871,28 @@ namespace h24
                 string q_status_new = get_config_item("q_status_new");
 
                 var new_punches = db.v_new_roc_punches.ToList();
+                /* TODO: this query works, but I don't know how to pass the result to Insert_queue_SMS
+                 * var query = from p in db.roc_punches
+                                join c in db.competitors on p.ChipNr equals c.comp_chip_id
+                                join t in db.teams on c.team_id equals t.team_id
+                                join ca in db.categories on t.cat_id equals ca.cat_id
+                             where p.status == null && DbFunctions.AddMinutes(p.as_of_date, 5) > DateTime.Now
+                             select new
+                             {
+                                 record_id = p.p_id,
+                                 control_code = p.CodeNr,
+                                 chip_id = p.ChipNr,
+                                 punch_date = p.PunchTime,
+                                 ca.cat_name,
+                                 t.team_nr,
+                                 t.team_name,
+                                 c.comp_name,
+                                 c.bib,
+                                 t.phone_number
+                             };
+                var resultList = query.ToList();*/
+
+
                 int i = 0;
                 foreach (var punch in new_punches)
                 {

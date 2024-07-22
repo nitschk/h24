@@ -314,9 +314,10 @@ namespace h24
                              ca.cat_name,
                              ca.cat_start_time,
                              ca.cat_time_limit
-                         }).OrderBy(x => x.team_id).ToList();
+                         }).OrderBy(x => x.team_id);
 
-            dgEntries.DataSource = db.v_comp_teams.ToList();
+            //dgEntries.DataSource = db.v_comp_teams.ToList();
+            dgEntries.DataSource = query.ToList();
             dgEntries.Refresh();
 
         }

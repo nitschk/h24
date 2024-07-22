@@ -68,8 +68,6 @@
             this.dgTeams = new System.Windows.Forms.DataGridView();
             this.phone_number = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.BtDisplaySlip = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
             this.dgLegs = new System.Windows.Forms.DataGridView();
             this.chip_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.card_readout_datetime = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -95,6 +93,8 @@
             this.btnWithdrawn = new System.Windows.Forms.Button();
             this.btnRefreshLegs = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.btnTopSearchBottom = new System.Windows.Forms.Button();
+            this.btFilterReadout = new System.Windows.Forms.Button();
             this.BtnPostAll = new System.Windows.Forms.Button();
             this.LbLastBib = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -107,8 +107,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.btReadot_cancel = new System.Windows.Forms.Button();
             this.btChangeStatus = new System.Windows.Forms.Button();
-            this.btnTopSearchBottom = new System.Windows.Forms.Button();
-            this.btFilterReadout = new System.Windows.Forms.Button();
+            this.btPostTeam = new System.Windows.Forms.Button();
             this.readout_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.start_time = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.leg_status = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -256,7 +255,7 @@
             // 
             this.panel2.BackColor = System.Drawing.Color.White;
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel2.Location = new System.Drawing.Point(0, 919);
+            this.panel2.Location = new System.Drawing.Point(0, 920);
             this.panel2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(1732, 65);
@@ -267,11 +266,11 @@
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.txtInfo);
-            this.groupBox1.Location = new System.Drawing.Point(105, 767);
+            this.groupBox1.Location = new System.Drawing.Point(14, 768);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.groupBox1.Size = new System.Drawing.Size(1608, 143);
+            this.groupBox1.Size = new System.Drawing.Size(1700, 143);
             this.groupBox1.TabIndex = 102;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Info box";
@@ -286,7 +285,7 @@
             this.txtInfo.Name = "txtInfo";
             this.txtInfo.ReadOnly = true;
             this.txtInfo.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtInfo.Size = new System.Drawing.Size(1585, 115);
+            this.txtInfo.Size = new System.Drawing.Size(1676, 115);
             this.txtInfo.TabIndex = 1;
             // 
             // menuStrip1
@@ -515,7 +514,7 @@
             this.dgTeams.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
             this.dgTeams.RowHeadersWidth = 30;
             this.dgTeams.RowTemplate.Height = 24;
-            this.dgTeams.Size = new System.Drawing.Size(591, 247);
+            this.dgTeams.Size = new System.Drawing.Size(591, 248);
             this.dgTeams.TabIndex = 103;
             this.dgTeams.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgTeams_CellEndEdit);
             this.dgTeams.SelectionChanged += new System.EventHandler(this.dgTeams_SelectionChanged);
@@ -532,36 +531,14 @@
             // BtDisplaySlip
             // 
             this.BtDisplaySlip.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtDisplaySlip.Location = new System.Drawing.Point(1647, 666);
+            this.BtDisplaySlip.Location = new System.Drawing.Point(1635, 654);
             this.BtDisplaySlip.Name = "BtDisplaySlip";
-            this.BtDisplaySlip.Size = new System.Drawing.Size(69, 29);
+            this.BtDisplaySlip.Size = new System.Drawing.Size(86, 29);
             this.BtDisplaySlip.TabIndex = 104;
             this.BtDisplaySlip.Text = "Slip";
             this.toolTip1.SetToolTip(this.BtDisplaySlip, "Display Slip");
             this.BtDisplaySlip.UseVisualStyleBackColor = true;
             this.BtDisplaySlip.Click += new System.EventHandler(this.SlipCurrentRow_Click);
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(778, 40);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(111, 29);
-            this.button3.TabIndex = 105;
-            this.button3.Text = "PrintSlip(80)";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Visible = false;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(627, 40);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(146, 29);
-            this.button1.TabIndex = 106;
-            this.button1.Text = "GuessCourse(65)";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Visible = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // dgLegs
             // 
@@ -605,7 +582,7 @@
             dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgLegs.DefaultCellStyle = dataGridViewCellStyle8;
-            this.dgLegs.Location = new System.Drawing.Point(636, 464);
+            this.dgLegs.Location = new System.Drawing.Point(636, 465);
             this.dgLegs.Name = "dgLegs";
             this.dgLegs.ReadOnly = true;
             dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -618,7 +595,7 @@
             this.dgLegs.RowHeadersDefaultCellStyle = dataGridViewCellStyle9;
             this.dgLegs.RowHeadersWidth = 30;
             this.dgLegs.RowTemplate.Height = 24;
-            this.dgLegs.Size = new System.Drawing.Size(992, 289);
+            this.dgLegs.Size = new System.Drawing.Size(990, 289);
             this.dgLegs.TabIndex = 107;
             this.dgLegs.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgLegs_CellFormatting);
             this.dgLegs.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.dgLegs_CellPainting);
@@ -733,9 +710,9 @@
             // btnReloadReadout
             // 
             this.btnReloadReadout.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnReloadReadout.Location = new System.Drawing.Point(1647, 478);
+            this.btnReloadReadout.Location = new System.Drawing.Point(1635, 498);
             this.btnReloadReadout.Name = "btnReloadReadout";
-            this.btnReloadReadout.Size = new System.Drawing.Size(69, 29);
+            this.btnReloadReadout.Size = new System.Drawing.Size(86, 29);
             this.btnReloadReadout.TabIndex = 108;
             this.btnReloadReadout.Text = "Reload";
             this.toolTip1.SetToolTip(this.btnReloadReadout, "Reload Readout - this will reload punches for selected competitor");
@@ -754,14 +731,13 @@
             // btnPrintSlip
             // 
             this.btnPrintSlip.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnPrintSlip.Location = new System.Drawing.Point(1647, 519);
+            this.btnPrintSlip.Location = new System.Drawing.Point(1635, 692);
             this.btnPrintSlip.Name = "btnPrintSlip";
-            this.btnPrintSlip.Size = new System.Drawing.Size(69, 29);
+            this.btnPrintSlip.Size = new System.Drawing.Size(86, 29);
             this.btnPrintSlip.TabIndex = 109;
             this.btnPrintSlip.Text = "Print";
             this.toolTip1.SetToolTip(this.btnPrintSlip, "Print Slip on Printer");
             this.btnPrintSlip.UseVisualStyleBackColor = true;
-            this.btnPrintSlip.Visible = false;
             this.btnPrintSlip.Click += new System.EventHandler(this.btnPrintSlip_Click);
             // 
             // txSearch
@@ -785,9 +761,9 @@
             // btn_delete_leg
             // 
             this.btn_delete_leg.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_delete_leg.Location = new System.Drawing.Point(1647, 569);
+            this.btn_delete_leg.Location = new System.Drawing.Point(1635, 575);
             this.btn_delete_leg.Name = "btn_delete_leg";
-            this.btn_delete_leg.Size = new System.Drawing.Size(69, 29);
+            this.btn_delete_leg.Size = new System.Drawing.Size(86, 29);
             this.btn_delete_leg.TabIndex = 113;
             this.btn_delete_leg.Text = "Delete";
             this.toolTip1.SetToolTip(this.btn_delete_leg, "Delete Leg - this will make selected readout INACTIVE, will be still displayed");
@@ -797,18 +773,18 @@
             // btReloadAll
             // 
             this.btReloadAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btReloadAll.Location = new System.Drawing.Point(1647, 620);
+            this.btReloadAll.Location = new System.Drawing.Point(1635, 615);
             this.btReloadAll.Name = "btReloadAll";
-            this.btReloadAll.Size = new System.Drawing.Size(66, 29);
+            this.btReloadAll.Size = new System.Drawing.Size(86, 29);
             this.btReloadAll.TabIndex = 114;
-            this.btReloadAll.Text = "R All";
+            this.btReloadAll.Text = "R Team";
             this.toolTip1.SetToolTip(this.btReloadAll, "Reload whole Team");
             this.btReloadAll.UseVisualStyleBackColor = true;
             this.btReloadAll.Click += new System.EventHandler(this.btReloadAll_Click);
             // 
             // btnPostSlip
             // 
-            this.btnPostSlip.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnPostSlip.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnPostSlip.Location = new System.Drawing.Point(729, 428);
             this.btnPostSlip.Name = "btnPostSlip";
             this.btnPostSlip.Size = new System.Drawing.Size(84, 29);
@@ -820,9 +796,9 @@
             // btn_change_competitor
             // 
             this.btn_change_competitor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_change_competitor.Location = new System.Drawing.Point(1518, 428);
+            this.btn_change_competitor.Location = new System.Drawing.Point(1635, 537);
             this.btn_change_competitor.Name = "btn_change_competitor";
-            this.btn_change_competitor.Size = new System.Drawing.Size(99, 29);
+            this.btn_change_competitor.Size = new System.Drawing.Size(86, 29);
             this.btn_change_competitor.TabIndex = 116;
             this.btn_change_competitor.Text = "Ch comp";
             this.btn_change_competitor.UseVisualStyleBackColor = true;
@@ -830,7 +806,7 @@
             // 
             // btnResults
             // 
-            this.btnResults.Location = new System.Drawing.Point(897, 42);
+            this.btnResults.Location = new System.Drawing.Point(1326, 308);
             this.btnResults.Name = "btnResults";
             this.btnResults.Size = new System.Drawing.Size(84, 29);
             this.btnResults.TabIndex = 117;
@@ -853,17 +829,39 @@
             // btnRefreshLegs
             // 
             this.btnRefreshLegs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnRefreshLegs.Location = new System.Drawing.Point(1629, 428);
+            this.btnRefreshLegs.Location = new System.Drawing.Point(1635, 458);
             this.btnRefreshLegs.Name = "btnRefreshLegs";
-            this.btnRefreshLegs.Size = new System.Drawing.Size(84, 29);
+            this.btnRefreshLegs.Size = new System.Drawing.Size(86, 29);
             this.btnRefreshLegs.TabIndex = 119;
             this.btnRefreshLegs.Text = "Refresh";
             this.btnRefreshLegs.UseVisualStyleBackColor = true;
             this.btnRefreshLegs.Click += new System.EventHandler(this.btnRefreshLegs_Click);
             // 
+            // btnTopSearchBottom
+            // 
+            this.btnTopSearchBottom.Location = new System.Drawing.Point(387, 655);
+            this.btnTopSearchBottom.Name = "btnTopSearchBottom";
+            this.btnTopSearchBottom.Size = new System.Drawing.Size(34, 48);
+            this.btnTopSearchBottom.TabIndex = 132;
+            this.btnTopSearchBottom.Text = " |\r\nV";
+            this.toolTip1.SetToolTip(this.btnTopSearchBottom, "Copy Search text to Search Readout");
+            this.btnTopSearchBottom.UseVisualStyleBackColor = true;
+            this.btnTopSearchBottom.Click += new System.EventHandler(this.btnTopSearchBottom_Click);
+            // 
+            // btFilterReadout
+            // 
+            this.btFilterReadout.Location = new System.Drawing.Point(532, 655);
+            this.btFilterReadout.Name = "btFilterReadout";
+            this.btFilterReadout.Size = new System.Drawing.Size(54, 38);
+            this.btFilterReadout.TabIndex = 133;
+            this.btFilterReadout.Text = "-->";
+            this.toolTip1.SetToolTip(this.btFilterReadout, "Filters Readout list by team selected on TopLeft");
+            this.btFilterReadout.UseVisualStyleBackColor = true;
+            this.btFilterReadout.Click += new System.EventHandler(this.btFilterReadout_Click);
+            // 
             // BtnPostAll
             // 
-            this.BtnPostAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.BtnPostAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.BtnPostAll.Location = new System.Drawing.Point(639, 428);
             this.BtnPostAll.Name = "BtnPostAll";
             this.BtnPostAll.Size = new System.Drawing.Size(84, 29);
@@ -879,7 +877,7 @@
             this.LbLastBib.Font = new System.Drawing.Font("Microsoft Sans Serif", 60F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LbLastBib.Location = new System.Drawing.Point(3, 22);
             this.LbLastBib.Name = "LbLastBib";
-            this.LbLastBib.Size = new System.Drawing.Size(585, 297);
+            this.LbLastBib.Size = new System.Drawing.Size(651, 344);
             this.LbLastBib.TabIndex = 122;
             this.LbLastBib.Text = "0X";
             this.LbLastBib.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -893,9 +891,9 @@
             this.groupBox2.Controls.Add(this.LbPenal);
             this.groupBox2.Controls.Add(this.LbStatus);
             this.groupBox2.Controls.Add(this.LbLastBib);
-            this.groupBox2.Location = new System.Drawing.Point(636, 89);
+            this.groupBox2.Location = new System.Drawing.Point(636, 42);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(591, 322);
+            this.groupBox2.Size = new System.Drawing.Size(657, 369);
             this.groupBox2.TabIndex = 123;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Last Readout";
@@ -905,7 +903,7 @@
             this.LbPenal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.LbPenal.AutoSize = true;
             this.LbPenal.Font = new System.Drawing.Font("Microsoft Sans Serif", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LbPenal.Location = new System.Drawing.Point(363, 254);
+            this.LbPenal.Location = new System.Drawing.Point(429, 302);
             this.LbPenal.Name = "LbPenal";
             this.LbPenal.Size = new System.Drawing.Size(221, 58);
             this.LbPenal.TabIndex = 124;
@@ -916,7 +914,7 @@
             this.LbStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.LbStatus.AutoSize = true;
             this.LbStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LbStatus.Location = new System.Drawing.Point(33, 255);
+            this.LbStatus.Location = new System.Drawing.Point(33, 302);
             this.LbStatus.Name = "LbStatus";
             this.LbStatus.Size = new System.Drawing.Size(97, 58);
             this.LbStatus.TabIndex = 123;
@@ -949,17 +947,18 @@
             // button2
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.Location = new System.Drawing.Point(1553, 392);
+            this.button2.Location = new System.Drawing.Point(1552, 392);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 27);
+            this.button2.Size = new System.Drawing.Size(75, 28);
             this.button2.TabIndex = 127;
             this.button2.Text = "Q one time";
             this.button2.UseVisualStyleBackColor = false;
+            this.button2.Visible = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // tbSearchReadout
             // 
-            this.tbSearchReadout.Location = new System.Drawing.Point(367, 727);
+            this.tbSearchReadout.Location = new System.Drawing.Point(368, 728);
             this.tbSearchReadout.Name = "tbSearchReadout";
             this.tbSearchReadout.Size = new System.Drawing.Size(220, 26);
             this.tbSearchReadout.TabIndex = 128;
@@ -968,7 +967,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(211, 733);
+            this.label1.Location = new System.Drawing.Point(212, 732);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(126, 20);
             this.label1.TabIndex = 129;
@@ -976,44 +975,35 @@
             // 
             // btReadot_cancel
             // 
-            this.btReadot_cancel.Location = new System.Drawing.Point(593, 726);
+            this.btReadot_cancel.Location = new System.Drawing.Point(592, 722);
             this.btReadot_cancel.Name = "btReadot_cancel";
-            this.btReadot_cancel.Size = new System.Drawing.Size(27, 27);
+            this.btReadot_cancel.Size = new System.Drawing.Size(34, 35);
             this.btReadot_cancel.TabIndex = 130;
-            this.btReadot_cancel.Text = "x";
+            this.btReadot_cancel.Text = "X";
             this.btReadot_cancel.UseVisualStyleBackColor = true;
             this.btReadot_cancel.Click += new System.EventHandler(this.btReadot_cancel_Click);
             // 
             // btChangeStatus
             // 
             this.btChangeStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btChangeStatus.Location = new System.Drawing.Point(1647, 709);
+            this.btChangeStatus.Location = new System.Drawing.Point(1635, 729);
             this.btChangeStatus.Name = "btChangeStatus";
-            this.btChangeStatus.Size = new System.Drawing.Size(69, 29);
+            this.btChangeStatus.Size = new System.Drawing.Size(86, 29);
             this.btChangeStatus.TabIndex = 131;
             this.btChangeStatus.Text = "Status";
             this.btChangeStatus.UseVisualStyleBackColor = true;
             this.btChangeStatus.Click += new System.EventHandler(this.btChangeStatus_Click);
             // 
-            // btnTopSearchBottom
+            // btPostTeam
             // 
-            this.btnTopSearchBottom.Location = new System.Drawing.Point(387, 656);
-            this.btnTopSearchBottom.Name = "btnTopSearchBottom";
-            this.btnTopSearchBottom.Size = new System.Drawing.Size(35, 48);
-            this.btnTopSearchBottom.TabIndex = 132;
-            this.btnTopSearchBottom.Text = " |\r\nV";
-            this.btnTopSearchBottom.UseVisualStyleBackColor = true;
-            this.btnTopSearchBottom.Click += new System.EventHandler(this.btnTopSearchBottom_Click);
-            // 
-            // btFilterReadout
-            // 
-            this.btFilterReadout.Location = new System.Drawing.Point(533, 656);
-            this.btFilterReadout.Name = "btFilterReadout";
-            this.btFilterReadout.Size = new System.Drawing.Size(54, 39);
-            this.btFilterReadout.TabIndex = 133;
-            this.btFilterReadout.Text = "-->";
-            this.btFilterReadout.UseVisualStyleBackColor = true;
-            this.btFilterReadout.Click += new System.EventHandler(this.btFilterReadout_Click);
+            this.btPostTeam.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btPostTeam.Location = new System.Drawing.Point(855, 428);
+            this.btPostTeam.Name = "btPostTeam";
+            this.btPostTeam.Size = new System.Drawing.Size(102, 29);
+            this.btPostTeam.TabIndex = 134;
+            this.btPostTeam.Text = "Post Team";
+            this.btPostTeam.UseVisualStyleBackColor = true;
+            this.btPostTeam.Click += new System.EventHandler(this.btPostTeam_Click);
             // 
             // readout_id
             // 
@@ -1256,7 +1246,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1732, 984);
+            this.ClientSize = new System.Drawing.Size(1732, 985);
+            this.Controls.Add(this.btPostTeam);
             this.Controls.Add(this.btFilterReadout);
             this.Controls.Add(this.btnTopSearchBottom);
             this.Controls.Add(this.btChangeStatus);
@@ -1280,8 +1271,6 @@
             this.Controls.Add(this.btnPrintSlip);
             this.Controls.Add(this.btnReloadReadout);
             this.Controls.Add(this.dgLegs);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.button3);
             this.Controls.Add(this.BtDisplaySlip);
             this.Controls.Add(this.dgTeams);
             this.Controls.Add(this.dgCompetitors);
@@ -1291,7 +1280,7 @@
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.MinimumSize = new System.Drawing.Size(901, 747);
+            this.MinimumSize = new System.Drawing.Size(898, 668);
             this.Name = "FrmMain";
             this.Text = "h24";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
@@ -1339,8 +1328,6 @@
         private System.Windows.Forms.Button BtDisplaySlip;
         private System.Windows.Forms.CheckBox chbPrint;
         public System.Windows.Forms.ComboBox cbPrinter;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.DataGridView dgLegs;
         private System.Windows.Forms.BindingSource legsBindingSource;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
@@ -1417,6 +1404,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn phone_number;
         private System.Windows.Forms.Button btnTopSearchBottom;
         private System.Windows.Forms.Button btFilterReadout;
+        private System.Windows.Forms.Button btPostTeam;
     }
 }
 

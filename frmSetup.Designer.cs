@@ -38,6 +38,7 @@ namespace h24
             this.label1 = new System.Windows.Forms.Label();
             this.CbROC = new System.Windows.Forms.CheckBox();
             this.BtUpdateROC = new System.Windows.Forms.Button();
+            this.btSaveSettings = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgSettings)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.settingsBindingSource)).BeginInit();
             this.SuspendLayout();
@@ -126,11 +127,22 @@ namespace h24
             this.BtUpdateROC.UseVisualStyleBackColor = true;
             this.BtUpdateROC.Click += new System.EventHandler(this.BtUpdateROC_Click);
             // 
+            // btSaveSettings
+            // 
+            this.btSaveSettings.Location = new System.Drawing.Point(910, 591);
+            this.btSaveSettings.Name = "btSaveSettings";
+            this.btSaveSettings.Size = new System.Drawing.Size(148, 32);
+            this.btSaveSettings.TabIndex = 6;
+            this.btSaveSettings.Text = "Save Settings";
+            this.btSaveSettings.UseVisualStyleBackColor = true;
+            this.btSaveSettings.Click += new System.EventHandler(this.btSaveSettings_Click);
+            // 
             // frmSetup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1331, 645);
+            this.Controls.Add(this.btSaveSettings);
             this.Controls.Add(this.BtUpdateROC);
             this.Controls.Add(this.CbROC);
             this.Controls.Add(this.label1);
@@ -156,5 +168,6 @@ namespace h24
         private System.Windows.Forms.DataGridViewTextBoxColumn configvalueDataGridViewTextBoxColumn;
         private System.Windows.Forms.CheckBox CbROC;
         private System.Windows.Forms.Button BtUpdateROC;
+        private System.Windows.Forms.Button btSaveSettings;
     }
 }

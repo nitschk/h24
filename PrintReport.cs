@@ -77,15 +77,22 @@ namespace h24
         {
             Metafile pageImage = new
                Metafile(m_streams[m_currentPageIndex]);
+            double scale = 1.3;
 
 int w = ev.PageBounds.Width;
             // Adjust rectangular area with printer margins.
+            //Rectangle adjustedRect = new Rectangle(
+            //    ev.PageBounds.Left - (int)ev.PageSettings.HardMarginX,
+            //    ev.PageBounds.Top - (int)ev.PageSettings.HardMarginY,
+            //    (int)reportWidth,
+            //    //ev.PageBounds.Width,
+            //    ev.PageBounds.Height);
             Rectangle adjustedRect = new Rectangle(
                 ev.PageBounds.Left - (int)ev.PageSettings.HardMarginX,
                 ev.PageBounds.Top - (int)ev.PageSettings.HardMarginY,
-                (int)reportWidth,
-                //ev.PageBounds.Width,
-                ev.PageBounds.Height);
+                (int)((reportWidth + 2* (int)ev.PageSettings.HardMarginX) * scale),
+                (int)((ev.PageBounds.Height + 2* (int)ev.PageSettings.HardMarginY) * scale)
+            );
 
             // Draw a white background for the report
             ev.Graphics.FillRectangle(Brushes.White, adjustedRect);
@@ -97,6 +104,20 @@ int w = ev.PageBounds.Width;
             m_currentPageIndex++;
             ev.HasMorePages = (m_currentPageIndex < m_streams.Count);
         }
+
+        /*public static void PrintPage(object sender, PrintPageEventArgs ev)
+        {
+
+            Metafile pageImage =
+              new Metafile(m_streams[m_currentPageIndex]);
+            //That's the fix - Units set to Display
+            ev.Graphics.PageUnit = GraphicsUnit.Display;
+            //Drawing it scaled
+            ev.Graphics.DrawImage(pageImage, 0, 0, (int)(ev.MarginBounds.Width *1.3), (int)(ev.MarginBounds.Height *1.3));
+
+            m_currentPageIndex++;
+            ev.HasMorePages = (m_currentPageIndex < m_streams.Count);
+        }*/
 
         public static void Print(string printerName)
         {

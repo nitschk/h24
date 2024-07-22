@@ -16,7 +16,7 @@ namespace h24
             LoadSettings();
         }
 
-        private static void LoadSettings()
+        public static void LoadSettings()
         {
             using (var db = new klc01())
             {

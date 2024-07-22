@@ -44,5 +44,11 @@ namespace h24
                 this.BtUpdateROC.Text = "Stop";
             }
         }
+
+        private void btSaveSettings_Click(object sender, EventArgs e)
+        {
+            //SettingsManager sm = new SettingsManager();
+            SettingsManager.LoadSettings();
+        }
     }
 }
