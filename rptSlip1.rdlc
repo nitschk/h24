@@ -15,7 +15,7 @@
               <Width>2.51786cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.96787cm</Width>
+              <Width>1.95199cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -34,7 +34,7 @@
                               <Value>#</Value>
                               <Style>
                                 <FontFamily>Consolas</FontFamily>
-                                <FontSize>9pt</FontSize>
+                                <FontSize>8pt</FontSize>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -67,7 +67,7 @@
                               <Value>Control</Value>
                               <Style>
                                 <FontFamily>Consolas</FontFamily>
-                                <FontSize>9pt</FontSize>
+                                <FontSize>8pt</FontSize>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -100,7 +100,7 @@
                               <Value>Time</Value>
                               <Style>
                                 <FontFamily>Consolas</FontFamily>
-                                <FontSize>9pt</FontSize>
+                                <FontSize>8pt</FontSize>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -133,7 +133,7 @@
                               <Value>Lap</Value>
                               <Style>
                                 <FontFamily>Consolas</FontFamily>
-                                <FontSize>9pt</FontSize>
+                                <FontSize>8pt</FontSize>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -171,7 +171,7 @@
                               <Value>=Fields!position.Value</Value>
                               <Style>
                                 <FontFamily>Consolas</FontFamily>
-                                <FontSize>9pt</FontSize>
+                                <FontSize>8pt</FontSize>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -204,7 +204,7 @@
                               <Value>=Fields!control_code.Value</Value>
                               <Style>
                                 <FontFamily>Consolas</FontFamily>
-                                <FontSize>9pt</FontSize>
+                                <FontSize>8pt</FontSize>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -237,7 +237,7 @@
                               <Value>=Fields!punch_time.Value</Value>
                               <Style>
                                 <FontFamily>Consolas</FontFamily>
-                                <FontSize>9pt</FontSize>
+                                <FontSize>8pt</FontSize>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -270,7 +270,7 @@
                               <Value>=Fields!lap_time.Value</Value>
                               <Style>
                                 <FontFamily>Consolas</FontFamily>
-                                <FontSize>9pt</FontSize>
+                                <FontSize>8pt</FontSize>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -310,11 +310,16 @@
             </TablixMember>
             <TablixMember>
               <Group Name="Details" />
+              <SortExpressions>
+                <SortExpression>
+                  <Value>=Fields!punch_index.Value</Value>
+                </SortExpression>
+              </SortExpressions>
             </TablixMember>
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>dsSlip</DataSetName>
-        <Top>2.32185cm</Top>
+        <Top>2.4171cm</Top>
         <Left>0.34078cm</Left>
         <Height>0.90406cm</Height>
         <Width>7.04449cm</Width>
@@ -343,9 +348,9 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox7</rd:DefaultName>
-        <Top>3.99849cm</Top>
+        <Top>4.09374cm</Top>
         <Left>0.29964cm</Left>
-        <Height>0.5cm</Height>
+        <Height>0.59033cm</Height>
         <Width>2.07667cm</Width>
         <ZIndex>1</ZIndex>
         <Style>
@@ -378,10 +383,10 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>team_race_end</rd:DefaultName>
-        <Top>3.99357cm</Top>
+        <Top>4.08882cm</Top>
         <Left>2.51028cm</Left>
-        <Height>0.5cm</Height>
-        <Width>4.71785cm</Width>
+        <Height>0.59525cm</Height>
+        <Width>4.87499cm</Width>
         <ZIndex>2</ZIndex>
         <Style>
           <Border>
@@ -393,7 +398,7 @@
           <PaddingBottom>2pt</PaddingBottom>
         </Style>
       </Textbox>
-      <Textbox Name="Textbox3">
+      <Textbox Name="leg_status">
         <CanGrow>true</CanGrow>
         <KeepTogether>true</KeepTogether>
         <Paragraphs>
@@ -410,9 +415,8 @@
             <Style />
           </Paragraph>
         </Paragraphs>
-        <rd:DefaultName>Textbox3</rd:DefaultName>
-        <Top>3.40229cm</Top>
-        <Left>0.29964cm</Left>
+        <Top>3.49143cm</Top>
+        <Left>0.30903cm</Left>
         <Height>0.5cm</Height>
         <Width>2.5cm</Width>
         <ZIndex>3</ZIndex>
@@ -426,7 +430,7 @@
           <PaddingBottom>2pt</PaddingBottom>
         </Style>
       </Textbox>
-      <Textbox Name="Textbox9">
+      <Textbox Name="penalty_label">
         <CanGrow>true</CanGrow>
         <KeepTogether>true</KeepTogether>
         <Paragraphs>
@@ -444,11 +448,10 @@ datediff("s", CDate(First(Fields!dsk_penalty.Value, "dsSlip").ToString())
             <Style />
           </Paragraph>
         </Paragraphs>
-        <rd:DefaultName>Textbox9</rd:DefaultName>
-        <Top>3.39737cm</Top>
-        <Left>3.86029cm</Left>
+        <Top>3.49143cm</Top>
+        <Left>3.4635cm</Left>
         <Height>0.5cm</Height>
-        <Width>0.89133cm</Width>
+        <Width>1.28812cm</Width>
         <ZIndex>4</ZIndex>
         <Style>
           <Border>
@@ -483,8 +486,8 @@ Format(CDate(First(Fields!dsk_penalty.Value, "dsSlip").ToString()), "mm:ss"), ""
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>dsk_penalty</rd:DefaultName>
-        <Top>3.39737cm</Top>
-        <Left>5.08796cm</Left>
+        <Top>3.49143cm</Top>
+        <Left>5.2451cm</Left>
         <Height>0.5cm</Height>
         <Width>2.14017cm</Width>
         <ZIndex>5</ZIndex>
@@ -516,7 +519,7 @@ Format(CDate(First(Fields!dsk_penalty.Value, "dsSlip").ToString()), "mm:ss"), ""
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>course_name</rd:DefaultName>
-        <Top>0.97099cm</Top>
+        <Top>1.06624cm</Top>
         <Left>0.30903cm</Left>
         <Height>0.4cm</Height>
         <Width>2.5cm</Width>
@@ -586,7 +589,7 @@ Format(CDate(First(Fields!dsk_penalty.Value, "dsSlip").ToString()), "mm:ss"), ""
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>rented_chip</rd:DefaultName>
-        <Top>0.97336cm</Top>
+        <Top>1.06861cm</Top>
         <Left>6.63575cm</Left>
         <Height>0.4cm</Height>
         <Width>0.74952cm</Width>
@@ -654,8 +657,8 @@ Format(CDate(First(Fields!dsk_penalty.Value, "dsSlip").ToString()), "mm:ss"), ""
         <rd:DefaultName>team_name</rd:DefaultName>
         <Top>0.5028cm</Top>
         <Left>0.29964cm</Left>
-        <Height>0.4cm</Height>
-        <Width>5.38587cm</Width>
+        <Height>0.4635cm</Height>
+        <Width>4.13448cm</Width>
         <ZIndex>10</ZIndex>
         <Style>
           <Border>
@@ -668,7 +671,6 @@ Format(CDate(First(Fields!dsk_penalty.Value, "dsSlip").ToString()), "mm:ss"), ""
         </Style>
       </Textbox>
       <Textbox Name="cat_name">
-
         <KeepTogether>true</KeepTogether>
         <Paragraphs>
           <Paragraph>
@@ -688,9 +690,9 @@ Format(CDate(First(Fields!dsk_penalty.Value, "dsSlip").ToString()), "mm:ss"), ""
         </Paragraphs>
         <rd:DefaultName>cat_name</rd:DefaultName>
         <Top>0.5028cm</Top>
-        <Left>5.82662cm</Left>
-        <Height>0.4cm</Height>
-        <Width>1.55865cm</Width>
+        <Left>4.61051cm</Left>
+        <Height>0.4635cm</Height>
+        <Width>2.77476cm</Width>
         <ZIndex>11</ZIndex>
         <Style>
           <Border>
@@ -720,7 +722,7 @@ Format(CDate(First(Fields!dsk_penalty.Value, "dsSlip").ToString()), "mm:ss"), ""
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>check_time</rd:DefaultName>
-        <Top>1.38995cm</Top>
+        <Top>1.4852cm</Top>
         <Left>1.68014cm</Left>
         <Height>0.4cm</Height>
         <Width>1.93322cm</Width>
@@ -753,8 +755,8 @@ Format(CDate(First(Fields!dsk_penalty.Value, "dsSlip").ToString()), "mm:ss"), ""
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>stamp_readout_dtime</rd:DefaultName>
-        <Top>1.82444cm</Top>
-        <Left>5.48428cm</Left>
+        <Top>1.91969cm</Top>
+        <Left>5.54778cm</Left>
         <Height>0.4cm</Height>
         <Width>1.90099cm</Width>
         <ZIndex>13</ZIndex>
@@ -786,7 +788,7 @@ Format(CDate(First(Fields!dsk_penalty.Value, "dsSlip").ToString()), "mm:ss"), ""
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox1</rd:DefaultName>
-        <Top>1.38157cm</Top>
+        <Top>1.47682cm</Top>
         <Left>0.30903cm</Left>
         <Height>0.4cm</Height>
         <Width>1.25117cm</Width>
@@ -819,8 +821,8 @@ Format(CDate(First(Fields!dsk_penalty.Value, "dsSlip").ToString()), "mm:ss"), ""
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>finish_time1</rd:DefaultName>
-        <Top>1.38995cm</Top>
-        <Left>5.48428cm</Left>
+        <Top>1.47682cm</Top>
+        <Left>5.54778cm</Left>
         <Height>0.4cm</Height>
         <Width>1.90099cm</Width>
         <ZIndex>15</ZIndex>
@@ -852,7 +854,7 @@ Format(CDate(First(Fields!dsk_penalty.Value, "dsSlip").ToString()), "mm:ss"), ""
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>start_dtime</rd:DefaultName>
-        <Top>1.82444cm</Top>
+        <Top>1.91969cm</Top>
         <Left>1.70018cm</Left>
         <Height>0.4cm</Height>
         <Width>1.91318cm</Width>
@@ -885,7 +887,7 @@ Format(CDate(First(Fields!dsk_penalty.Value, "dsSlip").ToString()), "mm:ss"), ""
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox4</rd:DefaultName>
-        <Top>1.82444cm</Top>
+        <Top>1.91969cm</Top>
         <Left>0.30903cm</Left>
         <Height>0.4cm</Height>
         <Width>1.26175cm</Width>
@@ -918,10 +920,10 @@ Format(CDate(First(Fields!dsk_penalty.Value, "dsSlip").ToString()), "mm:ss"), ""
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox1</rd:DefaultName>
-        <Top>1.38995cm</Top>
+        <Top>1.4852cm</Top>
         <Left>3.73217cm</Left>
         <Height>0.4cm</Height>
-        <Width>1.62881cm</Width>
+        <Width>1.70625cm</Width>
         <ZIndex>18</ZIndex>
         <Style>
           <Border>
@@ -951,10 +953,10 @@ Format(CDate(First(Fields!dsk_penalty.Value, "dsSlip").ToString()), "mm:ss"), ""
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox4</rd:DefaultName>
-        <Top>1.82444cm</Top>
+        <Top>1.91969cm</Top>
         <Left>3.73553cm</Left>
         <Height>0.4cm</Height>
-        <Width>1.60764cm</Width>
+        <Width>1.70289cm</Width>
         <ZIndex>19</ZIndex>
         <Style>
           <Border>
@@ -966,7 +968,7 @@ Format(CDate(First(Fields!dsk_penalty.Value, "dsSlip").ToString()), "mm:ss"), ""
           <PaddingBottom>2pt</PaddingBottom>
         </Style>
       </Textbox>
-      <Textbox Name="course_name2">
+      <Textbox Name="chip_id">
         <CanGrow>true</CanGrow>
         <KeepTogether>true</KeepTogether>
         <Paragraphs>
@@ -983,8 +985,7 @@ Format(CDate(First(Fields!dsk_penalty.Value, "dsSlip").ToString()), "mm:ss"), ""
             <Style />
           </Paragraph>
         </Paragraphs>
-        <rd:DefaultName>course_name</rd:DefaultName>
-        <Top>0.97336cm</Top>
+        <Top>1.06861cm</Top>
         <Left>4.0513cm</Left>
         <Height>0.4cm</Height>
         <Width>2.5cm</Width>
@@ -1000,10 +1001,10 @@ Format(CDate(First(Fields!dsk_penalty.Value, "dsSlip").ToString()), "mm:ss"), ""
         </Style>
       </Textbox>
     </ReportItems>
-    <Height>1.93767in</Height>
+    <Height>2.04878in</Height>
     <Style />
   </Body>
-  <Width>3.03259in</Width>
+  <Width>3.15in</Width>
   <Page>
     <PageHeader>
       <Height>0.02646cm</Height>
