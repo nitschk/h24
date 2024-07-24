@@ -56,10 +56,10 @@ namespace h24
             // 
             // reportViewer1
             // 
-            reportDataSource1.Name = "dsSlip";
+            reportDataSource1.Name = "dsResult";
             reportDataSource1.Value = this.bindingSource;
             this.reportViewer1.LocalReport.DataSources.Add(reportDataSource1);
-            this.reportViewer1.LocalReport.ReportEmbeddedResource = "h24.rptSlip1.rdlc";
+            this.reportViewer1.LocalReport.ReportEmbeddedResource = "h24.rpt_results.rdlc";
             this.reportViewer1.Location = new System.Drawing.Point(125, 44);
             this.reportViewer1.Name = "reportViewer1";
             this.reportViewer1.Size = new System.Drawing.Size(600, 246);
