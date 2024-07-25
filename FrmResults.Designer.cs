@@ -30,14 +30,14 @@ namespace h24
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            Microsoft.Reporting.WinForms.ReportDataSource reportDataSource1 = new Microsoft.Reporting.WinForms.ReportDataSource();
+            Microsoft.Reporting.WinForms.ReportDataSource reportDataSource2 = new Microsoft.Reporting.WinForms.ReportDataSource();
             this.bindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.ds_result = new h24.ds_result();
             this.reportViewer1 = new Microsoft.Reporting.WinForms.ReportViewer();
-            this.button1 = new System.Windows.Forms.Button();
-            this.BtnJson = new System.Windows.Forms.Button();
+            this.BtnRefresh = new System.Windows.Forms.Button();
+            this.BtnTeamResults = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
+            this.BtnCourseResults = new System.Windows.Forms.Button();
             this.rpt_resultsTableAdapter = new h24.ds_resultTableAdapters.rpt_resultsTableAdapter();
             this.cbCategory = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource)).BeginInit();
@@ -56,36 +56,36 @@ namespace h24
             // 
             // reportViewer1
             // 
-            reportDataSource1.Name = "dsResult";
-            reportDataSource1.Value = this.bindingSource;
-            this.reportViewer1.LocalReport.DataSources.Add(reportDataSource1);
+            reportDataSource2.Name = "dsResult";
+            reportDataSource2.Value = this.bindingSource;
+            this.reportViewer1.LocalReport.DataSources.Add(reportDataSource2);
             this.reportViewer1.LocalReport.ReportEmbeddedResource = "h24.rpt_results.rdlc";
             this.reportViewer1.Location = new System.Drawing.Point(125, 44);
             this.reportViewer1.Name = "reportViewer1";
             this.reportViewer1.Size = new System.Drawing.Size(600, 246);
             this.reportViewer1.TabIndex = 0;
             // 
-            // button1
+            // BtnRefresh
             // 
-            this.button1.Location = new System.Drawing.Point(253, 16);
-            this.button1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(84, 29);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.BtnRefresh.Location = new System.Drawing.Point(253, 16);
+            this.BtnRefresh.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.BtnRefresh.Name = "BtnRefresh";
+            this.BtnRefresh.Size = new System.Drawing.Size(84, 29);
+            this.BtnRefresh.TabIndex = 0;
+            this.BtnRefresh.Text = "Refresh";
+            this.BtnRefresh.UseVisualStyleBackColor = true;
+            this.BtnRefresh.Click += new System.EventHandler(this.BtnRefresh_Click);
             // 
-            // BtnJson
+            // BtnTeamResults
             // 
-            this.BtnJson.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnJson.Location = new System.Drawing.Point(626, 70);
-            this.BtnJson.Name = "BtnJson";
-            this.BtnJson.Size = new System.Drawing.Size(134, 32);
-            this.BtnJson.TabIndex = 1;
-            this.BtnJson.Text = "Team Results";
-            this.BtnJson.UseVisualStyleBackColor = true;
-            this.BtnJson.Click += new System.EventHandler(this.BtnJson_Click);
+            this.BtnTeamResults.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.BtnTeamResults.Location = new System.Drawing.Point(626, 70);
+            this.BtnTeamResults.Name = "BtnTeamResults";
+            this.BtnTeamResults.Size = new System.Drawing.Size(134, 32);
+            this.BtnTeamResults.TabIndex = 1;
+            this.BtnTeamResults.Text = "Team Results";
+            this.BtnTeamResults.UseVisualStyleBackColor = true;
+            this.BtnTeamResults.Click += new System.EventHandler(this.BtnTeamResults_Click);
             // 
             // label1
             // 
@@ -97,16 +97,16 @@ namespace h24
             this.label1.TabIndex = 2;
             this.label1.Text = "Offline Results";
             // 
-            // button2
+            // BtnCourseResults
             // 
-            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.Location = new System.Drawing.Point(626, 112);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(134, 32);
-            this.button2.TabIndex = 3;
-            this.button2.Text = "Course Results";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.BtnCourseResults.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.BtnCourseResults.Location = new System.Drawing.Point(626, 112);
+            this.BtnCourseResults.Name = "BtnCourseResults";
+            this.BtnCourseResults.Size = new System.Drawing.Size(134, 32);
+            this.BtnCourseResults.TabIndex = 3;
+            this.BtnCourseResults.Text = "Course Results";
+            this.BtnCourseResults.UseVisualStyleBackColor = true;
+            this.BtnCourseResults.Click += new System.EventHandler(this.BtnCourseResults_Click);
             // 
             // rpt_resultsTableAdapter
             // 
@@ -126,10 +126,10 @@ namespace h24
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(790, 562);
             this.Controls.Add(this.cbCategory);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.BtnCourseResults);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.BtnJson);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.BtnTeamResults);
+            this.Controls.Add(this.BtnRefresh);
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "FrmResults";
             this.Text = "frmResults";
@@ -144,13 +144,13 @@ namespace h24
         #endregion
 
         private Microsoft.Reporting.WinForms.ReportViewer reportViewer1;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button BtnRefresh;
         private ds_result ds_result;
         private System.Windows.Forms.BindingSource bindingSource;
         private ds_resultTableAdapters.rpt_resultsTableAdapter rpt_resultsTableAdapter;
-        private System.Windows.Forms.Button BtnJson;
+        private System.Windows.Forms.Button BtnTeamResults;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button BtnCourseResults;
         private System.Windows.Forms.ComboBox cbCategory;
     }
 }

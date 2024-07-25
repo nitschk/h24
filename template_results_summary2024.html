@@ -1,0 +1,149 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Results 24-h Thuringian Orienteering Relay 2024</title>
+	<meta name="description" content="Results 2024 - 24-h Thuringian Orienteering Relay">
+	<meta name="author" content="24h-ol.de">
+
+	<link rel="icon" href="favicon.ico">
+	<style>
+	/*general styles*/
+		.printable{display:none;}
+	/* print styles*/
+	@media print { 
+		.printable {display:block;} 
+		.nonprintable {display:none;}
+	}
+	
+	#quoteData {
+  height: 200px; /* Adjust height according to your preference */
+  overflow: hidden;
+}
+
+#quoteData p {
+  margin: 0;
+  padding: 10px;
+  animation: scrollText 30s linear infinite;
+}
+
+@keyframes scrollText {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-100%);
+  }
+}
+
+	</style>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.8/handlebars.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.16.22/dist/css/uikit.min.css" />
+
+	<!-- UIkit JS -->
+	<script src="https://cdn.jsdelivr.net/npm/uikit@3.16.22/dist/js/uikit.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/uikit@3.16.22/dist/js/uikit-icons.min.js"></script>
+</head>
+<body>
+  <div class="uk-grid uk-grid-medium" data-uk-grid>
+    <!-- panel -->
+    <div class="uk-width-1-1">
+      <div class="uk-card uk-card-default uk-card-small uk-card-hover">
+        <div class="uk-card-header" id="header">
+          <div class="uk-grid uk-grid-small">
+            <div class="uk-width-auto"><h1>Results 24-h Thuringian Orienteering Relay 2024</h1></div>
+            <div class="uk-width-expand uk-text-right panel-icons"></div>
+          </div>
+        </div>
+        <div class="uk-card-body">
+          <div class="chart-container" id="results-to-scroll">
+		    <div id="quoteData"></div>
+		  </div>
+        </div>
+      </div>
+    </div>
+    <!-- /panel -->
+  </div>
+
+<script id="quote-template" type="text/x-handlebars-template">
+
+{{#each r}}
+    <h2 uk-toggle="target: #t-{{class_name}}">{{class_name}}</h2>
+    <table class="uk-table uk-table-divider uk-table-small" id="t-{{class_name}}">
+        <thead class="thead-light">
+        <tr><th>Rank</th><th>Team Name</th><th>Team #</th><th>Finish</th><th>Km</th><th>Leg Count</th></tr>
+        </thead>
+        <tbody>
+	{{#each teams}}
+		<tr><td>{{tRank @index}}</td>
+			<td>{{team_name}}</td><td>{{team_nr}}</td><td>{{team_time}}</td><td>{{kmRound courses_length}}</td><td>{{legs_count}}</td></tr>
+	{{/each}}
+        </tbody>
+    </table>
+{{/each}}
+
+
+
+</script>
+<script>
+
+$(document).ready(function(){
+    var headerHeight = $("#header").outerHeight();
+    console.log("headerHeight", headerHeight);
+    var scrollingTextHeight = "calc(100vh - " + headerHeight + "px)";
+console.log("scrollingTextHeight", scrollingTextHeight);
+    $("#results-to-scroll").css("height", scrollingTextHeight);
+
+    // Wait for the animation to finish
+    $("#scrollingText div").on("animationiteration", function () {
+      // Delay before scrolling back to top
+      setTimeout(function () {
+        $("#scrollingText div").css("animation", "scrollTextTop 3s forwards");
+      }, 5000); // Adjust delay time as needed
+    });
+
+	
+	
+  // Wait for the animation to finish
+  $('#quoteData p').on('animationiteration', function() {
+    // Delay before scrolling back to top
+    setTimeout(function() {
+      $('#quoteData p').css('animation', 'scrollTextTop 300s forwards');
+    }, 5000); // Adjust delay time as needed
+  });
+});
+
+</script>
+
+<script type="text/javascript">
+
+Handlebars.registerHelper('tRank', (idx) => {
+	return  idx + 1;
+});
+Handlebars.registerHelper('kmRound', (km) => {
+	return Math.round(km * 10) /10000;
+});
+Handlebars.registerHelper('isDskPenalty', (name) => {
+	return name != "00:00:00";
+});
+
+
+    var quoteInfo = document.getElementById("quote-template").innerHTML;
+    var template = Handlebars.compile(quoteInfo);
+
+    var quoteData = template(
+        {
+			r:<!-- placeholder -->
+
+        });
+	document.getElementById("quoteData").innerHTML = quoteData;
+
+</script>
+</body>
+
+</html>

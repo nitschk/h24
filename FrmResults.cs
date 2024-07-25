@@ -52,25 +52,7 @@ namespace h24
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            List<results> results = null;
-            int cat_id = 2;
-            using (var db = new klc01())
-            {
-                results = db.results.Where(a => a.cat_id == cat_id).ToList();
-
-                this.reportViewer1.LocalReport.ReportPath = "rpt_results.rdlc";
-                this.reportViewer1.LocalReport.DataSources.Clear();
-                ReportDataSource rdc = new ReportDataSource("ds_result", results);
-                this.reportViewer1.LocalReport.DataSources.Add(rdc);
-
-                this.reportViewer1.RefreshReport();
-            }
-
-        }
-
-        private void BtnJson_Click(object sender, EventArgs e)
+        private void BtnTeamResults_Click(object sender, EventArgs e)
         {
             string stringToInsert;
 
@@ -85,7 +67,7 @@ namespace h24
             save_json(stringToInsert);
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void BtnCourseResults_Click(object sender, EventArgs e)
         {
             string stringToInsert;
 
@@ -138,5 +120,23 @@ namespace h24
                 MessageBox.Show("Output saved successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
+
+        private void BtnRefresh_Click(object sender, EventArgs e)
+        {
+            List<results> results = null;
+            int cat_id = 2;
+            using (var db = new klc01())
+            {
+                results = db.results.Where(a => a.cat_id == cat_id).ToList();
+
+                this.reportViewer1.LocalReport.ReportPath = "rpt_results.rdlc";
+                this.reportViewer1.LocalReport.DataSources.Clear();
+                ReportDataSource rdc = new ReportDataSource("ds_result", results);
+                this.reportViewer1.LocalReport.DataSources.Add(rdc);
+
+                this.reportViewer1.RefreshReport();
+            }
+
+        }        
     }
 }
