@@ -141,7 +141,7 @@ namespace h24
             }
             catch (Exception e)
             {
-                MessageBox.Show($"Neodchycená vyjimka:\n{e.Message}\n{e.StackTrace}");
+                MessageBox.Show($"Undefined Error:\n{e.Message}\n{e.StackTrace}");
             }
         }
 
@@ -484,8 +484,9 @@ namespace h24
             newDevice = new ReaderDeviceInfo(ReaderDeviceType.Textfile, string.Empty);
             newDevice.ListFormat = ListFormat.SiConfigReadout;
 
+            string json_log_path = NewCard.get_config_item("json_log_path") == "" ? @"c:\temp\" : NewCard.get_config_item("json_log_path");
             //var filePath = ConfigurationManager.AppSettings["folderLocation"];
-            newDevice.FilePath = "c:\\Temp\\event.csv";
+            newDevice.FilePath = json_log_path + "event.csv";
 
             try
             {
@@ -597,12 +598,13 @@ namespace h24
         /// <param name="resultId">The new computed resultId</param>
         private async Task NewResultAvailable(SportidentCard card)
         {
+            string json_log_path = NewCard.get_config_item("json_log_path") == "" ? @"c:\temp\" : NewCard.get_config_item("json_log_path");
             try
             {
                 int readout_id = 0;
                 //write punch log
-                string filename = @"c:\temp\card_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".json";
-                string filename_p = @"c:\temp\card_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + "_punches.json";
+                string filename = json_log_path + @"card_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".json";
+                string filename_p = json_log_path + @"card_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + "_punches.json";
                 File.WriteAllText(filename, JsonConvert.SerializeObject(card));
                 File.WriteAllText(filename_p, JsonConvert.SerializeObject(card.ControlPunchList));
                 DateTime cardReadout = card.ReadoutDateTime;
@@ -614,7 +616,6 @@ namespace h24
                 using (var db = new klc01())
                 {
                     //save readout and stamps
-
                     var newReadout = new si_readout
                     {
                         chip_id = card.Siid,
@@ -778,9 +779,6 @@ namespace h24
             {
                 this.LbPenal.ForeColor = System.Drawing.Color.Black;
             }
-
-
-
         }
 
         private void SlipCurrentRow_Click(object sender, EventArgs e)
@@ -1136,6 +1134,7 @@ namespace h24
 
                 NewCard NewCard = new NewCard();
 Log.Information("pred PostSlip");
+                //var result = await NewCard.PostSlip2(readout_id);
                 var result = await NewCard.PostSlip(readout_id);
                 this.txtInfo.AppendText(Environment.NewLine);
                 this.txtInfo.AppendText(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + result.ToString());

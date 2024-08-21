@@ -103,9 +103,7 @@ namespace h24
                     dgCompetitors.DataSource = db.sp_search_competitors(tbSearch.Text).ToList();
                     dgCompetitors.Refresh();
                 }
-
             }
-
         }
 
         private void btClear_Click(object sender, EventArgs e)

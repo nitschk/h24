@@ -15,6 +15,9 @@ using Serilog;
 using System.Data.Entity;
 using System.Runtime.Remoting.Contexts;
 using System.Reflection;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
+using System.Security.Policy;
+using Microsoft.Reporting.WebForms;
 
 namespace h24
 {
@@ -131,10 +134,54 @@ namespace h24
 
         }
 
+        /*public static bool IsASubsequenceOfB(List<int> A, List<int> B)
+        {
+            int aIndex = 0;
+            int bIndex = 0;
+
+            while (aIndex < A.Count && bIndex < B.Count)
+            {
+                if (A[aIndex] == B[bIndex])
+                {
+                    aIndex++;
+                    bIndex++;
+                }
+                else
+                {
+                    bIndex++;
+                }
+            }
+
+            return aIndex == A.Count;
+        }
+
+        public static bool IsBInCorrectOrder(List<int> A, List<int> B)
+        {
+            int aIndex = 0;
+            int bIndex = 0;
+
+            while (bIndex < B.Count)
+            {
+                if (aIndex < A.Count && A[aIndex] == B[bIndex])
+                {
+                    aIndex++;
+                    bIndex++;
+                }
+                else
+                {
+                    bIndex++;
+                }
+            }
+
+            return aIndex == A.Count;
+        }
+        */
+
         public List<int> GuessCourse(int readout_id)
         {
             using (var db = new klc01())
             {
+                //TODO rewwrite here
                 var a = db.sp_guess_course(readout_id);//.FirstOrDefault();
                 return a.Where(x => x != null).Cast<int>().ToList();
                 //return b;
@@ -213,11 +260,13 @@ namespace h24
 
             using (var db = new klc01())
             {
+                //
                 var query = from co in db.competitors
                              join t in db.teams on co.team_id equals t.team_id
                              join ca in db.categories on t.cat_id equals ca.cat_id
                              where co.comp_id == competitor_id
-                             select new { ca.force_order,
+                             select new {
+                                 ca.force_order,
                                  ca.cat_start_time,
                                  t.team_id
                              };
@@ -232,6 +281,25 @@ namespace h24
                                        where co.team_id == team_id;
                 //if force_order
                 */
+
+
+                /*
+                 			INSERT INTO dbo.legs
+			(
+                INSERT INTO dbo.legs
+			(
+				comp_id,
+				course_id,
+				readout_id,
+				start_dtime,
+				start_time,
+				finish_dtime,
+				finish_time,
+				leg_status,
+				dsk_penalty,
+				valid_flag
+			)
+                 */
 
             }
             int leg_id = 0;
@@ -455,6 +523,7 @@ namespace h24
         public static async Task PostEntries(int team = -1)
         {
             int i = 0;
+            string json_log_path = get_config_item("json_log_path") == "" ? @"c:\temp\" : get_config_item("json_log_path");
             using (var db = new klc01())
             {
                 List<int> AllTeams;
@@ -483,7 +552,7 @@ namespace h24
                     {
                         entry = db.get_one_entry_json(team_id).FirstOrDefault();
 
-                        string filename = @"c:\temp\entry_post_" + team_id + "_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".json";
+                        string filename = json_log_path + @"entry_post_" + team_id + "_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".json";
                         File.WriteAllText(filename, entry);
 
                         foreach (string oneUrl in urls)
@@ -556,6 +625,7 @@ namespace h24
         public static async Task PostCompetitors(int comp = -1)
         {
             int i = 0;
+            string json_log_path = get_config_item("json_log_path") == "" ? @"c:\temp\" : get_config_item("json_log_path");
             using (var db = new klc01())
             {
                 List<int> AllTeams;
@@ -584,7 +654,7 @@ namespace h24
                     {
                         entry = db.get_one_competitor_json(comp_id).FirstOrDefault();
 
-                        string filename = @"c:\temp\comp_post_" + comp_id + "_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".json";
+                        string filename = json_log_path + @"comp_post_" + comp_id + "_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".json";
                         File.WriteAllText(filename, entry);
 
                         foreach (string oneUrl in urls)
@@ -621,6 +691,7 @@ namespace h24
         public async static Task<string> OrisGetEntries()
         {
             string result;
+            string json_log_path = get_config_item("json_log_path") == "" ? @"c:\temp\" : get_config_item("json_log_path");
             using (var db = new klc01())
             {
                 //get entries from Oris
@@ -641,7 +712,7 @@ namespace h24
 
                 result = await response.Content.ReadAsStringAsync();
 
-                string filename = @"c:\temp\oris_entries_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".xml";
+                string filename = json_log_path + @"oris_entries_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".xml";
                 File.WriteAllText(filename, result);
 
             }
@@ -734,11 +805,13 @@ namespace h24
 
             Log.Information("request "+ request.q_content);
             //send
-            HttpClientHandler _httpHandler = new HttpClientHandler();
-            _httpHandler.Proxy = null;
+            //HttpClientHandler _httpHandler = new HttpClientHandler();
+            //var _httpHandler = new HttpClientHandler();
+            /*_httpHandler.Proxy = null;
             _httpHandler.UseProxy = false;
-            _httpHandler.AutomaticDecompression = System.Net.DecompressionMethods.GZip;
-            HttpClient client = new HttpClient(_httpHandler);
+            _httpHandler.AutomaticDecompression = System.Net.DecompressionMethods.GZip;*/
+            //HttpClient client = new HttpClient(_httpHandler);
+            HttpClient client = new HttpClient();
             HttpContent content = new StringContent(
             request.q_content,
             System.Text.Encoding.UTF8,
@@ -817,6 +890,7 @@ namespace h24
         public async Task<string> PostSlip(int readout_id)
         {
             Log.Information("PostSlip " + readout_id);
+            string json_log_path = get_config_item("json_log_path") == "" ? @"c:\temp\" : get_config_item("json_log_path");
             //insert record to queue
             using (var db = new klc01())
             {
@@ -826,7 +900,7 @@ namespace h24
                 OneSlip = db.get_slip_json(readout_id).FirstOrDefault();
 
                 //write punch log
-                string filename = @"c:\temp\slip_post_" + readout_id + "_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".json";
+                string filename = json_log_path + @"slip_post_" + readout_id + "_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".json";
                 File.WriteAllText(filename, OneSlip);
 
                 string live_urls = get_config_item("live_url");
@@ -858,6 +932,7 @@ namespace h24
         public string CheckNewROC()
         {
             Log.Information("CheckNewROC");
+            string json_log_path = get_config_item("json_log_path") == "" ? @"c:\temp\" : get_config_item("json_log_path");
             //insert record to queue
             using (var db = new klc01())
             {
@@ -913,9 +988,9 @@ namespace h24
                         "\", \"comp_name\":\"" + punch.comp_name +
                         "\", \"comp_bib\":\"" + punch.bib + "\"}";
 
-                    filename = @"c:\temp\roc_post_" + i + "_" + punch.chip_id + "_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".json";
+                    filename = json_log_path + @"roc_post_" + i + "_" + punch.chip_id + "_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".json";
                     if (File.Exists(filename))
-                        filename = @"c:\temp\roc_post_" + i + "_" + punch.chip_id + "a_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".json";
+                        filename = json_log_path + @"roc_post_" + i + "_" + punch.chip_id + "a_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".json";
                     //File.Delete(filename);
                     try
                     {
@@ -1294,5 +1369,84 @@ namespace h24
                 }
             }
         }
+
+
+
+
+
+        public async Task<string> PostSlip2(int readout_id)
+        {
+            Log.Information("PostSlip " + readout_id);
+            string json_log_path = get_config_item("json_log_path") == "" ? @"c:\temp\" : get_config_item("json_log_path");
+            //insert record to queue
+            using (var db = new klc01())
+            {
+                string OneSlip;
+                int q_id = 0;
+
+                OneSlip = db.get_slip_json(readout_id).FirstOrDefault();
+
+                //write punch log
+                string filename = json_log_path + @"slip_post_" + readout_id + "_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".json";
+                File.WriteAllText(filename, OneSlip);
+
+                string live_urls = get_config_item("live_url");
+                string url_slips = get_config_item("live_slips");
+                string q_status_failed = get_config_item("q_status_failed");
+
+                string[] urls = live_urls.Split(';');
+                foreach (string oneUrl in urls)
+                {
+                    try
+                    {
+                        //fire queue processing
+                        bool success = await SendApiRequest2(readout_id, oneUrl + url_slips, OneSlip != null ? OneSlip : "");
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error(q_id.ToString() + " " + q_status_failed + "; " + $"Sending error: {e.Message}");
+                    }
+                }
+                return "";
+            }
+        }
+
+
+        public async Task<bool> SendApiRequest2(int readout_id, string url, string slip_json)
+        {
+            Log.Information("SendApiRequest2 " + readout_id);
+            Log.Information("request " + slip_json);
+            //send
+            /*HttpClientHandler _httpHandler = new HttpClientHandler();
+            _httpHandler.Proxy = null;
+            _httpHandler.UseProxy = false;
+            _httpHandler.AutomaticDecompression = System.Net.DecompressionMethods.GZip;
+            HttpClient client = new HttpClient(_httpHandler);*/
+            HttpClient client = new HttpClient();
+            HttpContent content = new StringContent(
+            slip_json,
+            System.Text.Encoding.UTF8,
+            "application/json"
+            );
+            string oneResponse = "";
+
+            Log.Information("before PostAsync");
+            var response = await client.PostAsync(url, content);
+            try
+            {
+                response.EnsureSuccessStatusCode();
+                oneResponse = await response.Content.ReadAsStringAsync();
+                Log.Information(readout_id + ": response= " + oneResponse);
+                return true;
+            }
+            catch (Exception e)
+            {
+
+                oneResponse = response.Content.ReadAsStringAsync().Result;
+                Log.Error(url + " " + response.Content.ReadAsStringAsync().Result + "; " + $"Sending error: {e.Message}");
+                return false;
+            }
+        }
+
     }
 }
