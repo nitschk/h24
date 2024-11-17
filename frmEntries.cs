@@ -359,12 +359,13 @@ namespace h24
             string token = await getAccessToken;
             MessageBox.Show("response:" + token);
             */
+            NewCard NewCard = new NewCard();
             if (this.ChbTruncate.Checked)
             {
                 _ = NewCard.TruncateEntries();
                 _ = NewCard.TruncateCompetitors();
             }
-                
+
             _ = NewCard.PostEntries();
             _ = NewCard.PostCompetitors();
         }

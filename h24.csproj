@@ -340,6 +340,9 @@
     <Compile Include="v_comp_teams.cs">
       <DependentUpon>klc01.tt</DependentUpon>
     </Compile>
+    <Compile Include="v_iof_results.cs">
+      <DependentUpon>klc01.tt</DependentUpon>
+    </Compile>
     <Compile Include="v_new_roc_punches.cs">
       <DependentUpon>klc01.tt</DependentUpon>
     </Compile>

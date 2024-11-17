@@ -6,7 +6,7 @@ namespace h24
 {
     public partial class frmLegs : Form
     {
-        klc01 db;
+        //klc01 db;
         public frmLegs()
         {
             InitializeComponent();
@@ -14,25 +14,27 @@ namespace h24
 
         private void btnGenerateLegs_Click(object sender, EventArgs e)
         {
-            string prefix = txPrefix.Text;
-            try
+            using (var db = new klc01())
             {
-                var a = db.sp_generate_legs(prefix);
-                MessageBox.Show("Inserted: " + a.ToString());
+                string prefix = txPrefix.Text;
+                try
+                {
+                    var a = db.sp_generate_legs(prefix);
+                    MessageBox.Show("Inserted: " + a.ToString());
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: " + ex.Message);
+                }
+                dgLegs.Refresh();
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error: " + ex.Message);
-            }
-            dgLegs.Refresh();
-
         }
 
         private void frmLegs_Load(object sender, EventArgs e)
         {
             try
             {
-                using (db = new klc01())
+                using (var db = new klc01())
                 {
                     dgCourses.DataSource = db.courses.ToList();
 
@@ -54,7 +56,10 @@ namespace h24
 
         private void dgLegs_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            db.SaveChanges();
+            using (var db = new klc01())
+            {
+                db.SaveChanges();
+            }
         }
 
         private void dgLegs_DataError(object sender, DataGridViewDataErrorEventArgs e)
@@ -62,8 +67,9 @@ namespace h24
             e.Cancel = true;
         }
 
-        private void btDeleteLegs_Click(object sender, EventArgs e)
+        public async void btDeleteLegs_Click(object sender, EventArgs e)
         {
+            NewCard NewCard = new NewCard();
             if (this.CbDeleteLegs.Checked)
                 _ = NewCard.TruncateLegs();
         }
@@ -80,7 +86,7 @@ namespace h24
             {
                 try
                 {
-                    using (db = new klc01())
+                    using (var db = new klc01())
                     {
                         var a = db.sp_legs_assign_first(prefix, category);
                         MessageBox.Show("Inserted: " + a.ToString());

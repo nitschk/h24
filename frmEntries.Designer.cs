@@ -71,10 +71,14 @@ namespace h24
             this.teamstatusDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.race_end = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.comp_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.comp_chip_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.rented_chip = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.comp_valid_flag = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.comp_status = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.rank_order = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.comp_withdrawn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.comp_status = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.comp_country = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.comp_birthday = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cat_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -347,7 +351,7 @@ namespace h24
             this.TbOrisId.Name = "TbOrisId";
             this.TbOrisId.Size = new System.Drawing.Size(130, 26);
             this.TbOrisId.TabIndex = 16;
-            this.TbOrisId.Text = "7634";
+            this.TbOrisId.Text = "8914";
             this.TbOrisId.Visible = false;
             // 
             // label2
@@ -369,7 +373,6 @@ namespace h24
             this.BtnFetchOrisXML.TabIndex = 14;
             this.BtnFetchOrisXML.Text = "Fetch Oris XML";
             this.BtnFetchOrisXML.UseVisualStyleBackColor = true;
-            this.BtnFetchOrisXML.Visible = false;
             this.BtnFetchOrisXML.Click += new System.EventHandler(this.BtnFetchOrisXML_Click);
             // 
             // btnUpload
@@ -467,10 +470,14 @@ namespace h24
             this.teamstatusDataGridViewTextBoxColumn,
             this.race_end,
             this.comp_name,
+            this.dataGridViewTextBoxColumn1,
+            this.comp_chip_id,
             this.rented_chip,
+            this.comp_valid_flag,
+            this.comp_status,
             this.rank_order,
             this.comp_withdrawn,
-            this.comp_status,
+            this.dataGridViewTextBoxColumn2,
             this.comp_country,
             this.comp_birthday,
             this.cat_name,
@@ -487,127 +494,178 @@ namespace h24
             // 
             // teamnrDataGridViewTextBoxColumn
             // 
+            this.teamnrDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.teamnrDataGridViewTextBoxColumn.DataPropertyName = "team_nr";
             this.teamnrDataGridViewTextBoxColumn.HeaderText = "team_nr";
             this.teamnrDataGridViewTextBoxColumn.MinimumWidth = 6;
             this.teamnrDataGridViewTextBoxColumn.Name = "teamnrDataGridViewTextBoxColumn";
-            this.teamnrDataGridViewTextBoxColumn.Width = 125;
+            this.teamnrDataGridViewTextBoxColumn.Width = 104;
             // 
             // teamnameDataGridViewTextBoxColumn
             // 
+            this.teamnameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.teamnameDataGridViewTextBoxColumn.DataPropertyName = "team_name";
             this.teamnameDataGridViewTextBoxColumn.HeaderText = "team_name";
             this.teamnameDataGridViewTextBoxColumn.MinimumWidth = 6;
             this.teamnameDataGridViewTextBoxColumn.Name = "teamnameDataGridViewTextBoxColumn";
-            this.teamnameDataGridViewTextBoxColumn.Width = 125;
+            this.teamnameDataGridViewTextBoxColumn.Width = 130;
             // 
             // teamdidstartDataGridViewTextBoxColumn
             // 
+            this.teamdidstartDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.teamdidstartDataGridViewTextBoxColumn.DataPropertyName = "team_did_start";
             this.teamdidstartDataGridViewTextBoxColumn.HeaderText = "team_did_start";
             this.teamdidstartDataGridViewTextBoxColumn.MinimumWidth = 6;
             this.teamdidstartDataGridViewTextBoxColumn.Name = "teamdidstartDataGridViewTextBoxColumn";
-            this.teamdidstartDataGridViewTextBoxColumn.Width = 125;
+            this.teamdidstartDataGridViewTextBoxColumn.Width = 152;
             // 
             // teamstatusDataGridViewTextBoxColumn
             // 
+            this.teamstatusDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.teamstatusDataGridViewTextBoxColumn.DataPropertyName = "team_status";
             this.teamstatusDataGridViewTextBoxColumn.HeaderText = "team_status";
             this.teamstatusDataGridViewTextBoxColumn.MinimumWidth = 6;
             this.teamstatusDataGridViewTextBoxColumn.Name = "teamstatusDataGridViewTextBoxColumn";
-            this.teamstatusDataGridViewTextBoxColumn.Width = 125;
+            this.teamstatusDataGridViewTextBoxColumn.Width = 134;
             // 
             // race_end
             // 
+            this.race_end.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.race_end.DataPropertyName = "race_end";
             this.race_end.HeaderText = "race_end";
             this.race_end.MinimumWidth = 6;
             this.race_end.Name = "race_end";
-            this.race_end.Width = 125;
+            this.race_end.Width = 112;
             // 
             // comp_name
             // 
+            this.comp_name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.comp_name.DataPropertyName = "comp_name";
             this.comp_name.HeaderText = "comp_name";
             this.comp_name.MinimumWidth = 6;
             this.comp_name.Name = "comp_name";
-            this.comp_name.Width = 125;
+            this.comp_name.Width = 133;
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dataGridViewTextBoxColumn1.DataPropertyName = "bib";
+            this.dataGridViewTextBoxColumn1.HeaderText = "bib";
+            this.dataGridViewTextBoxColumn1.MinimumWidth = 8;
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.Width = 66;
+            // 
+            // comp_chip_id
+            // 
+            this.comp_chip_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.comp_chip_id.DataPropertyName = "comp_chip_id";
+            this.comp_chip_id.HeaderText = "comp_chip_id";
+            this.comp_chip_id.MinimumWidth = 8;
+            this.comp_chip_id.Name = "comp_chip_id";
+            this.comp_chip_id.Width = 143;
             // 
             // rented_chip
             // 
+            this.rented_chip.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.rented_chip.DataPropertyName = "rented_chip";
             this.rented_chip.HeaderText = "rented_chip";
             this.rented_chip.MinimumWidth = 6;
             this.rented_chip.Name = "rented_chip";
-            this.rented_chip.Width = 125;
+            this.rented_chip.Width = 99;
+            // 
+            // comp_valid_flag
+            // 
+            this.comp_valid_flag.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.comp_valid_flag.DataPropertyName = "comp_valid_flag";
+            this.comp_valid_flag.HeaderText = "comp_valid_flag";
+            this.comp_valid_flag.MinimumWidth = 8;
+            this.comp_valid_flag.Name = "comp_valid_flag";
+            this.comp_valid_flag.Width = 159;
+            // 
+            // comp_status
+            // 
+            this.comp_status.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.comp_status.DataPropertyName = "comp_status";
+            this.comp_status.HeaderText = "comp_status";
+            this.comp_status.MinimumWidth = 8;
+            this.comp_status.Name = "comp_status";
+            this.comp_status.Width = 137;
             // 
             // rank_order
             // 
+            this.rank_order.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.rank_order.DataPropertyName = "rank_order";
             this.rank_order.HeaderText = "rank_order";
             this.rank_order.MinimumWidth = 6;
             this.rank_order.Name = "rank_order";
             this.rank_order.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.rank_order.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.rank_order.Width = 125;
+            this.rank_order.Width = 92;
             // 
             // comp_withdrawn
             // 
+            this.comp_withdrawn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.comp_withdrawn.DataPropertyName = "comp_withdrawn";
             this.comp_withdrawn.HeaderText = "comp_withdrawn";
             this.comp_withdrawn.MinimumWidth = 6;
             this.comp_withdrawn.Name = "comp_withdrawn";
-            this.comp_withdrawn.Width = 125;
+            this.comp_withdrawn.Width = 134;
             // 
-            // comp_status
+            // dataGridViewTextBoxColumn2
             // 
-            this.comp_status.DataPropertyName = "comp_status";
-            this.comp_status.HeaderText = "comp_status";
-            this.comp_status.MinimumWidth = 6;
-            this.comp_status.Name = "comp_status";
-            this.comp_status.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.comp_status.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.comp_status.Width = 125;
+            this.dataGridViewTextBoxColumn2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dataGridViewTextBoxColumn2.DataPropertyName = "comp_status";
+            this.dataGridViewTextBoxColumn2.HeaderText = "comp_status";
+            this.dataGridViewTextBoxColumn2.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewTextBoxColumn2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.dataGridViewTextBoxColumn2.Width = 107;
             // 
             // comp_country
             // 
+            this.comp_country.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.comp_country.DataPropertyName = "comp_country";
             this.comp_country.HeaderText = "comp_country";
             this.comp_country.MinimumWidth = 6;
             this.comp_country.Name = "comp_country";
-            this.comp_country.Width = 125;
+            this.comp_country.Width = 145;
             // 
             // comp_birthday
             // 
+            this.comp_birthday.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.comp_birthday.DataPropertyName = "comp_birthday";
             this.comp_birthday.HeaderText = "comp_birthday";
             this.comp_birthday.MinimumWidth = 6;
             this.comp_birthday.Name = "comp_birthday";
-            this.comp_birthday.Width = 125;
+            this.comp_birthday.Width = 149;
             // 
             // cat_name
             // 
+            this.cat_name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.cat_name.DataPropertyName = "cat_name";
             this.cat_name.HeaderText = "cat_name";
             this.cat_name.MinimumWidth = 6;
             this.cat_name.Name = "cat_name";
-            this.cat_name.Width = 125;
+            this.cat_name.Width = 116;
             // 
             // cat_start_time
             // 
+            this.cat_start_time.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.cat_start_time.DataPropertyName = "cat_start_time";
             this.cat_start_time.HeaderText = "cat_start_time";
             this.cat_start_time.MinimumWidth = 6;
             this.cat_start_time.Name = "cat_start_time";
-            this.cat_start_time.Width = 125;
+            this.cat_start_time.Width = 147;
             // 
             // cat_time_limit
             // 
+            this.cat_time_limit.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.cat_time_limit.DataPropertyName = "cat_time_limit";
             this.cat_time_limit.HeaderText = "cat_time_limit";
             this.cat_time_limit.MinimumWidth = 6;
             this.cat_time_limit.Name = "cat_time_limit";
-            this.cat_time_limit.Width = 125;
+            this.cat_time_limit.Width = 142;
             // 
             // teamsBindingSource
             // 
@@ -728,21 +786,6 @@ namespace h24
         private System.Windows.Forms.CheckBox cbAllowDeletion;
         private System.Windows.Forms.Button btClose;
         private System.Windows.Forms.Button btnPost;
-        private System.Windows.Forms.DataGridViewTextBoxColumn teamnrDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn teamnameDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn teamdidstartDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn teamstatusDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn race_end;
-        private System.Windows.Forms.DataGridViewTextBoxColumn comp_name;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn rented_chip;
-        private System.Windows.Forms.DataGridViewTextBoxColumn rank_order;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn comp_withdrawn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn comp_status;
-        private System.Windows.Forms.DataGridViewTextBoxColumn comp_country;
-        private System.Windows.Forms.DataGridViewTextBoxColumn comp_birthday;
-        private System.Windows.Forms.DataGridViewTextBoxColumn cat_name;
-        private System.Windows.Forms.DataGridViewTextBoxColumn cat_start_time;
-        private System.Windows.Forms.DataGridViewTextBoxColumn cat_time_limit;
         private System.Windows.Forms.Button BtnRegisterClient;
         private System.Windows.Forms.Button BtnStarListXml;
         private System.Windows.Forms.Button BtnFetchOrisXML;
@@ -770,5 +813,24 @@ namespace h24
         private System.Windows.Forms.DataGridViewTextBoxColumn sichipDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn noteDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn oristeamidDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn teamnrDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn teamnameDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn teamdidstartDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn teamstatusDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn race_end;
+        private System.Windows.Forms.DataGridViewTextBoxColumn comp_name;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn comp_chip_id;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn rented_chip;
+        private System.Windows.Forms.DataGridViewTextBoxColumn comp_valid_flag;
+        private System.Windows.Forms.DataGridViewTextBoxColumn comp_status;
+        private System.Windows.Forms.DataGridViewTextBoxColumn rank_order;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn comp_withdrawn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn comp_country;
+        private System.Windows.Forms.DataGridViewTextBoxColumn comp_birthday;
+        private System.Windows.Forms.DataGridViewTextBoxColumn cat_name;
+        private System.Windows.Forms.DataGridViewTextBoxColumn cat_start_time;
+        private System.Windows.Forms.DataGridViewTextBoxColumn cat_time_limit;
     }
 }

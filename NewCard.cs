@@ -109,7 +109,7 @@ namespace h24
             int slip_id = this.InsertSlip(leg_id);
 
             //
-            //_ = PostSlip(readout_id);
+            _ = PostSlip(readout_id);
             return 0; //processedResult;
         }
 
@@ -483,14 +483,16 @@ namespace h24
 
         }
 
-        public static async Task TruncateEntries()
+        public async Task TruncateEntries()
         {
             using (var db = new klc01())
             {
                 HttpClient client = new HttpClient();
-                string live_entries = get_config_item("live_entries_truncate");
+                string live_entries_truncate = get_config_item("live_entries_truncate");
                 string live_urls = get_config_item("live_url");
                 string pwd = get_config_item("live_password");
+                string q_status_in_progress = get_config_item("q_status_in_progress");
+                string q_status_failed = get_config_item("q_status_failed");
 
                 string[] urls = live_urls.Split(';');
                 string json = "{\"truncate\":\"yes\"," +
@@ -498,31 +500,27 @@ namespace h24
 
                 foreach (string oneUrl in urls)
                 {
-                    string url_truncate = oneUrl + live_entries;
+                    int q_id = Insert_api_queue(oneUrl + live_entries_truncate, json, q_status_in_progress, null);
 
-                    //make request
-                    StringContent httpContent = new StringContent(json, Encoding.UTF8, "application/json");
-
-                    HttpResponseMessage response = await client.PostAsync(url_truncate, httpContent);
                     try
                     {
-                        response.EnsureSuccessStatusCode();
+                        api_queue api_queue_request = db.api_queue.FirstOrDefault(a => a.q_id == q_id);
+                        //fire queue processing
+                        bool success = await SendApiRequest(api_queue_request);
                     }
-                    catch
+                    catch (Exception e)
                     {
-                        MessageBox.Show("ERR EnsureSuccessStatusCode truncate");
-                        return;
+                        UpdateApiRequestStatus(q_id, q_status_failed);
                     }
-
-                    string info = await response.Content.ReadAsStringAsync();
-                    MessageBox.Show("API response: " + info);
                 }
             }
         }
 
-        public static async Task PostEntries(int team = -1)
+        public async Task PostEntries(int team = -1)
         {
             int i = 0;
+            //int q_id = 0;
+
             string json_log_path = get_config_item("json_log_path") == "" ? @"c:\temp\" : get_config_item("json_log_path");
             using (var db = new klc01())
             {
@@ -544,6 +542,8 @@ namespace h24
                     HttpClient client = new HttpClient();
                     string live_urls = get_config_item("live_url");
                     string live_entries = get_config_item("live_entries");
+                    string q_status_in_progress = get_config_item("q_status_in_progress");
+                    string q_status_failed = get_config_item("q_status_failed");
 
                     string[] urls = live_urls.Split(';');
                     string entry;
@@ -557,42 +557,37 @@ namespace h24
 
                         foreach (string oneUrl in urls)
                         {
-                            string url_entries = oneUrl + live_entries;
+                            int q_id = Insert_api_queue(oneUrl + live_entries, entry != null ? entry : "", q_status_in_progress, null);
+                            Insert_api_queue_link(q_id, "entry", team_id);
 
-                            //var data = new FormUrlEncodedContent(entry);
-                            var entry_content = new StringContent(
-                                entry,
-                                System.Text.Encoding.UTF8,
-                                "application/json"
-                                );
-                            HttpResponseMessage response = await client.PostAsync(url_entries, entry_content);
                             try
                             {
-                                response.EnsureSuccessStatusCode();
+                                api_queue api_queue_request = db.api_queue.FirstOrDefault(a => a.q_id == q_id);
+                                //fire queue processing
+                                bool success = await SendApiRequest(api_queue_request);
                             }
-                            catch
+                            catch (Exception e)
                             {
-                                MessageBox.Show("ERR EnsureSuccessStatusCode post");
-                                return;
+                                UpdateApiRequestStatus(q_id, q_status_failed);
                             }
-
-                            var result = await response.Content.ReadAsStringAsync();
-                            i++;
                         }
+
                     }
                 }
             }
             //return i;
         }
 
-        public static async Task TruncateCompetitors()
+        public async Task TruncateCompetitors()
         {
             using (var db = new klc01())
             {
                 HttpClient client = new HttpClient();
-                string live_competitors = get_config_item("live_competitors_truncate");
+                string live_competitors_truncate = get_config_item("live_competitors_truncate");
                 string live_urls = get_config_item("live_url");
                 string pwd = get_config_item("live_password");
+                string q_status_in_progress = get_config_item("q_status_in_progress");
+                string q_status_failed = get_config_item("q_status_failed");
 
                 string[] urls = live_urls.Split(';');
                 string json = "{\"truncate\":\"yes\"," +
@@ -600,24 +595,18 @@ namespace h24
 
                 foreach (string oneUrl in urls)
                 {
-                    string url_truncate = oneUrl + live_competitors;
+                    int q_id = Insert_api_queue(oneUrl + live_competitors_truncate, json, q_status_in_progress, null);
 
-                    //make request
-                    StringContent httpContent = new StringContent(json, Encoding.UTF8, "application/json");
-
-                    HttpResponseMessage response = await client.PostAsync(url_truncate, httpContent);
                     try
                     {
-                        response.EnsureSuccessStatusCode();
+                        api_queue api_queue_request = db.api_queue.FirstOrDefault(a => a.q_id == q_id);
+                        //fire queue processing
+                        bool success = await SendApiRequest(api_queue_request);
                     }
-                    catch
+                    catch (Exception e)
                     {
-                        MessageBox.Show("ERR EnsureSuccessStatusCode truncate");
-                        return;
+                        UpdateApiRequestStatus(q_id, q_status_failed);
                     }
-
-                    string info = await response.Content.ReadAsStringAsync();
-                    MessageBox.Show("API response: " + info);
                 }
             }
         }
@@ -1267,13 +1256,16 @@ namespace h24
                 }
         */
 
-        public static async Task TruncateLegs()
+        public async Task TruncateLegs()
         {
             using (var db = new klc01())
             {
                 HttpClient client = new HttpClient();
-                string live_legs = get_config_item("live_legs_truncate");
+                string live_legs_truncate = get_config_item("live_legs_truncate");
                 string live_urls = get_config_item("live_url");
+                string q_status_in_progress = get_config_item("q_status_in_progress");
+                string q_status_failed = get_config_item("q_status_failed");
+
                 string[] urls = live_urls.Split(';');
                 string pwd = get_config_item("live_password");
                 string json = "{\"truncate\":\"yes\"," +
@@ -1281,24 +1273,18 @@ namespace h24
 
                 foreach (string oneUrl in urls)
                 {
-                    string url_truncate = oneUrl + live_legs;
+                    int q_id = Insert_api_queue(oneUrl + live_legs_truncate, json, q_status_in_progress, null);
 
-                    //make request
-                    StringContent httpContent = new StringContent(json, Encoding.UTF8, "application/json");
-
-                    HttpResponseMessage response = await client.PostAsync(url_truncate, httpContent);
                     try
                     {
-                        response.EnsureSuccessStatusCode();
+                        api_queue api_queue_request = db.api_queue.FirstOrDefault(a => a.q_id == q_id);
+                        //fire queue processing
+                        bool success = await SendApiRequest(api_queue_request);
                     }
-                    catch
+                    catch (Exception e)
                     {
-                        MessageBox.Show("ERR EnsureSuccessStatusCode truncate");
-                        return;
+                        UpdateApiRequestStatus(q_id, q_status_failed);
                     }
-
-                    string info = await response.Content.ReadAsStringAsync();
-                    MessageBox.Show("API response: " + info);
                 }
             }
         }

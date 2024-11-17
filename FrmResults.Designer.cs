@@ -40,6 +40,7 @@ namespace h24
             this.BtnCourseResults = new System.Windows.Forms.Button();
             this.rpt_resultsTableAdapter = new h24.ds_resultTableAdapters.rpt_resultsTableAdapter();
             this.cbCategory = new System.Windows.Forms.ComboBox();
+            this.btXMLresult = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ds_result)).BeginInit();
             this.SuspendLayout();
@@ -120,11 +121,22 @@ namespace h24
             this.cbCategory.Size = new System.Drawing.Size(121, 28);
             this.cbCategory.TabIndex = 6;
             // 
+            // btXMLresult
+            // 
+            this.btXMLresult.Location = new System.Drawing.Point(626, 296);
+            this.btXMLresult.Name = "btXMLresult";
+            this.btXMLresult.Size = new System.Drawing.Size(134, 40);
+            this.btXMLresult.TabIndex = 7;
+            this.btXMLresult.Text = "XML Result";
+            this.btXMLresult.UseVisualStyleBackColor = true;
+            this.btXMLresult.Click += new System.EventHandler(this.btXMLresult_Click);
+            // 
             // FrmResults
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(790, 562);
+            this.Controls.Add(this.btXMLresult);
             this.Controls.Add(this.cbCategory);
             this.Controls.Add(this.BtnCourseResults);
             this.Controls.Add(this.label1);
@@ -152,5 +164,6 @@ namespace h24
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button BtnCourseResults;
         private System.Windows.Forms.ComboBox cbCategory;
+        private System.Windows.Forms.Button btXMLresult;
     }
 }

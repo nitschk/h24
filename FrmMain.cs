@@ -839,11 +839,17 @@ namespace h24
         {
 
             long r;
-            int curRow = dgLegs.CurrentRow.Index;
-            if (curRow > -1)
+            int i = 0;
+
+            List<DataGridViewRow> selectedRows = GetSelectedRows();
+
+            int first_row = selectedRows.LastOrDefault().Index;
+
+            foreach (DataGridViewRow row in selectedRows)
             {
-                int readout_id = Convert.ToInt32(dgLegs.Rows[curRow].Cells["readout_id"].Value);
-                //int leg_id = Convert.ToInt32(dgLegs.Rows[curRow].Cells["leg_id"].Value);
+                // Process each selected row
+                int readout_id = Convert.ToInt32(row.Cells["readout_id"].Value);
+
                 NewCard NewCard = new NewCard();
                 //tady budu muset udelat novou funkci UpdateLeg(leg_id), aby se nepridaval novy leg, ale upravoval ten stavajici...
                 r = NewCard.UpdateLeg(readout_id);
@@ -858,7 +864,32 @@ namespace h24
                 RefreshLegs();
             }
                 
-            dgLegs.CurrentCell = dgLegs.Rows[curRow].Cells[1];
+            dgLegs.CurrentCell = dgLegs.Rows[first_row].Cells[1];
+        }
+
+        private List<DataGridViewRow> GetSelectedRows()
+        {
+            List<DataGridViewRow> selectedRows = new List<DataGridViewRow>();
+
+            // Check if there are any selected rows
+            if (dgLegs.SelectedRows.Count > 0)
+            {
+                selectedRows =
+                    (from DataGridViewRow row in dgLegs.SelectedRows
+                     where !row.IsNewRow
+                     orderby row.Index descending
+                     select row).ToList<DataGridViewRow>();
+            }
+            else
+            {
+                // If no row is selected, use the current row (if any)
+                if (dgLegs.CurrentRow != null)
+                {
+                    selectedRows.Add(dgLegs.CurrentRow);
+                }
+            }
+
+            return selectedRows;
         }
 
         private void btnReloadReadoutSelection_Click(object sender, EventArgs e)
@@ -1205,6 +1236,7 @@ Log.Information("pred PostSlip");
             int curRowComp = dgCompetitors.CurrentRow.Index;
             int comp_id = Convert.ToInt32(dgCompetitors.Rows[curRowComp].Cells["competitor_id"].Value);
             db.SaveChanges();
+            NewCard NewCard = new NewCard();
             _ = NewCard.PostEntries(team_id);
             _ = NewCard.PostCompetitors(comp_id);
         }
@@ -1449,6 +1481,7 @@ Log.Information("pred PostSlip");
             int curRow = dgTeams.CurrentRow.Index;
             int team_id = Convert.ToInt32(dgTeams.Rows[curRow].Cells["team_id"].Value);
             db.SaveChanges();
+            NewCard NewCard = new NewCard();
             _ = NewCard.PostEntries(team_id);
         }
 
