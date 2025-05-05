@@ -639,6 +639,8 @@ namespace h24
                         NewCard.HandleNewCard(readout_id);
                         InvokeMethod(() => SetLastBib(readout_id));
 
+                        InvokeMethod(RefreshLegs);
+
                         //print slip
                         if (this.chbPrint.Checked)
                         {
@@ -654,9 +656,6 @@ namespace h24
                                 this.txtInfo.AppendText(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + result.ToString());
                             });
                         }
-
-                        InvokeMethod(RefreshLegs);
-
                     }
                     catch (DbEntityValidationException ex)
                     {
@@ -1236,9 +1235,12 @@ Log.Information("pred PostSlip");
             int curRowComp = dgCompetitors.CurrentRow.Index;
             int comp_id = Convert.ToInt32(dgCompetitors.Rows[curRowComp].Cells["competitor_id"].Value);
             db.SaveChanges();
-            NewCard NewCard = new NewCard();
-            _ = NewCard.PostEntries(team_id);
-            _ = NewCard.PostCompetitors(comp_id);
+            if (cbPost_Slips.Checked)
+            {
+                NewCard NewCard = new NewCard();
+                _ = NewCard.PostEntries(team_id);
+                _ = NewCard.PostCompetitors(comp_id);
+            }
         }
 
         private void btnResults_Click(object sender, EventArgs e)
@@ -1369,7 +1371,11 @@ Log.Information("pred PostSlip");
                 m.MenuItems.Add(new MenuItem("Delete", new System.EventHandler(this.btn_delete_leg_Click)));
                 m.MenuItems.Add(new MenuItem("Reload All", new System.EventHandler(this.btReloadAll_Click)));
                 m.MenuItems.Add(new MenuItem("Change Status", new System.EventHandler(this.btChangeStatus_Click)));
-
+                m.MenuItems.Add(new MenuItem("Post All", new System.EventHandler(this.BtnPostAll_Click)));
+                m.MenuItems.Add(new MenuItem("Post Team", new System.EventHandler(this.btPostTeam_Click)));
+                m.MenuItems.Add(new MenuItem("Post Slip", new System.EventHandler(this.btnPostSlip_Click)));
+                
+                
                 /*
                                 int currentMouseOverRow = dgLegs.HitTest(e.X, e.Y).RowIndex;
 
@@ -1392,8 +1398,12 @@ Log.Information("pred PostSlip");
 
         private async void BtnPostAll_Click(object sender, EventArgs e)
         {
+            int i = 0;
 
-            var query = (
+            DialogResult dResult = MessageBox.Show("Really send ALL slips?", "Send All", MessageBoxButtons.YesNo);
+            if (dResult == DialogResult.Yes)
+            {
+                var query = (
                 from l in db.legs
                 select new
                 {
@@ -1402,21 +1412,22 @@ Log.Information("pred PostSlip");
                 } into selection
                 orderby selection.finish_dtime
                 select new { selection.readout_id, selection.finish_dtime });
-            var readout_ids = query.ToList();
-            int i = 0;
-            var timeout = DateTime.Now.AddHours(-11);
+                var readout_ids = query.ToList();
 
-            foreach (var readout in readout_ids)
-            {
-                if ((readout.readout_id ?? 0) == 0) continue;
-                NewCard NewCard = new NewCard();
-                var result = await NewCard.PostSlip(readout.readout_id.Value);
-                this.txtInfo.AppendText(Environment.NewLine);
-                this.txtInfo.AppendText(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + result.ToString());
-                i++;
-                System.Threading.Thread.Sleep(500);
-            }
+                var timeout = DateTime.Now.AddHours(-11);
+
+                foreach (var readout in readout_ids)
+                {
+                    if ((readout.readout_id ?? 0) == 0) continue;
+                    NewCard NewCard = new NewCard();
+                    var result = await NewCard.PostSlip(readout.readout_id.Value);
+                    this.txtInfo.AppendText(Environment.NewLine);
+                    this.txtInfo.AppendText(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + result.ToString());
+                    i++;
+                    System.Threading.Thread.Sleep(500);
+                }
             MessageBox.Show("Sent " + i + " legs");
+            }
         }
 
         private void FrmMain_Resize(object sender, EventArgs e)
@@ -1481,8 +1492,11 @@ Log.Information("pred PostSlip");
             int curRow = dgTeams.CurrentRow.Index;
             int team_id = Convert.ToInt32(dgTeams.Rows[curRow].Cells["team_id"].Value);
             db.SaveChanges();
-            NewCard NewCard = new NewCard();
-            _ = NewCard.PostEntries(team_id);
+            if (cbPost_Slips.Checked)
+            {
+                NewCard NewCard = new NewCard();
+                _ = NewCard.PostEntries(team_id);
+            }
         }
 
         private void tbSearchReadout_TextChanged(object sender, EventArgs e)

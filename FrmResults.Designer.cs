@@ -34,19 +34,18 @@ namespace h24
             this.bindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.ds_result = new h24.ds_result();
             this.reportViewer1 = new Microsoft.Reporting.WinForms.ReportViewer();
+            this.rpt_resultsTableAdapter = new h24.ds_resultTableAdapters.rpt_resultsTableAdapter();
             this.BtnRefresh = new System.Windows.Forms.Button();
             this.BtnTeamResults = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.BtnCourseResults = new System.Windows.Forms.Button();
-            this.rpt_resultsTableAdapter = new h24.ds_resultTableAdapters.rpt_resultsTableAdapter();
             this.cbCategory = new System.Windows.Forms.ComboBox();
             this.btXMLresult = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ds_result)).BeginInit();
             this.SuspendLayout();
             // 
             // bindingSource
             // 
+            this.bindingSource.DataMember = "ds_result";
             this.bindingSource.DataSource = this.ds_result;
             this.bindingSource.Position = 0;
             // 
@@ -62,6 +61,7 @@ namespace h24
             this.reportViewer1.LocalReport.DataSources.Add(reportDataSource2);
             this.reportViewer1.LocalReport.ReportEmbeddedResource = "h24.rpt_results.rdlc";
             this.reportViewer1.Location = new System.Drawing.Point(125, 44);
+            this.reportViewer1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.reportViewer1.Name = "reportViewer1";
             this.reportViewer1.Size = new System.Drawing.Size(600, 246);
             this.reportViewer1.TabIndex = 0;

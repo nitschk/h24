@@ -539,7 +539,6 @@ namespace h24
                 if (AllTeams.Count > 0)
                 {
                     //send all entries
-                    HttpClient client = new HttpClient();
                     string live_urls = get_config_item("live_url");
                     string live_entries = get_config_item("live_entries");
                     string q_status_in_progress = get_config_item("q_status_in_progress");
@@ -611,9 +610,11 @@ namespace h24
             }
         }
 
-        public static async Task PostCompetitors(int comp = -1)
+        public async Task PostCompetitors(int comp = -1)
         {
             int i = 0;
+            //int q_id = 0;
+
             string json_log_path = get_config_item("json_log_path") == "" ? @"c:\temp\" : get_config_item("json_log_path");
             using (var db = new klc01())
             {
@@ -632,9 +633,10 @@ namespace h24
                 if (AllTeams.Count > 0)
                 {
                     //send all entries
-                    HttpClient client = new HttpClient();
                     string live_urls = get_config_item("live_url");
                     string live_competitors = get_config_item("live_competitors");
+                    string q_status_in_progress = get_config_item("q_status_in_progress");
+                    string q_status_failed = get_config_item("q_status_failed");
 
                     string[] urls = live_urls.Split(';');
                     string entry;
@@ -648,27 +650,19 @@ namespace h24
 
                         foreach (string oneUrl in urls)
                         {
-                            string url_competitors = oneUrl + live_competitors;
+                            int q_id = Insert_api_queue(oneUrl + live_competitors, entry != null ? entry : "", q_status_in_progress, null);
+                            Insert_api_queue_link(q_id, "competitors", comp_id);
 
-                            //var data = new FormUrlEncodedContent(entry);
-                            var entry_content = new StringContent(
-                                entry,
-                                System.Text.Encoding.UTF8,
-                                "application/json"
-                                );
-                            HttpResponseMessage response = await client.PostAsync(url_competitors, entry_content);
                             try
                             {
-                                response.EnsureSuccessStatusCode();
+                                api_queue api_queue_request = db.api_queue.FirstOrDefault(a => a.q_id == q_id);
+                                //fire queue processing
+                                bool success = await SendApiRequest(api_queue_request);
                             }
-                            catch
+                            catch (Exception e)
                             {
-                                MessageBox.Show("ERR EnsureSuccessStatusCode post");
-                                return;
+                                UpdateApiRequestStatus(q_id, q_status_failed);
                             }
-
-                            var result = await response.Content.ReadAsStringAsync();
-                            i++;
                         }
                     }
                 }

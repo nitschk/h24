@@ -163,7 +163,6 @@ namespace h24
                 settings.Indent = true;
                 settings.IndentChars = "\t";
                 settings.NewLineOnAttributes = true;
-                //string file_name = "StartList.xml";
 
                 using (XmlWriter writer = XmlWriter.Create(outputFilePath, settings))
                 {
@@ -201,9 +200,10 @@ namespace h24
                     db.Configuration.LazyLoadingEnabled = false;
                     db.Configuration.ProxyCreationEnabled = false;
                     List<v_iof_results> AllSlips = db.v_iof_results
-/*                        .OrderBy(s => s.course_id)
+                        .OrderBy(s => s.course_id)
                         .ThenBy(s => s.l_time)
-                        .ThenBy(s => s.position ?? 99)*/
+                        .ThenBy(s => s.finish_dtime)
+                        .ThenBy(s => s.position ?? 99)
                         .ToList();
 
                     int course_id = 0;
@@ -217,7 +217,12 @@ namespace h24
                         if (oneSlip.course_id != course_id)
                         {
                             if (i != 0)
+                            {
+                                writer.WriteEndElement();//Result
+                                writer.WriteEndElement();//PersonResult
                                 writer.WriteEndElement();//ClassResult
+                            }
+
                             writer.WriteStartElement("ClassResult");
                             writer.WriteStartElement("Class");
                             writer.WriteStartElement("Id");
@@ -239,7 +244,7 @@ namespace h24
                         }
                         if (oneSlip.comp_id != comp_id)
                         {
-                            if (i != 0)
+                            if (i != 0 && oneSlip.course_id == course_id)
                             {
                                 writer.WriteEndElement();//Result
                                 writer.WriteEndElement();//PersonResult
@@ -253,6 +258,9 @@ namespace h24
                             writer.WriteStartElement("Name");
                             writer.WriteStartElement("Family");
                             writer.WriteValue(oneSlip.comp_name);
+                            writer.WriteEndElement();//Family
+                            writer.WriteStartElement("Given");
+                            writer.WriteValue("");
                             writer.WriteEndElement();//Family
                             writer.WriteEndElement();//Name
                             writer.WriteEndElement();//Person
@@ -293,7 +301,18 @@ namespace h24
                             writer.WriteEndElement();//Position
 
                             writer.WriteStartElement("Status");
-                            writer.WriteValue(oneSlip.leg_status);
+                            switch (oneSlip.leg_status)
+                            {
+                                case "DSK":
+                                    writer.WriteValue("Disqualified");
+                                    break;
+                                case "DNF":
+                                    writer.WriteValue("DidNotFinish");
+                                    break;
+                                  default:
+                                    writer.WriteValue("OK");
+                                    break;
+                            }
                             writer.WriteEndElement();//Status
 
                             writer.WriteStartElement("Course");
@@ -311,13 +330,24 @@ namespace h24
                             writer.WriteEndElement();//Climb
                             writer.WriteEndElement();//Course
                         }
+                        
                         writer.WriteStartElement("SplitTime");
-                        writer.WriteStartElement("ControlCode");
-                        writer.WriteValue(oneSlip.control_code);
-                        writer.WriteEndElement();//ControlCode
-                        writer.WriteStartElement("Time");
-                        writer.WriteValue(oneSlip.split_time);
-                        writer.WriteEndElement();//Time
+                        if (oneSlip.split_time == null)
+                        {
+                            writer.WriteAttributeString("status", "Missing");
+                            writer.WriteStartElement("ControlCode");
+                            writer.WriteValue(oneSlip.control_code);
+                            writer.WriteEndElement();//ControlCode
+                        }
+                        else
+                        {
+                            writer.WriteStartElement("ControlCode");
+                            writer.WriteValue(oneSlip.control_code);
+                            writer.WriteEndElement();//ControlCode
+                            writer.WriteStartElement("Time");
+                            writer.WriteValue(oneSlip.split_time);
+                            writer.WriteEndElement();//Time
+                        }
                         writer.WriteEndElement();//SplitTime
 
                         course_id = oneSlip.course_id;
@@ -330,7 +360,8 @@ namespace h24
                     }
                     writer.WriteEndElement();//Result
                     writer.WriteEndElement();//PersonResult
-//                    writer.WriteEndElement();//ClassResult
+                    writer.WriteEndElement();//ClassResult
+                    writer.WriteEndElement();//ResultList
                     writer.Flush();
                     MessageBox.Show("Export copmlete");
                 }

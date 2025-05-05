@@ -45,6 +45,9 @@ namespace h24
                     cbCategory.DataSource = db.categories.ToList();
                     cbCategory.ValueMember = "cat_id";
                     cbCategory.DisplayMember = "cat_name";
+
+                    var sf_course_prefix = NewCard.get_config_item("sf_course_prefix");
+                    this.txPrefix.Text = sf_course_prefix;
                 }
 
             }

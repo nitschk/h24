@@ -701,6 +701,7 @@ namespace h24
             MessageBox.Show("Inserted: " + a.ToString());
 
             db.Database.ExecuteSqlCommand("TRUNCATE TABLE entry_xml");
+            dgEntries_refresh();
         }
 
         private void BtInsertCatagories_Click(object sender, EventArgs e)
