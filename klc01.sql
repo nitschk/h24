@@ -1,15 +1,15 @@
 USE [master]
 GO
-/****** Object:  Database [klc01]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  Database [klc01]    Script Date: 13.05.2025 12:20:31 ******/
 CREATE DATABASE [klc01]
  CONTAINMENT = NONE
  ON  PRIMARY 
-( NAME = N'klc01', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL16.SQLEXPRESS\MSSQL\DATA\klc01.mdf' , SIZE = 73728KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+( NAME = N'klc01', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL16.SQLEXPRESS\MSSQL\DATA\klc01.mdf' , SIZE = 466944KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
  LOG ON 
-( NAME = N'klc01_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL16.SQLEXPRESS\MSSQL\DATA\klc01_log.ldf' , SIZE = 73728KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+( NAME = N'klc01_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL16.SQLEXPRESS\MSSQL\DATA\klc01_log.ldf' , SIZE = 139264KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
  WITH CATALOG_COLLATION = DATABASE_DEFAULT, LEDGER = OFF
 GO
-ALTER DATABASE [klc01] SET COMPATIBILITY_LEVEL = 150
+ALTER DATABASE [klc01] SET COMPATIBILITY_LEVEL = 160
 GO
 IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
 begin
@@ -76,16 +76,18 @@ ALTER DATABASE [klc01] SET DELAYED_DURABILITY = DISABLED
 GO
 ALTER DATABASE [klc01] SET ACCELERATED_DATABASE_RECOVERY = OFF  
 GO
-ALTER DATABASE [klc01] SET QUERY_STORE = OFF
+ALTER DATABASE [klc01] SET QUERY_STORE = ON
+GO
+ALTER DATABASE [klc01] SET QUERY_STORE (OPERATION_MODE = READ_WRITE, CLEANUP_POLICY = (STALE_QUERY_THRESHOLD_DAYS = 30), DATA_FLUSH_INTERVAL_SECONDS = 900, INTERVAL_LENGTH_MINUTES = 60, MAX_STORAGE_SIZE_MB = 1000, QUERY_CAPTURE_MODE = AUTO, SIZE_BASED_CLEANUP_MODE = AUTO, MAX_PLANS_PER_QUERY = 200, WAIT_STATS_CAPTURE_MODE = ON)
 GO
 USE [klc01]
 GO
-/****** Object:  User [sportident]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  User [sportident]    Script Date: 13.05.2025 12:20:31 ******/
 CREATE USER [sportident] FOR LOGIN [sportident] WITH DEFAULT_SCHEMA=[dbo]
 GO
 ALTER ROLE [db_owner] ADD MEMBER [sportident]
 GO
-/****** Object:  UserDefinedFunction [dbo].[time_from_start]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  UserDefinedFunction [dbo].[time_from_start]    Script Date: 13.05.2025 12:20:31 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -130,11 +132,11 @@ BEGIN
     SET @sec = RIGHT('00' + RTRIM(@sec), 2)
 
     -- Return the result of the function
-    SET @time_from_start = @minus + RTRIM(CAST(@hours AS CHAR(2))) + ':' + RIGHT('00' + RTRIM(CAST(@minutes AS CHAR(2))), 2) + ':' + @sec
+    SET @time_from_start = @minus + RTRIM(right('00' + CAST(@hours AS CHAR(2)),2)) + ':' + RIGHT('00' + RTRIM(CAST(@minutes AS CHAR(2))), 2) + ':' + @sec
     RETURN @time_from_start
 END
 GO
-/****** Object:  Table [dbo].[slips]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  Table [dbo].[slips]    Script Date: 13.05.2025 12:20:31 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -184,7 +186,7 @@ CREATE TABLE [dbo].[slips](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  View [dbo].[v_teams_results]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  View [dbo].[v_teams_results]    Script Date: 13.05.2025 12:20:31 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -238,7 +240,7 @@ GROUP BY
 	legs_count,
 	race_time
 GO
-/****** Object:  Table [dbo].[teams]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  Table [dbo].[teams]    Script Date: 13.05.2025 12:20:31 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -261,7 +263,7 @@ CREATE TABLE [dbo].[teams](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[categories]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  Table [dbo].[categories]    Script Date: 13.05.2025 12:20:31 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -281,7 +283,7 @@ CREATE TABLE [dbo].[categories](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  View [dbo].[v_xml_resutls]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  View [dbo].[v_xml_resutls]    Script Date: 13.05.2025 12:20:31 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -314,7 +316,7 @@ inner join dbo.teams as t on s.team_id = t.team_id
 inner join dbo.categories as c on c.cat_id = t.cat_id
 order by s.cat_name, tr.legs_count, s.start_dtime, s.position
 GO
-/****** Object:  Table [dbo].[competitors]    Script Date: 30.04.2024 17:45:49 ******/
+/****** Object:  Table [dbo].[competitors]    Script Date: 13.05.2025 12:20:31 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -343,7 +345,7 @@ CREATE TABLE [dbo].[competitors](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[legs]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  Table [dbo].[legs]    Script Date: 13.05.2025 12:20:32 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -363,13 +365,14 @@ CREATE TABLE [dbo].[legs](
 	[as_of_date] [datetime] NOT NULL,
 	[valid_flag] [bit] NULL,
 	[starting_leg] [bit] NULL,
+	[valid_for_race] [bit] NULL,
  CONSTRAINT [PK__legs__810CE3C034474519] PRIMARY KEY CLUSTERED 
 (
 	[leg_id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[si_readout]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  Table [dbo].[si_readout]    Script Date: 13.05.2025 12:20:32 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -391,12 +394,13 @@ CREATE TABLE [dbo].[si_readout](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  View [dbo].[v_readout_legs]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  View [dbo].[v_readout_legs]    Script Date: 13.05.2025 12:20:32 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-create view [dbo].[v_readout_legs] as
+
+CREATE view [dbo].[v_readout_legs] as
 select 
     r.readout_id,
     r.chip_id,
@@ -414,7 +418,8 @@ select
     s.team_name as team,
     l.leg_id,
     l.valid_flag,
-    s.valid_flag as race_valid
+    s.valid_flag as race_valid,
+	c.team_id
 from 
 	dbo.si_readout as r
 left outer join dbo.legs as l on r.readout_id = l.readout_id 
@@ -435,7 +440,7 @@ left outer join (
 	) as s on r.readout_id = s.readout_id
 
 GO
-/****** Object:  View [dbo].[v_teams_results_legs]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  View [dbo].[v_teams_results_legs]    Script Date: 13.05.2025 12:20:32 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -473,7 +478,7 @@ AS
 		team_race_end
 order by cat_name, legs_count desc, race_time, finish_dtime
 GO
-/****** Object:  Table [dbo].[roc_punches]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  Table [dbo].[roc_punches]    Script Date: 13.05.2025 12:20:32 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -491,13 +496,14 @@ CREATE TABLE [dbo].[roc_punches](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  View [dbo].[v_new_roc_punches]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  View [dbo].[v_new_roc_punches]    Script Date: 13.05.2025 12:20:32 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-create view [dbo].[v_new_roc_punches] as
+
+CREATE view [dbo].[v_new_roc_punches] as
 select 
 	p.p_id as record_id,
 	p.CodeNr as control_code,
@@ -514,8 +520,9 @@ inner join competitors as c on p.ChipNr = c.comp_chip_id
 inner join teams as t on c.team_id = t.team_id
 inner join categories as ca on t.cat_id = ca.cat_id
 where p.status is null
+and dateadd(MI,5,p.as_of_date) > GETDATE()
 GO
-/****** Object:  View [dbo].[v_comp_teams]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  View [dbo].[v_comp_teams]    Script Date: 13.05.2025 12:20:32 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -554,7 +561,121 @@ INNER JOIN competitors AS c
 INNER JOIN categories AS ca
 	ON t.cat_id = ca.cat_id
 GO
-/****** Object:  Table [dbo].[api_queue]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  Table [dbo].[settings]    Script Date: 13.05.2025 12:20:32 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[settings](
+	[s_id] [int] IDENTITY(1,1) NOT NULL,
+	[config_name] [nvarchar](50) NOT NULL,
+	[config_value] [nvarchar](4000) NULL,
+	[as_of_date] [datetime] NOT NULL,
+ CONSTRAINT [PK_settings] PRIMARY KEY CLUSTERED 
+(
+	[s_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  View [dbo].[v_iof_results]    Script Date: 13.05.2025 12:20:32 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+
+CREATE view [dbo].[v_iof_results]
+as
+select 
+	s.slip_id,
+	s.course_id,
+	CASE
+	WHEN s.course_name LIKE st.config_value + '%' THEN
+		st.config_value + '.' + RIGHT(s.course_name, 1)
+	ELSE
+		s.course_name end as course_name,
+	s.course_length,
+	s.course_climb,
+	s.comp_id,
+	s.comp_name,
+	s.team_id,
+	s.team_name,
+	s.bib,
+	s.start_dtime,
+	s.finish_dtime,
+	s.leg_status,
+	s.control_code,
+	datediff(second, s.start_dtime, s.finish_dtime) as l_time,
+	datediff(second, s.start_dtime, s.finish_dtime) - min(datediff(second, s.start_dtime, s.finish_dtime)) over(partition by s.course_id) as t_behind,
+	datediff(second, s.start_dtime, s.punch_dtime) as split_time,
+	s.position
+from 
+	slips as s
+	left outer join dbo.settings as st on st.config_name = 'sf_course_prefix'
+where 
+	s.course_name <> 'WDRN'
+
+GO
+/****** Object:  View [dbo].[v_rpt_results]    Script Date: 13.05.2025 12:20:32 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE view [dbo].[v_rpt_results]
+AS
+/*
+ Create date: 2025-05-07
+ Description:    shows results
+
+ select * from v_rpt_results
+
+*/
+	select
+		rank() over (partition by a.cat_id order by a.sum_legs desc, a.max_finish) as rnk,
+		a.cat_id,
+		c.cat_name,
+        a.team_name,
+        a.team_nr,
+        a.team_id,
+        a.race_end,
+		a.sum_legs,
+		a.max_finish
+	from
+	(
+        SELECT
+			t.cat_id,
+            t.team_name,
+            t.team_nr,
+            t.team_id,
+            t.race_end,
+            SUM(CASE
+                WHEN l.leg_status = 'OK'
+                        AND l.finish_dtime < t.race_end
+                THEN 1
+                ELSE 0
+                END) AS sum_legs,
+            MAX(CASE
+                WHEN l.leg_status = 'OK'
+                        AND l.finish_dtime < t.race_end
+                THEN right('00000000' + l.finish_time, 8)
+                ELSE null
+                END) as max_finish
+        FROM  dbo.legs AS l
+        INNER JOIN dbo.competitors AS c
+            ON l.comp_id = c.comp_id
+        INNER JOIN dbo.teams AS t
+            ON t.team_id = c.team_id
+		group by t.team_id, 
+			t.cat_id,
+            t.team_name,
+            t.team_nr,
+            t.race_end
+	) as a
+	inner join categories as c on a.cat_id = c.cat_id
+
+GO
+/****** Object:  Table [dbo].[api_queue]    Script Date: 13.05.2025 12:20:32 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -574,7 +695,7 @@ CREATE TABLE [dbo].[api_queue](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[api_queue_link]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  Table [dbo].[api_queue_link]    Script Date: 13.05.2025 12:20:32 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -590,7 +711,7 @@ CREATE TABLE [dbo].[api_queue_link](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[calendar]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  Table [dbo].[calendar]    Script Date: 13.05.2025 12:20:32 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -616,7 +737,7 @@ CREATE TABLE [dbo].[calendar](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[controls]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  Table [dbo].[controls]    Script Date: 13.05.2025 12:20:32 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -636,7 +757,7 @@ CREATE TABLE [dbo].[controls](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[course_codes]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  Table [dbo].[course_codes]    Script Date: 13.05.2025 12:20:32 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -654,7 +775,7 @@ CREATE TABLE [dbo].[course_codes](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[courses]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  Table [dbo].[courses]    Script Date: 13.05.2025 12:20:32 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -673,7 +794,7 @@ CREATE TABLE [dbo].[courses](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[entry_competitors]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  Table [dbo].[entry_competitors]    Script Date: 13.05.2025 12:20:32 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -694,7 +815,7 @@ CREATE TABLE [dbo].[entry_competitors](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[entry_file]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  Table [dbo].[entry_file]    Script Date: 13.05.2025 12:20:32 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -705,7 +826,7 @@ CREATE TABLE [dbo].[entry_file](
 	[entry2] [xml] NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[entry_teams]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  Table [dbo].[entry_teams]    Script Date: 13.05.2025 12:20:32 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -723,7 +844,7 @@ CREATE TABLE [dbo].[entry_teams](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[entry_xml]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  Table [dbo].[entry_xml]    Script Date: 13.05.2025 12:20:32 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -750,7 +871,7 @@ CREATE TABLE [dbo].[entry_xml](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[leg_exceptions]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  Table [dbo].[leg_exceptions]    Script Date: 13.05.2025 12:20:32 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -768,7 +889,7 @@ CREATE TABLE [dbo].[leg_exceptions](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[logs]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  Table [dbo].[logs]    Script Date: 13.05.2025 12:20:32 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -785,7 +906,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[results]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  Table [dbo].[results]    Script Date: 13.05.2025 12:20:32 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -813,23 +934,7 @@ CREATE TABLE [dbo].[results](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[settings]    Script Date: 05.05.2024 21:24:12 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[settings](
-	[s_id] [int] IDENTITY(1,1) NOT NULL,
-	[config_name] [nvarchar](50) NOT NULL,
-	[config_value] [nvarchar](4000) NULL,
-	[as_of_date] [datetime] NOT NULL,
- CONSTRAINT [PK_settings] PRIMARY KEY CLUSTERED 
-(
-	[s_id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-/****** Object:  Table [dbo].[si_stamps]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  Table [dbo].[si_stamps]    Script Date: 13.05.2025 12:20:32 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4555,38 +4660,38 @@ GO
 
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [IX_course_codes]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  Index [IX_course_codes]    Script Date: 13.05.2025 12:20:32 ******/
 CREATE NONCLUSTERED INDEX [IX_course_codes] ON [dbo].[course_codes]
 (
 	[control_id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
-/****** Object:  Index [IX_legs]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  Index [IX_legs]    Script Date: 13.05.2025 12:20:32 ******/
 CREATE NONCLUSTERED INDEX [IX_legs] ON [dbo].[legs]
 (
 	[comp_id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
-/****** Object:  Index [IX_legs_1]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  Index [IX_legs_1]    Script Date: 13.05.2025 12:20:32 ******/
 CREATE NONCLUSTERED INDEX [IX_legs_1] ON [dbo].[legs]
 (
 	[readout_id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
-/****** Object:  Index [IX_si_stamps_readout_id]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  Index [IX_si_stamps_readout_id]    Script Date: 13.05.2025 12:20:32 ******/
 CREATE NONCLUSTERED INDEX [IX_si_stamps_readout_id] ON [dbo].[si_stamps]
 (
 	[readout_id] ASC
 )
 INCLUDE([control_code],[punch_index]) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
-/****** Object:  Index [ix_slips_leg_id]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  Index [ix_slips_leg_id]    Script Date: 13.05.2025 12:20:32 ******/
 CREATE NONCLUSTERED INDEX [ix_slips_leg_id] ON [dbo].[slips]
 (
 	[leg_id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
-/****** Object:  Index [IX_slips_readout_id]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  Index [IX_slips_readout_id]    Script Date: 13.05.2025 12:20:32 ******/
 CREATE NONCLUSTERED INDEX [IX_slips_readout_id] ON [dbo].[slips]
 (
 	[readout_id] ASC
@@ -4672,7 +4777,7 @@ REFERENCES [dbo].[categories] ([cat_id])
 GO
 ALTER TABLE [dbo].[teams] CHECK CONSTRAINT [FK_teams_categories]
 GO
-/****** Object:  StoredProcedure [dbo].[get_competitor]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  StoredProcedure [dbo].[get_competitor]    Script Date: 13.05.2025 12:20:32 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4698,7 +4803,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[get_course_results_json]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  StoredProcedure [dbo].[get_course_results_json]    Script Date: 13.05.2025 12:20:32 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4724,7 +4829,7 @@ BEGIN
 --drop table #temp_legs
 CREATE TABLE #temp_legs(
 	leg_id int NOT NULL PRIMARY KEY,
-	class_name nvarchar(20) NOT NULL,
+	class_name nvarchar(50) NOT NULL,
 	team_id INT NULL,
 	team_nr INT NULL,
 	team_name NVARCHAR(255) NULL,
@@ -4773,7 +4878,11 @@ INSERT INTO #temp_legs
 		s.team_nr,
 		s.team_name,
 		s.bib AS comp_bib,
-		s.course_name as leg_course,
+		CASE
+		WHEN s.course_name LIKE st.config_value + '%' THEN
+			st.config_value + '.' + RIGHT(s.course_name, 1)
+		ELSE
+			s.course_name end as leg_course,
 		s.course_length as leg_length,
 		s.course_climb as leg_climb,
 		s.comp_name, 
@@ -4784,7 +4893,7 @@ INSERT INTO #temp_legs
 		s.finish_dtime,
 		s.leg_status,
 		s.dsk_penalty,
-		s.valid_flag AS leg_valid,
+		CAST(MAX(CAST(s.valid_flag as INT)) AS BIT) AS leg_valid,
 		(
 			SELECT 
 				--readout_id,
@@ -4805,6 +4914,7 @@ INSERT INTO #temp_legs
 		) AS splits
 	FROM dbo.slips AS s
 	inner join dbo.teams as t on s.team_id = t.team_id
+	left outer join dbo.settings as st on st.config_name = 'sf_course_prefix'
 	where t.team_did_start = 1
 	group by 		
 		s.cat_name,
@@ -4822,7 +4932,8 @@ INSERT INTO #temp_legs
 		s.finish_dtime,
 		s.leg_status,
 		s.dsk_penalty,
-		s.valid_flag
+		st.config_value--,
+		--s.valid_flag
 	--ORDER BY s.course_name, 
 	--leg_time desc
 	;
@@ -4877,7 +4988,94 @@ INSERT INTO #temp_legs
 	SELECT @ResultJson as course_results
 END
 GO
-/****** Object:  StoredProcedure [dbo].[get_one_competitor_json]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  StoredProcedure [dbo].[get_json_results_summary]    Script Date: 13.05.2025 12:20:32 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[get_json_results_summary]
+	@cat_name varchar(50) = ''
+AS
+/*
+Create date: 2024-05-29
+Description: get json string of all results
+*/
+/*
+DECLARE @cat_name varchar(50) = ''
+
+EXECUTE dbo.get_json_results_summary
+	@cat_name
+*/
+BEGIN
+
+	SET NOCOUNT ON;
+
+	DECLARE @ResultJson nvarchar(max)
+		;with cte_teams as (
+			SELECT 
+				ca.cat_name,
+				t.team_nr,
+				t.team_id,
+				t.team_name,
+				COUNT(DISTINCT CASE WHEN sl.valid_flag = 1 THEN sl.course_name END) as legs_count,
+				SUM(CASE WHEN sl.valid_flag = 1 THEN sl.course_length END) as courses_length,
+				MAX(CASE WHEN sl.valid_flag = 1 THEN sl.finish_dtime ELSE '2000-01-01' END) as team_time
+			FROM (
+				select distinct
+					leg_id,
+					valid_flag,
+					course_name,
+					course_length,
+					finish_dtime
+				from dbo.slips
+				) AS sl
+			inner join legs as l on sl.leg_id = l.leg_id and l.valid_flag = 1
+			inner join competitors as c on l.comp_id = c.comp_id
+			inner join dbo.teams as t on c.team_id = t.team_id
+			inner join categories as ca on t.cat_id = ca.cat_id
+			where t.team_did_start = 1
+				and (ca.cat_name = @cat_name
+					OR @cat_name = '')
+			GROUP BY
+				ca.cat_name,
+				t.team_nr,
+				t.team_id,
+				t.team_name
+			--ORDER BY ca.cat_name, t.team_nr
+		)
+	Select @ResultJson =
+	(
+		SELECT DISTINCT
+			sli.class_name,
+			(
+				SELECT
+					team_nr,
+					team_name,
+					legs_count,
+					courses_length,
+					FORMAT(team_time, N'dd.MM.yyyy HH\:mm\:ss') as team_time
+				from cte_teams as t
+				where t.cat_name = sli.class_name
+				order by cat_name, legs_count desc, team_time
+				FOR JSON PATH--, 
+					--INCLUDE_NULL_VALUES
+			) AS teams
+			FROM (
+				SELECT DISTINCT 
+					cat_name as class_name 
+				FROM cte_teams
+				--where team_id = 99
+				WHERE cat_name = @cat_name
+					OR @cat_name = ''
+			) AS sli
+			ORDER BY class_name
+			FOR JSON PATH
+	)
+	SELECT @ResultJson
+END
+GO
+/****** Object:  StoredProcedure [dbo].[get_one_competitor_json]    Script Date: 13.05.2025 12:20:32 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4912,7 +5110,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[get_one_entry_json]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  StoredProcedure [dbo].[get_one_entry_json]    Script Date: 13.05.2025 12:20:32 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4960,7 +5158,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[get_results_json]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  StoredProcedure [dbo].[get_results_json]    Script Date: 13.05.2025 12:20:32 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4983,10 +5181,12 @@ BEGIN
 
 	SET NOCOUNT ON;
 
---drop table #temp_legs
+	if OBJECT_ID('tempdb..#temp_legs') is not null
+		drop table #temp_legs
+
 CREATE TABLE #temp_legs(
 	leg_id int NOT NULL PRIMARY KEY,
-	class_name nvarchar(20) NOT NULL,
+	class_name nvarchar(50) NOT NULL,
 	team_id INT NULL,
 	team_nr INT NULL,
 	team_name NVARCHAR(255) NULL,
@@ -5029,7 +5229,7 @@ INSERT INTO #temp_legs
            ,splits
 		   )
 	SELECT DISTINCT 
-		s.leg_id,
+		max(s.leg_id) as leg_id,
 		s.cat_name AS class_name,
 		s.team_id,
 		t.team_nr,
@@ -5046,7 +5246,7 @@ INSERT INTO #temp_legs
 		s.finish_dtime,
 		s.leg_status,
 		s.dsk_penalty,
-		s.valid_flag AS leg_valid,
+		CAST(MAX(CAST(s.valid_flag as INT)) AS BIT) AS leg_valid,
 		(
 			SELECT 
 				--readout_id,
@@ -5060,25 +5260,46 @@ INSERT INTO #temp_legs
 				leg_time
 			FROM dbo.slips		
 			WHERE 
-				readout_id = s.readout_id
+				readout_id = max(s.readout_id)
 			order by position
 			FOR JSON PATH--, 
 				--INCLUDE_NULL_VALUES
 		) AS splits
 	FROM dbo.slips AS s
 	inner join dbo.teams as t on s.team_id = t.team_id
-	where t.team_did_start = 1;
+	where t.team_did_start = 1
+	and s.course_name <> 'WDRN'
+	group by 		
+		s.cat_name,
+		s.team_id,
+		t.team_nr,
+		t.team_name,
+		s.bib,
+		s.course_name,
+		s.course_length,
+		s.course_climb,
+		s.comp_name, 
+		s.leg_time,
+		s.start_dtime,
+		s.start_dtime,
+		s.finish_dtime,
+		s.leg_status,
+		s.dsk_penalty
+	;
 
 --select * from #temp_legs order by leg_id
 
+	if OBJECT_ID('tempdb..#temp_teams') is not null
+		drop table #temp_legs
+	
 	--drop table #temp_teams
 	CREATE TABLE #temp_teams(
-		class_name NVARCHAR(50) NOT NULL,
-		team_nr INT NOT NULL,
+		class_name NVARCHAR(50) NULL,
+		team_nr INT NULL,
 		team_id int not null primary key,
 		team_name NVARCHAR(255) NULL,
 		legs_count INT NOT NULL,
-		courses_length INT NOT NULL,
+		courses_length INT NULL,
 		team_time DATETIME NULL,
 		legs nvarchar(max) NULL
 	)
@@ -5108,7 +5329,7 @@ INSERT INTO #temp_legs
 					leg_id,
 					comp_bib,
 					leg_course,
-					--leg_length,
+					leg_length,
 					leg_climb,
 				   comp_name,
 				   leg_time,
@@ -5170,7 +5391,220 @@ INSERT INTO #temp_legs
 	SELECT @ResultJson
 END
 GO
-/****** Object:  StoredProcedure [dbo].[get_slip_json]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  StoredProcedure [dbo].[get_results_wo_splits_json]    Script Date: 13.05.2025 12:20:32 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[get_results_wo_splits_json]
+	@cat_name varchar(50) = ''
+AS
+/*
+Create date: 2023-07-21
+Description: get json string of all results
+*/
+/*
+DECLARE @cat_name varchar(50) = ''
+
+EXECUTE dbo.get_results_wo_splits_json
+	@cat_name
+*/
+BEGIN
+
+	SET NOCOUNT ON;
+
+	if OBJECT_ID('tempdb..#temp_legs') is not null
+		drop table #temp_legs
+
+CREATE TABLE #temp_legs(
+	leg_id int NOT NULL PRIMARY KEY,
+	class_name nvarchar(50) NOT NULL,
+	team_id INT NULL,
+	team_nr INT NULL,
+	team_name NVARCHAR(255) NULL,
+	comp_bib NVARCHAR(10) NOT NULL,
+	leg_course nvarchar(20) NOT NULL,
+	leg_length int NULL,
+	leg_climb int NULL,
+	comp_name nvarchar(50) NULL,
+	leg_time varchar(15) NULL,
+	start_dtime datetime NULL,
+	leg_start nvarchar(4000) NULL,
+	leg_finish nvarchar(4000) NULL,
+	finish_dtime DATETIME NULL,
+	leg_status nvarchar(10) NULL,
+	dsk_penalty time(7) NULL,
+	leg_valid bit NULL,
+	splits nvarchar(max) NULL
+)
+
+INSERT INTO #temp_legs
+           (
+			leg_id,
+			class_name,
+			team_id,
+			team_nr,
+			team_name,
+			comp_bib,
+			leg_course,
+			leg_length,
+			leg_climb
+           ,comp_name
+           ,leg_time
+           ,start_dtime
+           ,leg_start
+           ,leg_finish
+		   ,finish_dtime
+           ,leg_status
+           ,dsk_penalty
+           ,leg_valid
+		   )
+	SELECT DISTINCT 
+		max(s.leg_id) as leg_id,
+		s.cat_name AS class_name,
+		s.team_id,
+		t.team_nr,
+		t.team_name,
+		s.bib AS comp_bib,
+		s.course_name as leg_course,
+		s.course_length as leg_length,
+		s.course_climb as leg_climb,
+		s.comp_name, 
+		s.leg_time,
+		s.start_dtime,
+		FORMAT(s.start_dtime, N'dd.MM.yyyy HH\:mm\:ss') AS leg_start,
+		FORMAT(s.finish_dtime, N'dd.MM.yyyy HH\:mm\:ss') AS leg_finish,
+		s.finish_dtime,
+		s.leg_status,
+		s.dsk_penalty,
+		CAST(MAX(CAST(s.valid_flag as INT)) AS BIT) AS leg_valid
+	FROM dbo.slips AS s
+	inner join dbo.teams as t on s.team_id = t.team_id
+	where t.team_did_start = 1
+	and s.course_name <> 'WDRN'
+	group by 		
+		s.cat_name,
+		s.team_id,
+		t.team_nr,
+		t.team_name,
+		s.bib,
+		s.course_name,
+		s.course_length,
+		s.course_climb,
+		s.comp_name, 
+		s.leg_time,
+		s.start_dtime,
+		s.start_dtime,
+		s.finish_dtime,
+		s.leg_status,
+		s.dsk_penalty
+	;
+
+--select * from #temp_legs order by leg_id
+
+	if OBJECT_ID('tempdb..#temp_teams') is not null
+		drop table #temp_legs
+	
+	--drop table #temp_teams
+	CREATE TABLE #temp_teams(
+		class_name NVARCHAR(50) NULL,
+		team_nr INT NULL,
+		team_id int not null primary key,
+		team_name NVARCHAR(255) NULL,
+		legs_count INT NOT NULL,
+		courses_length INT NULL,
+		team_time DATETIME NULL,
+		legs nvarchar(max) NULL
+	)
+	CREATE INDEX ix_class_name
+	ON #temp_teams (class_name); 
+
+		INSERT INTO #temp_teams (
+			class_name,
+			team_nr,
+			team_id,
+			team_name,
+			legs_count,
+			courses_length,
+			team_time,
+			legs
+			)
+		SELECT 
+			sl.class_name,
+			sl.team_nr,
+			sl.team_id,
+			sl.team_name,
+			COUNT(DISTINCT CASE WHEN sl.leg_valid = 1 THEN sl.leg_course END) as legs_count,
+			SUM(CASE WHEN sl.leg_valid = 1 THEN sl.leg_length END) as courses_length,
+			MAX(CASE WHEN sl.leg_valid = 1 THEN sl.finish_dtime ELSE '2000-01-01' END) as team_time,
+			(
+				SELECT 
+					leg_id,
+					comp_bib,
+					leg_course,
+					leg_length,
+					leg_climb,
+				   comp_name,
+				   leg_time,
+				   --start_dtime,
+				   leg_start,
+				   leg_finish,
+				   leg_status,
+				   dsk_penalty,
+				   leg_valid
+				FROM #temp_legs as t
+				WHERE t.team_id = sl.team_id
+				ORDER BY t.start_dtime
+					FOR JSON PATH--, 
+						--INCLUDE_NULL_VALUES
+			) AS legs
+			FROM #temp_legs as sl
+		GROUP BY
+			sl.class_name,
+			sl.team_nr,
+			sl.team_id,
+			sl.team_name
+		ORDER BY sl.class_name, sl.team_nr
+
+--select * from #temp_teams
+
+	DECLARE @ResultJson nvarchar(max)
+	SET @ResultJson =
+	(
+		SELECT DISTINCT
+			sli.class_name,
+			(
+				SELECT
+					--class_name,
+					team_nr,
+					--team_id,
+					team_name,
+					legs_count,
+					courses_length,
+					FORMAT(team_time, N'dd.MM.yyyy HH\:mm\:ss') as team_time,
+					json_query(legs) as legs
+				from #temp_teams as t
+				where t.class_name = sli.class_name
+				order by class_name, legs_count desc, team_time
+				FOR JSON PATH--, 
+					--INCLUDE_NULL_VALUES
+			) AS teams
+			FROM (
+				SELECT DISTINCT 
+					class_name 
+				FROM #temp_teams
+				--where team_id = 99
+				WHERE class_name = @cat_name
+					OR @cat_name = ''
+			) AS sli
+			ORDER BY class_name
+			FOR JSON PATH
+	)
+	SELECT @ResultJson
+END
+GO
+/****** Object:  StoredProcedure [dbo].[get_slip_json]    Script Date: 13.05.2025 12:20:32 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -5204,7 +5638,11 @@ BEGIN
 		s.team_name,
 		s.team_id,
 		s.bib AS comp_bib,
-		s.course_name as leg_course,
+		CASE
+		WHEN s.course_name LIKE st.config_value + '%' THEN
+			st.config_value + '.' + RIGHT(s.course_name, 1)
+		ELSE
+			s.course_name end as leg_course,
 		s.course_length as leg_length,
 		s.course_climb as leg_climb,
 		s.leg_id,
@@ -5235,18 +5673,20 @@ BEGIN
 			FROM dbo.slips		
 			WHERE 
 				readout_id = s.readout_id
+			order by punch_index, position
 			FOR JSON PATH, 
 				INCLUDE_NULL_VALUES
 		) AS sp
 	FROM dbo.slips AS s
 	inner join competitors as c on s.comp_id = c.comp_id
+	left outer join dbo.settings as st on st.config_name = 'sf_course_prefix'
 	WHERE s.readout_id = @readout_id
 	FOR JSON path
 	)
 	select @ResultJson
 END
 GO
-/****** Object:  StoredProcedure [dbo].[rpt_results]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  StoredProcedure [dbo].[rpt_results]    Script Date: 13.05.2025 12:20:32 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -5258,8 +5698,76 @@ AS
  Create date: 2022-10-02
  Description:    shows results
 
- declare @category_id int = 2
+ declare @category_id int = 6
  exec rpt_results @category_id
+
+*/
+    BEGIN
+        -- SET NOCOUNT ON added to prevent extra result sets from
+        -- interfering with SELECT statements.
+        SET NOCOUNT ON;
+
+        -- Insert statements for procedure here
+		select
+			rank() over (order by a.sum_legs desc, a.max_finish) as rnk,
+			a.cat_id,
+			c.cat_name,
+            a.team_name,
+            a.team_nr,
+            a.team_id,
+            a.race_end,
+			a.sum_legs,
+			a.max_finish
+		from
+		(
+            SELECT
+				t.cat_id,
+                t.team_name,
+                t.team_nr,
+                t.team_id,
+                t.race_end,
+                SUM(CASE
+                    WHEN l.leg_status = 'OK'
+                         AND l.finish_dtime < t.race_end
+                    THEN 1
+                    ELSE 0
+                    END) AS sum_legs,
+                MAX(CASE
+                    WHEN l.leg_status = 'OK'
+                         AND l.finish_dtime < t.race_end
+                    THEN l.finish_time
+                    ELSE null
+                    END) as max_finish
+            FROM  dbo.legs AS l
+            INNER JOIN dbo.competitors AS c
+                ON l.comp_id = c.comp_id
+            INNER JOIN dbo.teams AS t
+                ON t.team_id = c.team_id
+            WHERE t.cat_id = @category_id
+                  OR @category_id IS NULL
+			group by t.team_id, 
+				t.cat_id,
+                t.team_name,
+                t.team_nr,
+                t.race_end
+		) as a
+		inner join categories as c on a.cat_id = c.cat_id
+    END
+GO
+/****** Object:  StoredProcedure [dbo].[rpt_results_legs]    Script Date: 13.05.2025 12:20:32 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+create PROCEDURE [dbo].[rpt_results_legs]
+    @category_id INT = NULL
+AS
+/*
+ Create date: 2022-10-02
+ Description:    shows results with legs
+
+ declare @category_id int = 2
+ exec rpt_results_legs @category_id
 
 */
     BEGIN
@@ -5321,7 +5829,7 @@ AS
 --        ) as a
     END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_check_courses]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  StoredProcedure [dbo].[sp_check_courses]    Script Date: 13.05.2025 12:20:32 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -5372,7 +5880,7 @@ BEGIN
 				INNER JOIN dbo.course_codes AS cc ON c.course_id = cc.course_id
 				INNER JOIN dbo.controls AS con ON cc.control_id = con.control_id
 			WHERE
-				con.control_code NOT IN ('F', 'F1', 'S1', 'S')
+				con.control_code NOT IN ('F', 'F1', 'S1', 'S', 'S2', 'S3', 'Z1')
 		)
 		,punches_cte AS (
 			SELECT 
@@ -5382,7 +5890,7 @@ BEGIN
 			FROM course_codes AS cc
 			inner join controls AS co ON cc.control_id = co.control_id
 			WHERE course_id = @course_id
-			and cc.control_id <> 'S1'
+			and cc.control_id NOT IN ('S1', 'S', 'S2', 'S3')
 		)
 		,course_punch AS (
 			SELECT
@@ -5437,7 +5945,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_fill_calendar]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  StoredProcedure [dbo].[sp_fill_calendar]    Script Date: 13.05.2025 12:20:32 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -5500,7 +6008,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_fill_results]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  StoredProcedure [dbo].[sp_fill_results]    Script Date: 13.05.2025 12:20:32 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -5579,7 +6087,7 @@ AS
 
     END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_generate_legs]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  StoredProcedure [dbo].[sp_generate_legs]    Script Date: 13.05.2025 12:20:32 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -5614,7 +6122,7 @@ BEGIN
 	SELECT @@ROWCOUNT
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_guess_course]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  StoredProcedure [dbo].[sp_guess_course]    Script Date: 13.05.2025 12:20:32 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -5649,7 +6157,7 @@ BEGIN
             INNER JOIN dbo.course_codes AS cc ON c.course_id = cc.course_id
             INNER JOIN dbo.controls AS con ON cc.control_id = con.control_id
         WHERE
-            con.control_code NOT IN ('F', 'F1', 'S1', 'S')
+            con.control_code NOT IN ('F', 'F1', 'S1', 'S', 'S2', 'S3', 'Z1')
     )
         ,punches_cte AS (
         SELECT
@@ -5702,7 +6210,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_ins_xml_entries]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  StoredProcedure [dbo].[sp_ins_xml_entries]    Script Date: 13.05.2025 12:20:32 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -5777,8 +6285,8 @@ BEGIN
 	SELECT
 		RANK() OVER(PARTITION BY e.class_name
 		ORDER BY
-		e.oris_team_id) + mn.max_nr AS nr,
-		e.team_short_name AS team_name,
+		e.oris_team_id) + mn.max_nr -1 AS nr,
+		case when isnull(e.note, '') = '' then e.team_short_name else e.note end AS team_name,
 		e.team_name AS team_abbr,
 		1 AS team_start,
 		1 AS team_status,
@@ -5805,7 +6313,8 @@ BEGIN
 		c.first_start_number,
 		c.cat_time_limit,
 		s.config_value,
-		mn.max_nr
+		mn.max_nr,
+		e.note
 	ORDER BY
 		nr,
 		e.class_name,
@@ -5815,7 +6324,7 @@ BEGIN
 
 	UPDATE t
 	SET
-		team_name = e.team_short_name,
+		team_name = case when isnull(e.note, '') = '' then e.team_short_name else e.note end,
 		team_abbr = e.team_name,
 		cat_id = c.cat_id,
 		race_end = DATEADD(MINUTE,c.cat_time_limit,CAST(s.config_value AS DATETIME))
@@ -5893,7 +6402,7 @@ BEGIN
 	select @@ROWCOUNT
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_insert_slips]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  StoredProcedure [dbo].[sp_insert_slips]    Script Date: 13.05.2025 12:20:32 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -6036,7 +6545,7 @@ EXEC dbo.sp_insert_slips @leg_id
 					pun.clear_datetime,
 					pun.check_datetime,
 					l.start_dtime,
-					fin.punch_dtime AS finish_dtime,
+					coalesce(fin.punch_dtime, l.finish_dtime) AS finish_dtime,
 					pun.card_readout_datetime,
 					CONVERT(TIME, fin.punch_dtime - l.start_dtime) AS leg_time,
 					l.course_id,
@@ -6056,6 +6565,7 @@ EXEC dbo.sp_insert_slips @leg_id
 					fin.punch_dtime,
 					pun.card_readout_datetime,
 					l.start_dtime,
+					l.finish_dtime,
 					pun.clear_datetime,
 					pun.check_datetime,
 					l.course_id,
@@ -6070,7 +6580,7 @@ EXEC dbo.sp_insert_slips @leg_id
 				inner join competitors as c on l.comp_id = c.comp_id
 				inner join competitors as c2 on c.team_id = c2.team_id
 				inner join legs as l2 on c2.comp_id = l2.comp_id and l.course_id = l2.course_id
-					and l2.leg_status = 'OK'
+and l2.leg_status = 'OK'
 				left outer join ( 
 					select distinct 
 						leg_id
@@ -6119,7 +6629,7 @@ EXEC dbo.sp_insert_slips @leg_id
 					ON cou.course_id = cc.course_id
 				INNER JOIN dbo.controls AS con
 					ON cc.control_id = con.control_id
-					and con.control_code <> 'S1'
+					and con.control_code NOT IN ('S1', 'S', 'S2', 'S3')
 				FULL OUTER JOIN cte_slip AS p
 					ON con.control_code = p.control_code
 					AND l.readout_id = p.readout_id
@@ -6128,6 +6638,19 @@ EXEC dbo.sp_insert_slips @leg_id
 					AND (l.valid_flag = 1 OR l.valid_flag IS NULL)
 			)
 --select * from cte_controls
+			,cte_loop as (
+				select 
+					leg_id,
+					punch_index,
+					position,
+					control_code,
+					punch_dtime,
+					punch_time,
+					lap_dtime,
+					lap_time,
+					rank() over( partition by control_code, punch_index order by abs(punch_index-position)) as r_rank
+				from cte_controls
+			)
 			 INSERT INTO dbo.slips
 			 (
 				 comp_id,
@@ -6205,7 +6728,7 @@ EXEC dbo.sp_insert_slips @leg_id
 				 l.dsk_penalty,
 				 dbo.time_from_start(cat.cat_start_time, t.race_end) as team_race_end_zero,
 				 t.race_end
-			FROM cte_controls AS cc
+			FROM cte_loop AS cc
 			INNER JOIN cte_legs AS l
 				ON cc.leg_id = l.leg_id
 			INNER JOIN dbo.competitors AS com
@@ -6216,14 +6739,15 @@ EXEC dbo.sp_insert_slips @leg_id
 				ON t.cat_id = cat.cat_id
 			INNER JOIN dbo.courses AS cou
 				ON l.course_id = cou.course_id
-			cross join cte_second_course as sc
+			CROSS JOIN cte_second_course as sc
 			WHERE l.valid_flag = 1
+			AND cc.r_rank = 1
 		ORDER BY ISNULL(cc.position, 999), cc.punch_index
 
 		SELECT o.ID FROM @OutputTbl AS o 
 	END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_inset_wdr_slip]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  StoredProcedure [dbo].[sp_inset_wdr_slip]    Script Date: 13.05.2025 12:20:32 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -6306,7 +6830,7 @@ BEGIN
 		and co.course_name = @wd_course
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_legs_assign_first]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  StoredProcedure [dbo].[sp_legs_assign_first]    Script Date: 13.05.2025 12:20:32 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -6343,7 +6867,7 @@ BEGIN
 	SELECT @@ROWCOUNT
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_search_competitors]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  StoredProcedure [dbo].[sp_search_competitors]    Script Date: 13.05.2025 12:20:32 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -6373,7 +6897,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_update_xml_entries_team_bib]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  StoredProcedure [dbo].[sp_update_xml_entries_team_bib]    Script Date: 13.05.2025 12:20:32 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -6407,7 +6931,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_upsert_legs]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  StoredProcedure [dbo].[sp_upsert_legs]    Script Date: 13.05.2025 12:20:32 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -6603,7 +7127,9 @@ FROM start_finish AS sf
 			ISNULL(sf.prev_finish, sf.zero_time) AS start_dtime,
 			dbo.time_from_start(sf.zero_time, ISNULL(sf.prev_finish, sf.zero_time)) AS start_time,
 			sf.finish_dtime,
-			CASE WHEN sf.finish_missing = 1 THEN '' ELSE dbo.time_from_start(sf.zero_time, sf.finish_dtime) END AS finish_time,
+			--Not sure why we were not inserting time when finish was missing
+			--CASE WHEN sf.finish_missing = 1 THEN '' ELSE dbo.time_from_start(sf.zero_time, sf.finish_dtime) END AS finish_time,
+			dbo.time_from_start(sf.zero_time, sf.finish_dtime) AS finish_time,
 			CASE WHEN sf.finish_missing = 1 THEN '' ELSE dbo.time_from_start(ISNULL(sf.prev_finish, sf.zero_time), sf.finish_dtime) END AS leg_time,
 			CASE WHEN sf.finish_missing = 1 THEN 'DNF'
 				WHEN @course_id <> @guessed_course
@@ -6623,7 +7149,6 @@ FROM start_finish AS sf
 		FROM start_finish AS sf
 
 --select * from @leg
-
 
 	SELECT
 		@cnt = COUNT(1)
@@ -6672,6 +7197,7 @@ FROM start_finish AS sf
 				finish_dtime,
 				finish_time,
 				leg_status,
+				leg_time,
 				dsk_penalty,
 				valid_flag
 			)
@@ -6685,6 +7211,7 @@ FROM start_finish AS sf
 				lg.finish_dtime,
 				lg.finish_time,
 				lg.leg_status,
+				lg.leg_time,
 				lg.dsk_penalty,
 				1
 			FROM @leg AS lg
@@ -6692,7 +7219,7 @@ FROM start_finish AS sf
 		SELECT isnull(o.ID, 0) FROM @OutputTbl AS o 
 	END
 GO
-/****** Object:  StoredProcedure [dbo].[update_team_race_end]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  StoredProcedure [dbo].[update_team_race_end]    Script Date: 13.05.2025 12:20:32 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -6745,7 +7272,69 @@ BEGIN
 	select @@ROWCOUNT
 END
 GO
-/****** Object:  StoredProcedure [dbo].[x_sp_fill_runs]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  StoredProcedure [dbo].[update_team_race_end_increment]    Script Date: 13.05.2025 12:20:32 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+create PROCEDURE [dbo].[update_team_race_end_increment]
+	@comp_id int,
+	@leg_id int
+AS
+/*
+Create date: 2022-06-22
+Description:	updates teams race_end based on disk penalities
+
+DECLARE @comp_id int = 2201
+execute dbo.update_team_race_end @comp_id
+*/
+BEGIN
+
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	;WITH cte_dsk AS (
+		SELECT 
+			d.team_id,
+			--sum(d.e * d.penalty_seconds) over (partition by team_id order by d.start_dtime rows between unbounded preceding and current row) as ds,
+			max(d.e * ps) AS dsk_seconds
+		FROM ( 	
+			SELECT 
+				l.leg_id,
+				c.team_id,
+				l.start_dtime,
+				CASE WHEN 
+					DATEADD(second, 
+						-SUM(DATEDIFF(SECOND, 0, l.dsk_penalty)) over(order by l.start_dtime ), 
+							DATEADD(MINUTE, ca.cat_time_limit, ca.cat_start_time)
+					) < l.start_dtime 
+				THEN 0 
+				ELSE 1 
+				END AS e,
+				l.dsk_penalty,
+				DATEDIFF(SECOND, 0, l.dsk_penalty) AS penalty_seconds,
+				sum(DATEDIFF(SECOND, 0, l.dsk_penalty)) over (partition by t.team_id order by l.start_dtime rows between unbounded preceding and current row) as ps
+			FROM competitors AS c
+			INNER JOIN competitors AS cp ON c.team_id = cp.team_id
+			INNER JOIN legs AS l ON cp.comp_id = l.comp_id
+			inner join teams as t on c.team_id = t.team_id
+			INNER JOIN categories AS ca ON t.cat_id = ca.cat_id
+			WHERE c.comp_id = @comp_id
+
+		) AS d
+		GROUP BY d.team_id
+	)
+	UPDATE teams
+		SET race_end = DATEADD(SECOND, -s.dsk_seconds, DATEADD(MINUTE, c.cat_time_limit, c.cat_start_time))
+	FROM 
+		teams AS t
+	INNER JOIN categories AS c ON t.cat_id = c.cat_id
+	INNER JOIN cte_dsk AS s ON s.team_id = t.team_id
+
+	select @@ROWCOUNT
+END
+GO
+/****** Object:  StoredProcedure [dbo].[x_sp_fill_runs]    Script Date: 13.05.2025 12:20:32 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -6780,7 +7369,7 @@ FROM
     ) AS n
 END
 GO
-/****** Object:  StoredProcedure [dbo].[x_sp_stamp2punches]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  StoredProcedure [dbo].[x_sp_stamp2punches]    Script Date: 13.05.2025 12:20:32 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -7250,7 +7839,7 @@ SELECT top 10000 * FROM dbo.runs
     END
 END
 GO
-/****** Object:  StoredProcedure [dbo].[x_sp_stamp2punches2]    Script Date: 05.05.2024 21:24:12 ******/
+/****** Object:  StoredProcedure [dbo].[x_sp_stamp2punches2]    Script Date: 13.05.2025 12:20:32 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
