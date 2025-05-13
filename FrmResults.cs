@@ -27,18 +27,21 @@ namespace h24
 
         private void FrmResults_Load(object sender, EventArgs e)
         {
-            List<results> results = null;
-            int cat_id = 2;
+            _fill_cmbCategoreis();
+            _refresh_rv_results();
+
+            /*List<v_rpt_results> results = null;
+            int cat_id = 6;
             using (var db = new klc01())
             {
-                results = db.results.Where(a => a.cat_id == cat_id).ToList();
+                results = db.v_rpt_results.Where(a => a.cat_id == cat_id).ToList();
 
-                this.reportViewer1.LocalReport.ReportPath = "rpt_results.rdlc";
-                this.reportViewer1.LocalReport.DataSources.Clear();
+                this.rv_Results.LocalReport.ReportPath = "rpt_results.rdlc";
+                this.rv_Results.LocalReport.DataSources.Clear();
                 ReportDataSource rdc = new ReportDataSource("ds_result", results);
-                this.reportViewer1.LocalReport.DataSources.Add(rdc);
+                this.rv_Results.LocalReport.DataSources.Add(rdc);
 
-                this.reportViewer1.RefreshReport();
+                this.rv_Results.RefreshReport();
 
                 var categories_list = db.categories.Where(a=> a.valid == true)
                     .OrderBy(t => t.cat_name)
@@ -54,7 +57,7 @@ namespace h24
                 this.cbCategory.SelectedIndex = 0;
                 this.cbCategory.ValueMember = "Key";
                 this.cbCategory.DisplayMember = "Key";
-            }
+            }*/
         }
 
         private void BtnTeamResults_Click(object sender, EventArgs e)
@@ -128,20 +131,21 @@ namespace h24
 
         private void BtnRefresh_Click(object sender, EventArgs e)
         {
-            List<results> results = null;
-            int cat_id = 2;
+            _refresh_rv_results();
+/*            List<v_rpt_results> results = null;
+            int cat_id = (int)cmbCategories.SelectedValue;
             using (var db = new klc01())
             {
-                results = db.results.Where(a => a.cat_id == cat_id).ToList();
+                results = db.v_rpt_results.Where(a => a.cat_id == cat_id).ToList();
 
-                this.reportViewer1.LocalReport.ReportPath = "rpt_results.rdlc";
-                this.reportViewer1.LocalReport.DataSources.Clear();
+                this.rv_Results.LocalReport.ReportPath = "rpt_results.rdlc";
+                this.rv_Results.LocalReport.DataSources.Clear();
                 ReportDataSource rdc = new ReportDataSource("ds_result", results);
-                this.reportViewer1.LocalReport.DataSources.Add(rdc);
+                this.rv_Results.LocalReport.DataSources.Add(rdc);
 
-                this.reportViewer1.RefreshReport();
+                this.rv_Results.RefreshReport();
             }
-
+*/
         }
 
         private void btXMLresult_Click(object sender, EventArgs e)
@@ -366,6 +370,49 @@ namespace h24
                     MessageBox.Show("Export copmlete");
                 }
             }
+        }
+
+        private void _fill_cmbCategoreis()
+        {
+            using (var db = new klc01())
+            {
+                var categories_list = db.categories.Where(a => a.valid == true)
+                    .OrderBy(t => t.cat_name)
+                    .ToList();
+                var cat_all = new List<KeyValuePair<string, int>>();
+                cat_all.Add(new KeyValuePair<string, int>("All", -1));
+                foreach (var cat in categories_list)
+                {
+                    cat_all.Add(new KeyValuePair<string, int>(cat.cat_name, cat.cat_id));
+                }
+
+                this.cbCategory.DataSource = cat_all;
+                this.cbCategory.SelectedIndex = 0;
+                this.cbCategory.ValueMember = "Value";
+                this.cbCategory.DisplayMember = "Key";
+
+            }
+        }
+
+        private void _refresh_rv_results()
+        {
+            List<v_rpt_results> results = null;
+            int cat_id = (int)cbCategory.SelectedValue;
+            using (var db = new klc01())
+            {
+                results = db.v_rpt_results
+                    .Where(a => a.cat_id == cat_id || cat_id == -1 )
+                    .ToList();
+
+                this.rv_Results.LocalReport.ReportPath = "rptResults.rdlc";
+                this.rv_Results.LocalReport.DataSources.Clear();
+                ReportDataSource rdc = new ReportDataSource("ds_result", results);
+                this.rv_Results.LocalReport.DataSources.Add(rdc);
+
+                this.rv_Results.RefreshReport();
+
+            }
+
         }
     }
 }

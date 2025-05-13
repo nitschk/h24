@@ -289,10 +289,17 @@
           <Property Name="as_of_date" Type="datetime" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'klc01_de.dbo.v_comp_teams' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'klc01_25vel.dbo.v_comp_teams' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="v_comp_teams">
           <Key>
+            
+            
             <PropertyRef Name="comp_id" />
+            
+            
+            
+            
+            
           </Key>
           <Property Name="team_id" Type="int" Nullable="false" />
           <Property Name="team_nr" Type="int" />
@@ -318,14 +325,17 @@ warning 6002: The table/view 'klc01_de.dbo.v_comp_teams' does not have a primary
           <Property Name="cat_time_limit" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'klc01_de.dbo.v_iof_results' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'klc01_25vel.dbo.v_iof_results' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="v_iof_results">
           <Key>
             <PropertyRef Name="slip_id" />
+            
+            
+            
           </Key>
-          <Property Name="slip_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="slip_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="course_id" Type="int" Nullable="false" />
-          <Property Name="course_name" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="course_name" Type="nvarchar" MaxLength="4000" />
           <Property Name="course_length" Type="int" />
           <Property Name="course_climb" Type="int" />
           <Property Name="comp_id" Type="int" Nullable="false" />
@@ -343,10 +353,14 @@ warning 6002: The table/view 'klc01_de.dbo.v_iof_results' does not have a primar
           <Property Name="position" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'klc01_de.dbo.v_new_roc_punches' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'klc01_25vel.dbo.v_new_roc_punches' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="v_new_roc_punches">
           <Key>
             <PropertyRef Name="record_id" />
+            
+            
+            
+            
           </Key>
           <Property Name="record_id" Type="int" Nullable="false" />
           <Property Name="control_code" Type="int" Nullable="false" />
@@ -360,10 +374,12 @@ warning 6002: The table/view 'klc01_de.dbo.v_new_roc_punches' does not have a pr
           <Property Name="phone_number" Type="nvarchar" MaxLength="20" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'klc01_de.dbo.v_readout_legs' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'klc01_25vel.dbo.v_readout_legs' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="v_readout_legs">
           <Key>
             <PropertyRef Name="readout_id" />
+            
+            
           </Key>
           <Property Name="readout_id" Type="int" Nullable="false" />
           <Property Name="chip_id" Type="varchar" MaxLength="15" Nullable="false" />
@@ -385,7 +401,24 @@ warning 6002: The table/view 'klc01_de.dbo.v_readout_legs' does not have a prima
           <Property Name="team_id" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'klc01_de.dbo.v_teams_results' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'klc01_25vel.dbo.v_rpt_results' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="v_rpt_results">
+          <Key>
+            <PropertyRef Name="cat_name" />
+            <PropertyRef Name="team_id" />
+          </Key>
+          <Property Name="rnk" Type="bigint" />
+          <Property Name="cat_id" Type="int" />
+          <Property Name="cat_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="team_name" Type="nvarchar" MaxLength="255" />
+          <Property Name="team_nr" Type="int" />
+          <Property Name="team_id" Type="int" Nullable="false" />
+          <Property Name="race_end" Type="datetime" />
+          <Property Name="sum_legs" Type="int" />
+          <Property Name="max_finish" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'klc01_25vel.dbo.v_teams_results' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="v_teams_results">
           <Key>
             <PropertyRef Name="cat_name" />
@@ -641,6 +674,19 @@ warning 6002: The table/view 'klc01_de.dbo.v_teams_results' does not have a prim
     [v_readout_legs].[race_valid] AS [race_valid], 
     [v_readout_legs].[team_id] AS [team_id]
     FROM [dbo].[v_readout_legs] AS [v_readout_legs]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="v_rpt_results" EntityType="Self.v_rpt_results" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [v_rpt_results].[rnk] AS [rnk], 
+    [v_rpt_results].[cat_id] AS [cat_id], 
+    [v_rpt_results].[cat_name] AS [cat_name], 
+    [v_rpt_results].[team_name] AS [team_name], 
+    [v_rpt_results].[team_nr] AS [team_nr], 
+    [v_rpt_results].[team_id] AS [team_id], 
+    [v_rpt_results].[race_end] AS [race_end], 
+    [v_rpt_results].[sum_legs] AS [sum_legs], 
+    [v_rpt_results].[max_finish] AS [max_finish]
+    FROM [dbo].[v_rpt_results] AS [v_rpt_results]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="v_teams_results" EntityType="Self.v_teams_results" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -1137,6 +1183,7 @@ warning 6002: The table/view 'klc01_de.dbo.v_teams_results' does not have a prim
           </FunctionImport>
           <EntitySet Name="leg_exceptions" EntityType="klc01Model.leg_exceptions" />
           <EntitySet Name="v_iof_results" EntityType="klc01Model.v_iof_results" />
+          <EntitySet Name="v_rpt_results" EntityType="klc01Model.v_rpt_results" />
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -1364,7 +1411,7 @@ warning 6002: The table/view 'klc01_de.dbo.v_teams_results' does not have a prim
             <PropertyRef Name="slip_id" />
           </Key>
           <Property Name="course_id" Type="Int32" Nullable="false" />
-          <Property Name="course_name" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="course_name" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
           <Property Name="course_length" Type="Int32" />
           <Property Name="course_climb" Type="Int32" />
           <Property Name="comp_id" Type="Int32" Nullable="false" />
@@ -1381,6 +1428,21 @@ warning 6002: The table/view 'klc01_de.dbo.v_teams_results' does not have a prim
           <Property Name="split_time" Type="Int32" />
           <Property Name="position" Type="Int32" />
           <Property Name="slip_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="v_rpt_results">
+          <Key>
+            <PropertyRef Name="cat_name" />
+            <PropertyRef Name="team_id" />
+          </Key>
+          <Property Name="rnk" Type="Int64" />
+          <Property Name="cat_id" Type="Int32" />
+          <Property Name="cat_name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="team_name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="team_nr" Type="Int32" />
+          <Property Name="team_id" Type="Int32" Nullable="false" />
+          <Property Name="race_end" Type="DateTime" Precision="3" />
+          <Property Name="sum_legs" Type="Int32" />
+          <Property Name="max_finish" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1854,6 +1916,21 @@ warning 6002: The table/view 'klc01_de.dbo.v_teams_results' does not have a prim
                 <ScalarProperty Name="course_length" ColumnName="course_length" />
                 <ScalarProperty Name="course_name" ColumnName="course_name" />
                 <ScalarProperty Name="course_id" ColumnName="course_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="v_rpt_results">
+            <EntityTypeMapping TypeName="klc01Model.v_rpt_results">
+              <MappingFragment StoreEntitySet="v_rpt_results">
+                <ScalarProperty Name="max_finish" ColumnName="max_finish" />
+                <ScalarProperty Name="sum_legs" ColumnName="sum_legs" />
+                <ScalarProperty Name="race_end" ColumnName="race_end" />
+                <ScalarProperty Name="team_id" ColumnName="team_id" />
+                <ScalarProperty Name="team_nr" ColumnName="team_nr" />
+                <ScalarProperty Name="team_name" ColumnName="team_name" />
+                <ScalarProperty Name="cat_name" ColumnName="cat_name" />
+                <ScalarProperty Name="cat_id" ColumnName="cat_id" />
+                <ScalarProperty Name="rnk" ColumnName="rnk" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

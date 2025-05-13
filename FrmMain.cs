@@ -927,7 +927,7 @@ namespace h24
         private void resultsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FrmResults f = new FrmResults();
-            f.ShowDialog();
+            f.Show();
         }
 
 

@@ -349,6 +349,9 @@
     <Compile Include="v_readout_legs.cs">
       <DependentUpon>klc01.tt</DependentUpon>
     </Compile>
+    <Compile Include="v_rpt_results.cs">
+      <DependentUpon>klc01.tt</DependentUpon>
+    </Compile>
     <Compile Include="v_teams_results.cs">
       <DependentUpon>klc01.tt</DependentUpon>
     </Compile>
@@ -405,10 +408,10 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="rptSlip1.rdlc">
+    <EmbeddedResource Include="rptResults.rdlc">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="rpt_results.rdlc">
+    <EmbeddedResource Include="rptSlip1.rdlc">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <None Include="app.config" />

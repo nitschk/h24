@@ -35,6 +35,7 @@
         <EntityTypeShape EntityType="klc01Model.roc_punches" Width="1.5" PointX="12.375" PointY="14.75" />
         <EntityTypeShape EntityType="klc01Model.leg_exceptions" Width="1.5" PointX="14.375" PointY="14.75" />
         <EntityTypeShape EntityType="klc01Model.v_iof_results" Width="1.5" PointX="16.375" PointY="0.75" />
+        <EntityTypeShape EntityType="klc01Model.v_rpt_results" Width="1.5" PointX="16.375" PointY="6.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

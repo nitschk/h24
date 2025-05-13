@@ -50,6 +50,7 @@ namespace h24
         public virtual DbSet<roc_punches> roc_punches { get; set; }
         public virtual DbSet<leg_exceptions> leg_exceptions { get; set; }
         public virtual DbSet<v_iof_results> v_iof_results { get; set; }
+        public virtual DbSet<v_rpt_results> v_rpt_results { get; set; }
     
         public virtual ObjectResult<Nullable<int>> get_competitor(Nullable<int> chip_id)
         {
