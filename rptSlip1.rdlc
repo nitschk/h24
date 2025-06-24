@@ -9,13 +9,13 @@
               <Width>0.91305cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.64571cm</Width>
+              <Width>1.38194cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.51786cm</Width>
+              <Width>2.61531cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.95199cm</Width>
+              <Width>2.23882cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -34,7 +34,7 @@
                               <Value>#</Value>
                               <Style>
                                 <FontFamily>Consolas</FontFamily>
-                                <FontSize>8pt</FontSize>
+                                <FontSize>9pt</FontSize>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -64,10 +64,10 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Control</Value>
+                              <Value>Cntrl</Value>
                               <Style>
                                 <FontFamily>Consolas</FontFamily>
-                                <FontSize>8pt</FontSize>
+                                <FontSize>9pt</FontSize>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -100,7 +100,7 @@
                               <Value>Time</Value>
                               <Style>
                                 <FontFamily>Consolas</FontFamily>
-                                <FontSize>8pt</FontSize>
+                                <FontSize>9pt</FontSize>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -133,7 +133,7 @@
                               <Value>Lap</Value>
                               <Style>
                                 <FontFamily>Consolas</FontFamily>
-                                <FontSize>8pt</FontSize>
+                                <FontSize>9pt</FontSize>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -171,7 +171,7 @@
                               <Value>=Fields!position.Value</Value>
                               <Style>
                                 <FontFamily>Consolas</FontFamily>
-                                <FontSize>8pt</FontSize>
+                                <FontSize>9pt</FontSize>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -204,7 +204,7 @@
                               <Value>=Fields!control_code.Value</Value>
                               <Style>
                                 <FontFamily>Consolas</FontFamily>
-                                <FontSize>8pt</FontSize>
+                                <FontSize>9pt</FontSize>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -237,7 +237,7 @@
                               <Value>=Fields!punch_time.Value</Value>
                               <Style>
                                 <FontFamily>Consolas</FontFamily>
-                                <FontSize>8pt</FontSize>
+                                <FontSize>9pt</FontSize>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -270,7 +270,7 @@
                               <Value>=Fields!lap_time.Value</Value>
                               <Style>
                                 <FontFamily>Consolas</FontFamily>
-                                <FontSize>8pt</FontSize>
+                                <FontSize>9pt</FontSize>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -319,10 +319,10 @@
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>dsSlip</DataSetName>
-        <Top>2.4171cm</Top>
-        <Left>0.34078cm</Left>
+        <Top>2.44626cm</Top>
+        <Left>0.29964cm</Left>
         <Height>0.90406cm</Height>
-        <Width>7.04449cm</Width>
+        <Width>7.14913cm</Width>
         <Style>
           <Border>
             <Style>None</Style>
