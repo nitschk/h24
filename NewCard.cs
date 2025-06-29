@@ -50,7 +50,7 @@ namespace h24
             {
                 //chip not found
                 frmChipNotFound f2 = new frmChipNotFound(chip_id_s);
-                f2.ShowDialog();
+                f2.ShowDialogOnTop();
                 competitor_id = this.GetRunnerByCardId(chip_id_s);
             }
             //insert leg
@@ -224,7 +224,7 @@ namespace h24
                             int course_id_from_slips = db.slips.Where(b => b.readout_id == readout_id).Select(s => s.course_id).FirstOrDefault();
                             //unknown course
                             frmCourseNotFound frm = new frmCourseNotFound(competitor_id, readout_id, course_id_from_slips);
-                            frm.ShowDialog();
+                            frm.ShowDialogOnTop();
                             course_id = frm.course;
                             frm.course = 0;
                         }

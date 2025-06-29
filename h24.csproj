@@ -163,6 +163,7 @@
     <Compile Include="controls.cs">
       <DependentUpon>klc01.tt</DependentUpon>
     </Compile>
+    <Compile Include="ControlsExtensions.cs" />
     <Compile Include="courses.cs">
       <DependentUpon>klc01.tt</DependentUpon>
     </Compile>
