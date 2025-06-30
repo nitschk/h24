@@ -109,7 +109,8 @@ namespace h24
                             }
                             else if ((i > 4) && (i % 2 == 1))
                             {
-                                List<string> lst = new List<string>() { "31", "32", "33", "34", "35" };
+                                //List<string> lst = new List<string>() { "31", "32", "33", "34", "35" };
+                                List<string> lst = new List<string>() { };
                                 if (!lst.Contains(control))
                                 {
                                     cCode.control_id = control;

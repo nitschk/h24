@@ -937,7 +937,7 @@ namespace h24
             if (curRow > -1)
             {
                 int readout_id = Convert.ToInt32(dgLegs.Rows[curRow].Cells["readout_id"].Value);
-                string printerName = this.cbPrinter.Text; //"Microsoft Print to PDF";
+                //string printerName = this.cbPrinter.Text; //"Microsoft Print to PDF";
                 this.PrintSlip(readout_id);
             }
         }
@@ -1039,12 +1039,12 @@ namespace h24
         }
 
 
-        private void button3_Click(object sender, EventArgs e)
+/*        private void button3_Click(object sender, EventArgs e)
         {
             int readout_id = 80;
-            string printerName = this.cbPrinter.Text; //"Microsoft Print to PDF";
+            //string printerName = this.cbPrinter.Text; //"Microsoft Print to PDF";
             this.PrintSlip(readout_id);
-        }
+        }*/
 
         private void button1_Click(object sender, EventArgs e)
         {
