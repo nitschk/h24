@@ -272,6 +272,7 @@
           <Property Name="finish_missing" Type="bit" />
           <Property Name="punch_count" Type="int" />
           <Property Name="as_of_date" Type="datetime" Nullable="false" />
+          <Property Name="dev_serial" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="si_stamps">
           <Key>
@@ -441,6 +442,7 @@ warning 6002: The table/view 'klc01_26.dbo.v_readout_legs' does not have a prima
             
           </Key>
           <Property Name="readout_id" Type="int" Nullable="false" />
+          <Property Name="dev_serial" Type="int" Nullable="false" />
           <Property Name="chip_id" Type="varchar" MaxLength="15" Nullable="false" />
           <Property Name="card_readout_datetime" Type="datetime" Nullable="false" />
           <Property Name="comp_id" Type="int" />
@@ -715,7 +717,8 @@ warning 6002: The table/view 'klc01_26.dbo.v_teams_results' does not have a prim
           </EntitySet>
           <EntitySet Name="v_readout_legs" EntityType="Self.v_readout_legs" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
-    [v_readout_legs].[readout_id] AS [readout_id], 
+    [v_readout_legs].[readout_id] AS [readout_id],
+    [v_readout_legs].[dev_serial] AS [dev_serial],
     [v_readout_legs].[chip_id] AS [chip_id], 
     [v_readout_legs].[card_readout_datetime] AS [card_readout_datetime], 
     [v_readout_legs].[comp_id] AS [comp_id], 
@@ -923,6 +926,7 @@ warning 6002: The table/view 'klc01_26.dbo.v_teams_results' does not have a prim
           <Property Name="check_datetime" Type="DateTime" Precision="3" />
           <Property Name="finish_datetime" Type="DateTime" Precision="3" />
           <Property Name="punch_count" Type="Int32" />
+          <Property Name="dev_serial" Type="Int32" Nullable="false" />
           <Property Name="as_of_date" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="si_stamps" Relationship="Self.FK_si_stamps_si_readout" FromRole="si_readout" ToRole="si_stamps" />
           <Property Name="start_datetime" Type="DateTime" Precision="3" />
@@ -1403,6 +1407,7 @@ warning 6002: The table/view 'klc01_26.dbo.v_teams_results' does not have a prim
             <PropertyRef Name="readout_id" />
           </Key>
           <Property Name="readout_id" Type="Int32" Nullable="false" />
+          <Property Name="dev_serial" Type="Int32" Nullable="false" />
           <Property Name="chip_id" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="card_readout_datetime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="comp_id" Type="Int32" />
@@ -1700,6 +1705,7 @@ warning 6002: The table/view 'klc01_26.dbo.v_teams_results' does not have a prim
                 <ScalarProperty Name="finish_datetime" ColumnName="finish_datetime" />
                 <ScalarProperty Name="punch_count" ColumnName="punch_count" />
                 <ScalarProperty Name="as_of_date" ColumnName="as_of_date" />
+                <ScalarProperty Name="dev_serial" ColumnName="dev_serial" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1960,6 +1966,7 @@ warning 6002: The table/view 'klc01_26.dbo.v_teams_results' does not have a prim
                 <ScalarProperty Name="card_readout_datetime" ColumnName="card_readout_datetime" />
                 <ScalarProperty Name="chip_id" ColumnName="chip_id" />
                 <ScalarProperty Name="readout_id" ColumnName="readout_id" />
+                <ScalarProperty Name="dev_serial" ColumnName="dev_serial" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -32,5 +32,6 @@ namespace h24
         public Nullable<bool> valid_flag { get; set; }
         public Nullable<bool> race_valid { get; set; }
         public Nullable<int> team_id { get; set; }
+        public int dev_serial { get; set; }
     }
 }

@@ -1,29 +1,33 @@
-﻿using Microsoft.Reporting.WinForms;
+﻿using CsvHelper;
+using CsvHelper.Configuration;
+using h24;
+using Microsoft.Reporting.WinForms;
 using Microsoft.Win32;
 using Newtonsoft.Json;
+using Serilog;
 using SPORTident;
 using SPORTident.Common;
 using SPORTident.Communication;
 using SPORTident.Communication.UsbDevice;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Configuration;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.SqlServer;
 using System.Data.Entity.Validation;
 using System.Data.SqlTypes;
 using System.Drawing;
 using System.Drawing.Printing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Configuration;
-using System.Collections.Specialized;
 using Timer = System.Threading.Timer;
-using Serilog;
-using System.Data.Entity.SqlServer;
 
 namespace h24
 {
@@ -33,7 +37,9 @@ namespace h24
         private readonly Reader _reader;
         private const string SerialPortSettingsName = "SerialPort";
 
+        private int devserial;
         private bool _connected;
+        private bool skipTextChange;
         private Dictionary<int, DeviceInfo> _deviceInfoList;
 
         private Timer apiRequestTimer;
@@ -49,6 +55,7 @@ namespace h24
                 WriteLogFile = false
             };
 
+            devserial = 0;
             _reader.InputDeviceChanged += _reader_InputDeviceChanged;
             _reader.InputDeviceStateChanged += _reader_InputDeviceStateChanged;
             _reader.LogEvent += _reader_LogEvent;
@@ -141,11 +148,11 @@ namespace h24
             }
             catch (Exception e)
             {
-                MessageBox.Show($"Undefined Error:\n{e.Message}\n{e.StackTrace}");
+                MessageBox.Show($"Not caught exceptions:\n{e.Message}\n{e.StackTrace}");
             }
         }
 
-        private void RefreshLegs()
+        private void RefreshLegsAll()
         {
             //dataGridView1.Table.... Bind data here (this method would be executed on UI thread)
             /*          var query = (from r in db.si_readout
@@ -204,8 +211,18 @@ namespace h24
 
             using (var db = new klc01())
             {
-                var query = db.v_readout_legs.OrderByDescending(x => x.readout_id).ToList();
-                dgLegs.DataSource = query;
+                dgLegs.DataSource = db.v_readout_legs.OrderByDescending(x => x.readout_id).Take(100).ToList(); 
+                dgLegs.Update();
+                dgLegs.Refresh();
+                dgLegs.Columns["card_readout_datetime"].DefaultCellStyle.Format = "dd. MM. yyyy HH:mm:ss";
+            }
+        }
+
+        private void RefreshLegsWithStatus(string status)
+        {
+            using (var db = new klc01())
+            {               
+                dgLegs.DataSource = db.v_readout_legs.Where(b => b.leg_status == status).OrderByDescending(x => x.readout_id).ToList();
                 dgLegs.Update();
                 dgLegs.Refresh();
                 dgLegs.Columns["card_readout_datetime"].DefaultCellStyle.Format = "dd. MM. yyyy HH:mm:ss";
@@ -362,6 +379,7 @@ namespace h24
                 return;
             }
 
+            devserial = Int32.Parse(e.Device.SerialNumber);
             txtInfo.Text = "Unknown device";
 
             var msg = "no description available";
@@ -539,10 +557,14 @@ namespace h24
         {
             db = new klc01();
 
-            // check if time on the station is same as on the server, if not, show warning
+            // first database connection
             DateTime servertime = db.Database.SqlQuery<DateTime>("SELECT SYSDATETIME()").FirstOrDefault();
-            var dtime = DateTime.Now - servertime;
-            if (Math.Abs(dtime.TotalSeconds) > 0.3)
+            var dtime = DateTime.Now - servertime;            
+            if (Math.Abs(dtime.TotalSeconds) > 2)
+                // Die Zeitmessung erfolgt Grundsätzlich über die SI-Stadionen,
+                // aber bei Fehlstempel, Krankmeldung oder allgemein bei jeder
+                // Aktion wird ein Zeitstempel hinterlassen, wo es sehr verwirrend ist,
+                // wenn die Zeit des Rechners nicht zur Serverzeit passt. CT_17April2026
                 MessageBox.Show("Server: " + servertime + "\nTime difference: " + dtime.TotalSeconds.ToString("0.00") + " sec's",
                        "Server Time", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
@@ -597,7 +619,8 @@ namespace h24
         private void dgTeams_SelectionChanged(object sender, EventArgs e)
         {
             RefreshDgCompetitors();
-
+            if (radio_team.Checked)
+                RefreshLegsSelectedTeam();           
         }
 
         /// <summary>
@@ -634,9 +657,10 @@ namespace h24
                         finish_datetime = card.FinishPunch.IsMissingOrEmpty == true ? card.ReadoutDateTime : card.FinishPunch.PunchDateTime,
                         finish_missing = card.FinishPunch.IsMissingOrEmpty == true ? true : false,
                         as_of_date = DateTime.Now,
-                        si_stamps = Stamps
+                        si_stamps = Stamps,
+                        dev_serial = devserial
                     };
-
+                   
                     try
                     {
                         db.si_readout.Add(newReadout);
@@ -753,9 +777,9 @@ namespace h24
             //string dsk_penalty = competitor.dsk_penalty.ToString();
 
             //this.LbLastBib.Text = bib;
-
+            
             //display competitor details
-            this.LbLastBib.Text = competitor.bib;
+            this.LbLastBib.Text = competitor.bib; 
             this.LbStatus.Text = competitor.leg_status;
             this.LbPenal.Text = competitor.dsk_penalty.ToString();
 
@@ -790,6 +814,9 @@ namespace h24
 
         private void SlipCurrentRow_Click(object sender, EventArgs e)
         {
+            if (dgLegs.CurrentRow == null)
+                return;
+
             int curRow = dgLegs.CurrentRow.Index;
             if (curRow > -1)
             {
@@ -844,7 +871,6 @@ namespace h24
 
         private void btnReloadReadout_Click(object sender, EventArgs e)
         {
-
             long r;
             int i = 0;
 
@@ -861,16 +887,10 @@ namespace h24
                 //tady budu muset udelat novou funkci UpdateLeg(leg_id), aby se nepridaval novy leg, ale upravoval ten stavajici...
                 r = NewCard.UpdateLeg(readout_id);
             }
-            if (tbSearchReadout.Text.Length > 0)
-            {
-                string search_string = tbSearchReadout.Text;
-                RefreshLegsFiltered(search_string);
-            }
-            else
-            {
-                RefreshLegs();
-            }
-                
+
+            // wenn bei mir ausgelesen könnte man die team anzeige optimieren.
+            // wenn nicht bei mir ausgelesen, könnte die device anzeige Optimiert werden .. CT_7May26 
+            RefreshLegs();
             dgLegs.CurrentCell = dgLegs.Rows[first_row].Cells[1];
         }
 
@@ -916,7 +936,8 @@ namespace h24
                 r = NewCard.UpdateLeg(readout_id);
                 //}
             }
-            RefreshLegs();
+
+            RefreshLegs();            
             //dgLegs.CurrentCell = dgLegs.Rows[curRow].Cells[1];
         }
 
@@ -935,23 +956,29 @@ namespace h24
         private void resultsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FrmResults f = new FrmResults();
-            f.Show();
+            f.Show();  // or ShowDialog(); ?           
         }
 
 
-        private void btnPrintSlip_Click(object sender, EventArgs e)
+        private void printSlipToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (dgLegs.CurrentRow == null)
+                return;
+                       
             int curRow = dgLegs.CurrentRow.Index;
             if (curRow > -1)
             {
                 int readout_id = Convert.ToInt32(dgLegs.Rows[curRow].Cells["readout_id"].Value);
                 //string printerName = this.cbPrinter.Text; //"Microsoft Print to PDF";
                 this.PrintSlip(readout_id);
-            }
+            }            
         }
 
         private void btn_delete_leg_Click(object sender, EventArgs e)
         {
+            if (dgLegs.CurrentRow == null)
+                return;
+
             int curRow = dgLegs.CurrentRow.Index;
             if (curRow > -1)
             {
@@ -976,7 +1003,6 @@ namespace h24
                     RefreshLegs();
                 }
             }
-
         }
 
         private void RefreshDgCompetitors()
@@ -991,36 +1017,56 @@ namespace h24
 
             db.Configuration.ProxyCreationEnabled = false;
             db.competitors.Load();
-            this.competitorsBindingSource.DataSource = db.competitors.Local.ToBindingList().Where(c => c.team_id == team_id).OrderBy(x=> x.rank_order);
+            this.competitorsBindingSource.DataSource = db.competitors.Local.ToBindingList().Where(c => c.team_id == team_id).OrderBy(x => x.rank_order);
 
+            // select cell from search text
+            if ((checkBoxSearch.Checked) && (txSearch.Text.Length > 0))
+            {
+                foreach (DataGridViewRow row in dgCompetitors.Rows)
+                {
+                    foreach (DataGridViewCell cell in row.Cells)
+                    {
+                        if ((cell.Value != null) && (cell.Value.ToString().IndexOf(txSearch.Text, StringComparison.OrdinalIgnoreCase) != -1))
+                        {
+                            dgCompetitors.CurrentCell = cell;
+                            dgCompetitors.BeginEdit(false);
+                            cell.Selected = true;
+                            return;
+                        }
+                    }
+                }
+                
+            }
         }
 
-        private void SearchComp(string tx)
+        private void UpdateComp(int team_nr)
         {
             using (var db = new klc01())
-            {
-                tx = txSearch.Text;
-                //TODO change to linq
+            {                
+                string tx = txSearch.Text;
                 var query = (
-                        from t in db.teams
-                        join c in db.competitors on t.team_id equals c.team_id
-                        where c.comp_name.Contains(tx)
-                            || t.team_name.Contains(tx)
-                            || c.bib.Contains(tx)
-                            || SqlFunctions.StringConvert((double)c.comp_chip_id).Contains(tx)
-                        select new
-                        {
-                            t.team_id,
-                            t.team_name,
-                            t.team_nr,
-                            t.team_status,
-                            t.team_did_start,
-                            t.race_end
-                        });
+                            from t in db.teams
+                            join c in db.competitors on t.team_id equals c.team_id
+                            where ((team_nr > 0) && (t.team_nr == team_nr))
+                               || ((team_nr < 0) && (
+                            c.comp_name.Contains(tx)
+                                || t.team_name.Contains(tx)
+                                || c.bib.Contains(tx)
+                                || SqlFunctions.StringConvert((double)c.comp_chip_id).Contains(tx)))
+                            select new
+                            {
+                                t.team_id,
+                                t.team_name,
+                                t.team_nr,                                
+                                t.team_status,
+                                t.phone_number,
+                                t.team_did_start,
+                                t.race_end
+                            });               
 
                 var orderedTeams = query
                     .Distinct()
-                    .OrderBy(t=> t.team_nr)
+                    .OrderBy(t => t.team_nr)
                     .ToList();
 
                 var tms = orderedTeams;
@@ -1032,27 +1078,38 @@ namespace h24
 
         private void txSearch_TextChanged(object sender, EventArgs e)
         {
-            if (txSearch.Text.Length > 0)
+            if (this.skipTextChange) {  return; }
+            int team_nr = -1;
+            if ((!checkBoxSearch.Checked) && (txSearch.Text.Length > 0))
             {
-                SearchComp(txSearch.Text);
-
-                RefreshDgCompetitors();
+                string tx = txSearch.Text;
+                if (!int.TryParse(tx, out team_nr))
+                {
+                    if (sender != checkBoxSearch)                       
+                    {
+                        this.skipTextChange = true;
+                        // Remove the last character as it wasn't a number
+                        txSearch.Text = txSearch.Text.Remove((txSearch.Text.Length - 1));
+                        this.skipTextChange = false;
+                        // Move the cursor to the end of text
+                        txSearch.SelectionStart = txSearch.Text.Length;                        
+                    }
+                    else
+                        txSearch.Text = "";
+                    return;
+                }
             }
-        }
-
-        private void btSearch_Click(object sender, EventArgs e)
-        {
-            SearchComp(txSearch.Text);
+            UpdateComp(team_nr);
             RefreshDgCompetitors();
+
+            if ((checkBoxSearch.Checked) && (radio_search.Checked))
+            {
+                if (txSearch.Text.Length > 0)
+                    RefreshLegsFiltered(txSearch.Text);
+                else
+                    RefreshLegsAll();
+            }                        
         }
-
-
-/*        private void button3_Click(object sender, EventArgs e)
-        {
-            int readout_id = 80;
-            //string printerName = this.cbPrinter.Text; //"Microsoft Print to PDF";
-            this.PrintSlip(readout_id);
-        }*/
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -1147,16 +1204,8 @@ namespace h24
                         }
                     }
                 }
-                if (tbSearchReadout.Text.Length > 0)
-                {
-                    string search_string = tbSearchReadout.Text;
-                    RefreshLegsFiltered(search_string);
-                }
-                else
-                {
-                    RefreshLegs();
-                }
 
+                RefreshLegs();
                 dgLegs.CurrentCell = dgLegs.Rows[curRow].Cells[1];
 
             }
@@ -1257,7 +1306,7 @@ Log.Information("pred PostSlip");
             f2.ShowDialog();
         }
 
-        private void btnWithdrawn_Click(object sender, EventArgs e)
+        private void withdrawnToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string wdrn_course = NewCard.get_config_item("wdrn_course");
             int curRow = dgCompetitors.CurrentRow.Index;
@@ -1372,16 +1421,9 @@ Log.Information("pred PostSlip");
             if (e.Button == MouseButtons.Right)
             {
                 ContextMenu m = new ContextMenu();
-                m.MenuItems.Add(new MenuItem("Reload Stamps", new System.EventHandler(this.btnReloadReadout_Click)));
-                m.MenuItems.Add(new MenuItem("Change Competitor", new System.EventHandler(this.btn_change_competitor_Click)));
-                m.MenuItems.Add(new MenuItem("Slip", new System.EventHandler(this.SlipCurrentRow_Click)));
-                m.MenuItems.Add(new MenuItem("Print", new System.EventHandler(this.btnPrintSlip_Click)));
-                m.MenuItems.Add(new MenuItem("Delete", new System.EventHandler(this.btn_delete_leg_Click)));
-                m.MenuItems.Add(new MenuItem("Reload All", new System.EventHandler(this.btReloadAll_Click)));
+                m.MenuItems.Add(new MenuItem("Show", new System.EventHandler(this.SlipCurrentRow_Click)));
                 m.MenuItems.Add(new MenuItem("Change Status", new System.EventHandler(this.btChangeStatus_Click)));
-                m.MenuItems.Add(new MenuItem("Post All", new System.EventHandler(this.BtnPostAll_Click)));
-                m.MenuItems.Add(new MenuItem("Post Team", new System.EventHandler(this.btPostTeam_Click)));
-                m.MenuItems.Add(new MenuItem("Post Slip", new System.EventHandler(this.btnPostSlip_Click)));
+               
                 
                 
                 /*
@@ -1396,12 +1438,6 @@ Log.Information("pred PostSlip");
                 */
                 m.Show(dgLegs, new Point(e.X, e.Y));
             }
-        }
-
-        private void btnRefreshLegs_Click(object sender, EventArgs e)
-        {
-
-            RefreshLegs();
         }
 
         private async void BtnPostAll_Click(object sender, EventArgs e)
@@ -1445,12 +1481,6 @@ Log.Information("pred PostSlip");
                 LbLastBib.Font = new Font("Microsoft Sans Serif", this.ClientSize.Height / 8);
         }
 
-        private void btnClearSearch_Click(object sender, EventArgs e)
-        {
-            txSearch.Text = "";
-            SearchComp("");
-        }
-
         private void cmbSerialPort_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(cmbSerialPort.SelectedItem?.ToString()))
@@ -1470,14 +1500,14 @@ Log.Information("pred PostSlip");
                 Log.Information("QueueProcess Started");
                 // Start the timer with the desired interval (e.g., every 5 seconds)
                 apiRequestTimer.Change(TimeSpan.Zero, TimeSpan.FromSeconds(api_queue_timer));
-                cbQueueProcess.ForeColor = Color.Green;
+                cbQueueProcess.BackColor = Color.Green;
             }
             else
             {
                 Log.Information("QueueProcess STOP");
                 // Stop the timer
                 apiRequestTimer.Change(Timeout.Infinite, Timeout.Infinite);
-                cbQueueProcess.ForeColor = Color.Black;
+                cbQueueProcess.BackColor = Color.Red;
             }
         }
 
@@ -1489,7 +1519,7 @@ Log.Information("pred PostSlip");
 
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void checkAPIToolStripMenuItem_Click(object sender, EventArgs e)
         {
             NewCard NewCard = new NewCard();
             NewCard.CheckApiRequests(null);
@@ -1507,16 +1537,29 @@ Log.Information("pred PostSlip");
             }
         }
 
-        private void tbSearchReadout_TextChanged(object sender, EventArgs e)
+        private void RefreshLegsSelectedTeam()
         {
-            string search_string;
-            if (tbSearchReadout.Text.Length > 0)
+            if (dgTeams.CurrentRow != null)
             {
-                search_string = tbSearchReadout.Text;
-                RefreshLegsFiltered(search_string);
+                int curRow = dgTeams.CurrentRow.Index;
+                int team_id = Convert.ToInt32(dgTeams.Rows[curRow].Cells["team_id"].Value);
+                using (var db = new klc01())
+                {
+                    var query = db.v_readout_legs.OrderByDescending(x => x.readout_id).Where(
+                        x => x.team_id == team_id)
+                        .ToList();
+                    dgLegs.DataSource = query;
+                    dgLegs.Update();
+                    dgLegs.Refresh();
+                }
+            }
+            else
+            {
+                dgLegs.DataSource = null;
+                dgLegs.Update();
+                dgLegs.Refresh();
             }
         }
-
         private void RefreshLegsFiltered(string search_string)
         {
             using (var db = new klc01())
@@ -1527,7 +1570,7 @@ Log.Information("pred PostSlip");
                 || x.bib.Contains(search_string)
                 || x.chip_id.ToString().Contains(search_string)
                 || x.course_name.Contains(search_string))
-                    .ToList();
+                    .Take(100).ToList();
                 dgLegs.DataSource = query;
                 dgLegs.Update();
                 dgLegs.Refresh();
@@ -1535,11 +1578,16 @@ Log.Information("pred PostSlip");
             }
         }
 
-
-        private void btReadot_cancel_Click(object sender, EventArgs e)
+        private void RefreshLegsDevice()
         {
-            tbSearchReadout.Text = "";
-            RefreshLegs();
+            using (var db = new klc01())
+            {
+                var query = db.v_readout_legs.Where(x => x.dev_serial == devserial).OrderByDescending(x => x.readout_id)
+                    .Take(100).ToList();               
+                dgLegs.DataSource = query;
+                dgLegs.Update();
+                dgLegs.Refresh();
+            }
         }
 
         private void btChangeStatus_Click(object sender, EventArgs e)
@@ -1553,59 +1601,328 @@ Log.Information("pred PostSlip");
                 FrmStatusChange f2 = new FrmStatusChange(leg_id, this.cbPost_Slips.Checked);
                 f2.ShowDialog();
             }
-            RefreshLegs();
 
+            // FIXME: doch  nur wenn sich was ändert? CT
+            RefreshLegs();         
         }
 
-        private void btnTopSearchBottom_Click(object sender, EventArgs e)
+        class WinnerEntries
         {
-            if(txSearch.Text.Length > 0)
+            public int Platz { get; set; }
+            public int Wechsel { get; set; }
+            public string Zeit { get; set; }
+            public int StartNr { get; set; }
+            public string Name { get; set; }
+            public string Klasse { get; set; }
+            public string Name1 { get; set; }
+            public string Name2 { get; set; }
+            public string Name3 { get; set; }
+            public string Name4 { get; set; }
+            public string Name5 { get; set; }
+            public string Name6 { get; set; }
+        }
+       
+        private void exportWinnerMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFile = new SaveFileDialog
             {
-                tbSearchReadout.Text = txSearch.Text;
-                RefreshLegsFiltered(tbSearchReadout.Text);
+                Title = "Winner Export List",
+                DefaultExt = "csv",
+                Filter = "txt files (*.csv)|*.csv",
+                RestoreDirectory = true,
+            };
+
+            if (saveFile.ShowDialog() == DialogResult.OK)
+            {
+                var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+                {
+                    PrepareHeaderForMatch = args => args.Header.ToLower(),
+                    Delimiter = ";",
+                    Encoding = Encoding.UTF8,
+                    HeaderValidated = null,
+                    MissingFieldFound = null,
+                };
+
+                var winObjs = new List<WinnerEntries>();
+                using (var db = new klc01())
+                {
+                    // BUG: Return the first row again for each row
+                    var team_res = db.v_teams_results.Where(b => b.res_pos <7).ToList();
+                    foreach (var tr in team_res)
+                    {
+                        // Platz;Wechsel;Zeit;StartNr;Name;Klasse;Name1;Name2;Name3;Name4;Name5;Name6
+                        WinnerEntries obj = new WinnerEntries
+                        {
+                            Platz = (int)tr.res_pos.Value,
+                            Wechsel = tr.legs_count.Value,
+                            StartNr = tr.team_nr.Value,
+                            Name = tr.team_name,
+                            Klasse = tr.cat_name,
+                        };
+
+                        var category = db.categories.Where(b => b.cat_name == tr.cat_name).FirstOrDefault();
+                        obj.Zeit = (tr.race_time - category.cat_start_time).ToString();
+
+                        List<string> Team;
+                        Team = db.competitors.Where(b => b.team_id == tr.team_id).Select(s => s.comp_name).ToList();
+
+                        obj.Name1 = Team[0];
+                        obj.Name2 = Team[1];
+                        if (Team.Count > 2) obj.Name3 = Team[2];
+                        if (Team.Count > 3) obj.Name4 = Team[3];
+                        if (Team.Count > 4) obj.Name5 = Team[4];
+                        if (Team.Count > 5) obj.Name6 = Team[5];
+                        winObjs.Add(obj);
+                    }
+                }
+                
+                // UTF8 with BOM, that Excel handle it correct. CT_08Mai24
+                var writer = new StreamWriter(saveFile.FileName, false, new UTF8Encoding(true));
+
+                using (var csv = new CsvWriter(writer, config))
+                {
+                    csv.WriteRecords(winObjs);
+                }
             }
         }
 
-        private void btFilterReadout_Click(object sender, EventArgs e)
+        class OpenCoursesEntries
+        {            
+            public int TNr { get; set; }
+            public string Finish { get; set; }
+            public string TeamName { get; set; }
+            public int Cnt { get; set; }
+            public string OpenCourses { get; set; }
+        }
+
+        private void exportOpenCoursesMenuItem_Click(object sender, EventArgs e)
         {
-            int curRow = dgTeams.CurrentRow.Index;
-            int team_id = Convert.ToInt32(dgTeams.Rows[curRow].Cells["team_id"].Value);
-            using (var db = new klc01())
+            SaveFileDialog saveFile = new SaveFileDialog
             {
-                var query = db.v_readout_legs.OrderByDescending(x => x.readout_id).Where(
-                    x => x.team_id == team_id)
-                    .ToList();
-                dgLegs.DataSource = query;
+                Title = "Open Courses List",
+                DefaultExt = "csv",                
+                Filter = "txt files (*.csv)|*.csv",
+                RestoreDirectory = true,
+            };
+
+            var hgone = 6;
+            var dura = DateTime.Now.Subtract((DateTime)db.categories.FirstOrDefault().cat_start_time).TotalMinutes;
+            if (dura > 1440)
+                hgone = 24;
+            else
+                if (dura > 720)
+                    hgone = 12;
+             
+            // default name with time version
+            var oc_name = "open_courses_";                    
+            saveFile.FileName = oc_name + hgone + "h_" + DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
+
+            if (saveFile.ShowDialog() == DialogResult.OK)
+            {
+                var time_limit = 0; // export all
+                int i1 = saveFile.FileName.IndexOf(oc_name) + oc_name.Length;
+                int i2 = saveFile.FileName.IndexOf("h_",i1);
+                try
+                {   if (i2>i1)
+                        time_limit = Int32.Parse(saveFile.FileName.Substring(i1, i2 - i1)) * 60;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);                    
+                }
+                
+              
+                var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+                {
+                    PrepareHeaderForMatch = args => args.Header.ToLower(),
+                    Delimiter = ";",
+                    Encoding = Encoding.UTF8,
+                    HeaderValidated = null,
+                    MissingFieldFound = null,
+                };
+
+                var openObjs = new List<OpenCoursesEntries>();
+
+                using (var db = new klc01())
+                {
+                    List<teams> AllTeams = db.teams.ToList();
+                    foreach (var team in AllTeams)
+                    {
+                        var category = db.categories.Where(b => b.cat_id == team.cat_id).FirstOrDefault();
+                        if ((time_limit !=0) && (category.cat_time_limit != time_limit))
+                            continue;
+                        DateTime ftime = (DateTime)category.cat_start_time;
+                        OpenCoursesEntries ocobj = new OpenCoursesEntries
+                        {
+                            TNr = team.team_nr.Value,
+                            TeamName = team.team_name
+                        };
+
+                        List<string> OpenCoures = new List<string>();
+                        List<courses> AllCourses = db.courses.ToList();
+                        foreach (var course in AllCourses)
+                        {
+                            // Feste Kategorie Bahnzuordnung hart über den Bahnnamen
+                            // Mit einer time_limit Angabe pro Bahn: 360, 720+ und nur 1440
+                            // könnte man es mit einer Zahl ausdrücken, was aber erst noch eingeplegt
+                            // werden müsste, nicht nur in die Datenbank sondern auch beim Import
+                            // Was aber eine neue Fehlerquelle hervorbringt, also lieber bei der
+                            // Namenslogik bleiben, die sich hoffentlich nicht ändert. CT_07Apr26
+                            if (course.course_name.Left(2) == "SF") // Startbahnen
+                                continue;
+                            if (course.course_name == "WDRN") // duStartbahnen
+                                continue;
+                            if (category.cat_time_limit == 360) // Kinderbahn, > 6h, 360min
+                            {
+                                if (course.course_name.Contains("C") || course.course_name.Contains("Y"))
+                                {
+                                    var slip = db.slips.Where(c => c.course_id == course.course_id && c.team_id == team.team_id).FirstOrDefault();
+                                    if (slip == null)
+                                        OpenCoures.Add(course.course_name);
+                                    else
+                                    {
+                                        if (slip.finish_dtime > ftime)
+                                            ftime = (DateTime)slip.finish_dtime;
+                                    }
+                                }
+                            }
+                            else // 12 oder 24h 
+                            {
+                                if (course.course_name.Contains("C") || course.course_name.Contains("Y"))  // Kinderbahnen hier überspringen
+                                    continue;
+                                if (course.course_name.Contains("N") && (category.cat_time_limit != 1440)) // nur 24h Bahnen
+                                    continue;
+                                if ((course.course_name == "FF") && (category.cat_time_limit != 1440)) // nur 24h Bahnen
+                                    continue;
+                                var slip = db.slips.Where(c => c.course_id == course.course_id && c.team_id == team.team_id).FirstOrDefault();
+                                if (slip == null)
+                                    OpenCoures.Add(course.course_name);
+                                else
+                                {
+                                    if (slip.finish_dtime > ftime)
+                                        ftime = (DateTime)slip.finish_dtime;
+                                }                                                        
+                            }
+                        }
+
+                        ocobj.Cnt = OpenCoures.Count();
+                        ocobj.Finish = ftime.ToShortTimeString();
+                        ocobj.OpenCourses = string.Join(" -  ", OpenCoures);
+                        openObjs.Add(ocobj);
+                    }
+                }
+                
+                // UTF8 with BOM, that Excel handle it correct. CT_08Mai24
+                var writer = new StreamWriter(saveFile.FileName, false, new UTF8Encoding(true));
+
+                using (var csv = new CsvWriter(writer, config))
+                {
+                    csv.WriteRecords(openObjs);
+                }
+            }
+        }
+
+        private void checkBoxSearch_CheckedChanged(object sender, EventArgs e)
+        {            
+            labelTeamNr.Visible = !checkBoxSearch.Checked;
+            radio_search.Enabled = checkBoxSearch.Checked;              
+            txSearch_TextChanged(sender, e);
+        }
+
+        private void dgCompetitors_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            foreach (DataGridViewRow row in dgCompetitors.Rows)
+            {
+                if (row.Cells["comp_withdrawn"].Value is true)
+                    row.DefaultCellStyle.BackColor = Color.LightBlue;
+                else
+                    row.DefaultCellStyle.BackColor = Color.Empty;
+            }
+        }
+
+        private void radio_leg_changed(object sender, EventArgs e)
+        {
+            if ((sender is RadioButton) && (((RadioButton)sender).Checked == false))
+            {
+                dgLegs.DataSource = null;
                 dgLegs.Update();
                 dgLegs.Refresh();
             }
+            else
+                RefreshLegs();
+        }
+        private void RefreshLegs()
+        {
+            if (radio_team.Checked)
+                RefreshLegsSelectedTeam();
+
+            if (radio_device.Checked)
+                RefreshLegsDevice();
+
+            if ((checkBoxSearch.Checked) && (radio_search.Checked))
+            {
+                if (txSearch.Text.Length > 0)
+                    RefreshLegsFiltered(txSearch.Text);
+                else
+                    RefreshLegsAll();
+            }
+
+            if (radio_wdrn.Checked)
+                RefreshLegsWithStatus("WDR");
+            
+            if (radio_dsk.Checked)
+                RefreshLegsWithStatus("DSK");
+            
+            if (radio_all.Checked)
+                RefreshLegsAll();            
         }
 
+        private void check_editmode_CheckedChanged(object sender, EventArgs e)
+        { 
+            if (team_editmode.Checked)
+            {
+                dgTeams.ReadOnly = false;
+                dgCompetitors.ReadOnly = false;
+                editborder.BackColor = Color.Red;
+                dataColumnTeamNr.ReadOnly = true;
+                withdrawn_datetime.ReadOnly = true;
+                dataGridViewTextBoxColumn4.ReadOnly = true;
+            }
+            else
+            {
+                dgTeams.ReadOnly = true;
+                dgCompetitors.ReadOnly = true;
+                editborder.BackColor = SystemColors.Control;
+            }
+        }
 
-
-
+        private void btClean_txSearch_Click(object sender, EventArgs e)
+        {
+            txSearch.Text = "";
+            UpdateComp(-1);
+        }
 
         /*
-    private void Refresh_Readout(Object sender, EventArgs e)
-    {
-    if (this.dgLegs.GetCellCount(DataGridViewElementStates.Selected) > 0)
-    {
-       try
-       {
-           Clipboard.SetDataObject(this.dataGridView1.GetClipboardContent());
-       }
-       catch (System.Runtime.InteropServices.ExternalException)
-       {
-           MessageBox.Show("Clipboard could not be accessed. Please try again.");
-       }
-    }
+   private void Refresh_Readout(Object sender, EventArgs e)
+   {
+   if (this.dgLegs.GetCellCount(DataGridViewElementStates.Selected) > 0)
+   {
+      try
+      {
+          Clipboard.SetDataObject(this.dataGridView1.GetClipboardContent());
+      }
+      catch (System.Runtime.InteropServices.ExternalException)
+      {
+          MessageBox.Show("Clipboard could not be accessed. Please try again.");
+      }
+   }
 
-    if (this.dataGridView1.SelectedRows.Count > 0)
-    {
-       dataGridView1.Rows.RemoveAt(this.dataGridView1.SelectedRows[0].Index);
-    }
+   if (this.dataGridView1.SelectedRows.Count > 0)
+   {
+      dataGridView1.Rows.RemoveAt(this.dataGridView1.SelectedRows[0].Index);
+   }
 
-    }*/
+   }*/
 
 
 

@@ -1,23 +1,24 @@
-﻿using SPORTident;
+﻿using Microsoft.Reporting.WebForms;
+using Newtonsoft.Json.Linq;
+using Serilog;
+using SPORTident;
+using SPORTident.SiLiveSoapService;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Forms;
-using System.Text;
-using Newtonsoft.Json.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Net;
-using System.IO;
-using System.Net.Http.Headers;
-using System.Xml.Linq;
-using Serilog;
 using System.Data.Entity;
-using System.Runtime.Remoting.Contexts;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Reflection;
+using System.Runtime.Remoting.Contexts;
 using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using System.Security.Policy;
-using Microsoft.Reporting.WebForms;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace h24
 {
@@ -53,6 +54,42 @@ namespace h24
                 f2.TopMost = true;
                 f2.ShowDialog();
                 competitor_id = this.GetRunnerByCardId(chip_id_s);
+            }
+
+            // FIXME: GetRunnerByCardId könnte doch gleich competitor liefern!?
+            var competitor = db.competitors.SingleOrDefault(b => b.comp_id == competitor_id);
+            if (competitor != null)
+            {
+                string sb;
+                Int32 nr = 0;
+                string bib = competitor.bib;
+                if (Int32.TryParse(bib, out nr)) // first competitor readout
+                {
+                    int rankmax = db.competitors.Where(c => c.team_id == competitor.team_id).Max(c => c.rank_order);
+                    rankmax++;
+                    bib += System.Convert.ToChar(64 + rankmax); // add A..F
+
+                    competitor.bib = bib;
+                    competitor.rank_order = rankmax;
+                    db.SaveChanges();
+
+                    if (rankmax == 1) // nur hier die Startbahn zuordnung Möglich!
+                    {
+                        // team_nr - ca.first_start_number
+                        if (nr > 400)
+                        {
+                            sb = "SFY" + (((nr - 1) % 2) + 1);
+                        }
+                        else
+                        {
+                            if (nr > 200)
+                                sb = "SF" + (((nr - 201) % 6) + 1);
+                            else
+                                sb = "SF" + (((nr - 1) % 6) + 1);
+                        }
+                        // TOOD: Startbahn noch zuweisen!
+                    }
+                }
             }
             //insert leg
             int leg_id = this.InsertLeg(readout_id, competitor_id, out int guessed_course);

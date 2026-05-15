@@ -21,6 +21,7 @@ namespace h24
         }
     
         public int readout_id { get; set; }
+        public int dev_serial { get; set; }
         public string chip_id { get; set; }
         public System.DateTime card_readout_datetime { get; set; }
         public Nullable<System.DateTime> clear_datetime { get; set; }

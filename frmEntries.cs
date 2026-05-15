@@ -165,10 +165,9 @@ namespace h24
 
                                 List<competitors> Competitor = new List<competitors>();
                                 competitors comp1 = new competitors();
-                                comp1.bib = record.id.ToString() + "A";
+                                comp1.bib = record.id.ToString();
                                 comp1.comp_name = record.given1 + " " + record.family1;
                                 comp1.comp_chip_id = string.IsNullOrWhiteSpace(record.si_chip1) ? (int?)null : int.Parse(record.si_chip1);
-                                comp1.rank_order = 1;
                                 comp1.comp_country = record.country1;
                                 comp1.comp_birthday = DateTime.ParseExact(record.birth_year1, "yyyy", null);
                                 comp1.comp_valid_flag = true;
@@ -178,11 +177,9 @@ namespace h24
                                 if (record.family2.Length > 0)
                                 {
                                     competitors comp2 = new competitors();
-                                    comp2.bib = record.id.ToString() + "B";
+                                    comp2.bib = record.id.ToString();
                                     comp2.comp_name = record.given2 + " " + record.family2;
                                     comp2.comp_chip_id = string.IsNullOrWhiteSpace(record.si_chip2) ? (int?)null : int.Parse(record.si_chip2);
-                                    //comp2.rented_chip = record.rented2;
-                                    comp2.rank_order = 2;
                                     comp2.comp_country = record.country2;
                                     if (!String.IsNullOrEmpty(record.birth_year2))
                                         comp2.comp_birthday = DateTime.ParseExact(record.birth_year2, "yyyy", null);
@@ -194,11 +191,9 @@ namespace h24
                                 if (record.family3.Length > 0)
                                 {
                                     competitors comp3 = new competitors();
-                                    comp3.bib = record.id.ToString() + "C";
+                                    comp3.bib = record.id.ToString();
                                     comp3.comp_name = record.given3 + " " + record.family3;
                                     comp3.comp_chip_id = string.IsNullOrWhiteSpace(record.si_chip3) ? (int?)null : int.Parse(record.si_chip3);
-                                    //comp3.rented_chip = record.rented3;
-                                    comp3.rank_order = 3;
                                     comp3.comp_country = record.country3;
                                     if (!String.IsNullOrEmpty(record.birth_year3))
                                         comp3.comp_birthday = DateTime.ParseExact(record.birth_year3, "yyyy", null);
@@ -210,11 +205,9 @@ namespace h24
                                 if (record.family4.Length > 0)
                                 {
                                     competitors comp4 = new competitors();
-                                    comp4.bib = record.id.ToString() + "D";
+                                    comp4.bib = record.id.ToString();
                                     comp4.comp_name = record.given4 + " " + record.family4;
                                     comp4.comp_chip_id = string.IsNullOrWhiteSpace(record.si_chip4) ? (int?)null : int.Parse(record.si_chip4);
-                                    //comp4.rented_chip = record.rented4;
-                                    comp4.rank_order = 4;
                                     comp4.comp_country = record.country4;
                                     if (!String.IsNullOrEmpty(record.birth_year4))
                                         comp4.comp_birthday = DateTime.ParseExact(record.birth_year4, "yyyy", null);
@@ -226,11 +219,9 @@ namespace h24
                                 if (record.family5.Length > 0)
                                 {
                                     competitors comp5 = new competitors();
-                                    comp5.bib = record.id.ToString() + "E";
+                                    comp5.bib = record.id.ToString();
                                     comp5.comp_name = record.given5 + " " + record.family5;
                                     comp5.comp_chip_id = string.IsNullOrWhiteSpace(record.si_chip5) ? (int?)null : int.Parse(record.si_chip5);
-                                    //comp5.rented_chip = record.rented5;
-                                    comp5.rank_order = 5;
                                     comp5.comp_country = record.country5;
                                     comp5.comp_birthday = DateTime.ParseExact(record.birth_year5, "yyyy", null);
                                     comp5.comp_valid_flag = true;
@@ -241,11 +232,9 @@ namespace h24
                                 if (record.family6.Length > 0)
                                 {
                                     competitors comp6 = new competitors();
-                                    comp6.bib = record.id.ToString() + "F";
+                                    comp6.bib = record.id.ToString();
                                     comp6.comp_name = record.given6 + " " + record.family6;
                                     comp6.comp_chip_id = string.IsNullOrWhiteSpace(record.si_chip6) ? (int?)null : int.Parse(record.si_chip6);
-                                    //comp6.rented_chip = record.rented6;
-                                    comp6.rank_order = 6;
                                     comp6.comp_country = record.country6;
                                     comp6.comp_birthday = DateTime.ParseExact(record.birth_year6, "yyyy", null);
                                     comp6.comp_valid_flag = true;
