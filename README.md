@@ -1,15 +1,93 @@
 # h24
 
+get_results_json
 
-* Filter ist jetzt sehr sehe.... da stimmt was nicht!
+		Message	"Verletzung der PRIMARY KEY-Einschränkung \"PK__#temp_te__F82DEDBC20AA7B17\". Ein doppelter Schlüssel kann in das dbo.#temp_teams-Objekt nicht eingefügt werden. Der doppelte Schlüsselwert ist (296).\r\nDie Anweisung wurde beendet.\r\nWarnung: Ein NULL-Wert wird durch einen Aggregat- oder sonstigen SET-Vorgang gelöscht."	string
 
-* Abfrage Box für Krankmeldung
+* in der course_result list stehen schon gelöscht Bahnen noch drin.
 
-* edit mode mit roten Rahmen, dann kann man was ändern.
+## Result
+* BUG: Startnummernsuche mit Copy-Paste String, löscht nur den letzten Buchstaben
+* FIXME: WDRN Liste wird die Zeit nicht anzeigt! Liste ist denke ich ok. 
+* TODO?: Template-File verwaltung, nutzung. DE,ENG,CZ..? das Jahr? default name?
+
+
+as_of_date vergessen??? bei competitors??
+
+root:
+https://live.24ob.cz/
+
+tv results:
+https://live.24ob.cz/results2
+
+tv radio:
+https://live.24ob.cz/radio2
+
+
+* TODO: Datum von wann die Ergebnisse sind.
+
+## dbo.v_open_legs
+SELECT        r.readout_id, r.dev_serial, r.chip_id, r.card_readout_datetime
+FROM         dbo.si_readout AS r  left OUTER JOIN
+             dbo.legs AS l ON r.readout_id = l.readout_id where l.leg_id is NULL
+
+* phone 0 .. 0049
+
+* Code no.: 22 (S/N: 176908, FW: 656), OpMode: Readout, AutoSend: False, Legacy prot: False
+* Code no.: 15 (S/N: 184759, FW: 670), OpMode: Readout, AutoSend: False, Legacy prot: False
+
+
+* BUG: Suchen geht nicht mit 2 bzw s!
+* BUG: Suchen geht nicht im Edit-Modus. Fokus wechselt zu schnell.
+* FIXME: Gender wird gar nicht import bzw. in der Datenbank verwaltet.
+* FIXME: Team status richtig übernehmen... Länge...?
+* TODO: Läufer hinzufügen können, muss man in der Datenbank machen.
+* TODO: Radio punch time mit millisekunen. sql script anpassen datetime2
+* TODO: readout list größer, dynamisch.
+* TODO: readout Anzahl bahnen wäre schön
+
+* FIXME: readout copy past nicht nutzbar
+* Nicht Disk sonder m.p. missing punsch.. wird keiner Disqualifziert
+* Logging? Wo landet das?
+* All Fenster: Extra Close Button?
+
+* Unterschied zwischen Readout Valid und Rave valid
+  * discard leg mit change status doch überflüssig
+* Reload Funktion... sind doch ehr recalculate Funktion
+Reload punches? or Reload stamps or Reload readout
+
+Reload whole Team
+Will relaod punches of all competitors of current team
+
+Reload Readout - this will reload punches for selected competitor
+
+
+
+# log
+12:54 - 226: E mit F getauscht
+12:54 - 275: D und F getauscht
+13:14 - Team reinfolge gtaucht. Larissa...
+13:21 - 248: C und D getauscht:  TH1
+
+
+
+Reload whole Team
+Will relaod punches of all competitors of current team
+
+* Krankmeldung geht nicht wenn die Readausliste lehr ist
+* Chipnummer prüfen anch der Eingabe, das keiner doppelt verwendet wird.
+
+* Bearbeitung als Dropdown bos.
+* Bearbeiter rechts oben 
+
+* phonnummern vor dem Import noch korrigieren ... import...
+* Startbahnen mit Nummer letztes Jahr mit Buchstabe.
+
+
+
 * Device Filter in Datenbank ergänzen.... readout.
 
 * Automatische Läuferreinfolge!
-* bug: searach auf Team Filter zurückgestellt... wird nicht alles gelöscht, wenn es keine Zahl ist!
 
 
 * Search Eingabe, bei voller Datenbank sehr zäh.. 2 sec warten und dann erst suchen?
