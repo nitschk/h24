@@ -1,0 +1,595 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Results 24-h Thuringian Orienteering Relay 2026</title>
+	<meta name="description" content="Results 2026 - 24-h Thuringian Orienteering Relay">
+	<meta name="author" content="24h-ol.de">
+
+	<link rel="icon" href="favicon.ico">
+	<style>
+	/*general styles*/
+		.printable{display:none;}
+        #splash-screen{
+            position: fixed;
+            inset: 0;
+            z-index: 3000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 0.8rem;
+            background: rgba(255, 255, 255, 0.95);
+        }
+        .hourglass {
+            width: 44px;
+            height: 44px;
+            border: 3px solid #222;
+            border-radius: 50%;
+            position: relative;
+            animation: spinHourglass 1.2s linear infinite;
+        }
+        .hourglass:before,
+        .hourglass:after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 9px solid transparent;
+            border-right: 9px solid transparent;
+        }
+        .hourglass:before {
+            top: 8px;
+            border-bottom: 10px solid #222;
+        }
+        .hourglass:after {
+            bottom: 8px;
+            border-top: 10px solid #222;
+        }
+        @keyframes spinHourglass {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        #splash-screen .loading-text{
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-size: 1rem;
+            color: #222;
+        }
+        #pivot-section{
+            position: fixed;
+            right: 1rem;
+            bottom: 1rem;
+            z-index: 1500;
+            width: min(48vw, 780px);
+            height: 46vh;
+            background: #ffffff;
+            border: 1px solid #d9d9d9;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+            padding: 0.9rem;
+            overflow: hidden;
+        }
+        #pivot-section h2{
+            margin: 0 0 0.5rem 0;
+            font-size: 1.1rem;
+        }
+        .pivot-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+        }
+        .pivot-tabs {
+            display: flex;
+            gap: 0.35rem;
+            margin-bottom: 0.45rem;
+        }
+        .pivot-tab {
+            border: 1px solid #cfcfcf;
+            background: #f4f4f4;
+            border-radius: 5px;
+            padding: 0.2rem 0.6rem;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+        .pivot-tab.is-active {
+            background: #222;
+            color: #fff;
+            border-color: #222;
+        }
+        .pivot-body {
+            height: calc(100% - 80px);
+            overflow: auto;
+        }
+        #pivot-chart-panel canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+        .pivot-resize-top,
+        .pivot-resize-left {
+            position: absolute;
+            z-index: 2;
+            background: transparent;
+        }
+        .pivot-resize-top {
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            cursor: ns-resize;
+        }
+        .pivot-resize-left {
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 8px;
+            cursor: ew-resize;
+        }
+        @media (max-width: 960px) {
+            #pivot-section{
+                left: 0.5rem;
+                right: 0.5rem;
+                bottom: 0.5rem;
+                width: auto;
+                height: 50vh;
+            }
+        }
+	/* print styles*/
+	@media print { 
+		.printable {display:block;} 
+		.nonprintable {display:none;}
+        .uk-modal-dialog,
+        .uk-modal-dialog * {
+            font-size: 10pt !important;
+            line-height: 1.25 !important;
+        }
+        .uk-modal-dialog .uk-modal-title {
+            font-size: 12pt !important;
+        }
+	}
+	</style>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.8/handlebars.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.16.22/dist/css/uikit.min.css" />
+
+	<!-- UIkit JS -->
+	<script src="https://cdn.jsdelivr.net/npm/uikit@3.16.22/dist/js/uikit.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/uikit@3.16.22/dist/js/uikit-icons.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <div id="splash-screen" aria-live="polite" aria-busy="true">
+        <div class="hourglass" aria-hidden="true"></div>
+        <div class="loading-text">Loading...</div>
+    </div>
+	<header class="uk-box-shadow-small" style="background-color: #252525">
+		<div class="uk-container uk-container-expand">
+		<nav class="uk-navbar" id="navbar" data-uk-navbar>
+			<div class="uk-navbar-left">
+			<a class="uk-navbar-item uk-logo" href="/" style="color: #fff;font-family: Verdana, Geneva, Tahoma, sans-serif;">Results 24-h Thuringian Orienteering Relay 2026</a>
+			<span id="a"></span>
+			</div>
+			
+		</nav>
+		</div>
+	</header>
+	<div id="content" data-uk-height-viewport="expand: true">
+    <div class="uk-container uk-container-expand">
+
+
+<div id="quoteData"></div>
+
+<div id="pivot-section" style="display:none;" class="uk-margin-top">
+    <div id="pivot-resize-top" class="pivot-resize-top" title="Resize from top"></div>
+    <div id="pivot-resize-left" class="pivot-resize-left" title="Resize from left"></div>
+    <div class="pivot-header">
+        <h2>Course Time Comparison</h2>
+        <button class="uk-button uk-button-default uk-button-small" onclick="clearPivot()">Clear selection</button>
+    </div>
+    <div class="pivot-tabs">
+        <button id="pivot-tab-table" class="pivot-tab is-active" onclick="setPivotTab('table')">Table</button>
+        <button id="pivot-tab-chart" class="pivot-tab" onclick="setPivotTab('chart')">Chart</button>
+    </div>
+    <div id="pivot-table-panel" class="pivot-body">
+        <div id="pivot-table-content"></div>
+    </div>
+    <div id="pivot-chart-panel" class="pivot-body" style="display:none;">
+        <canvas id="pivot-chart-canvas"></canvas>
+    </div>
+</div>
+
+      <footer class="uk-section uk-section-small uk-text-center">
+        <hr>
+        <p class="uk-text-small uk-text-center">© 2026 <a href="https://24h-ol.de">24h OL</a></p>
+      </footer>
+    </div>
+	</div>
+<div class=”printable”></div>
+
+<script id="quote-template" type="text/x-handlebars-template">
+
+{{#each r}}
+    <h2 uk-toggle="target: #t-{{class_name}}">{{class_name}}</h2>
+    <table class="uk-table uk-table-divider uk-table-small" id="t-{{class_name}}">
+        <thead class="thead-light">
+        <tr><th>Rank</th><th>Compare</th><th>Team Name</th><th>Team #</th><th>Finish</th><th>Km</th><th>Leg Count</th></tr>
+        </thead>
+        <tbody>
+	{{#each teams}}
+		<tr><td>{{tRank @index}}</td>
+			<td><input type="checkbox" class="uk-checkbox team-select-cb" value="{{team_nr}}" onchange="buildPivot()"></td><td uk-toggle="target: #team-{{team_nr}}; animation: uk-animation-fade"><a>{{team_name}}</a></td><td>{{team_nr}}</td><td>{{team_time}}</td><td>{{kmRound courses_length}}</td><td>{{legs_count}}</td></tr>
+			<tr id="team-{{team_nr}}" hidden><td></td><td colspan="6">
+			
+			<table class="uk-table uk-table-hover uk-table-divider uk-table-small">
+			<thead class="thead-light">
+			<tr><th></th><th>Rank</th><th>Comp #</th><th>Comp Name</th><th>Course</th><th>Time</th><th>Finish</th><th>Status</th><th>Valid</th></tr>
+			</thead>
+			<tbody>
+		{{#each legs}}
+			<tr class="{{#if leg_valid}}{{else}}uk-text-muted{{/if}}"><td scope="row"></td>
+				<td>{{tRank @index}}</td>
+				<td>{{comp_bib}}</td><td>{{comp_name}}</td><td>{{leg_course}}</td><td><a href="#modal-slip{{leg_id}}" uk-toggle>{{leg_time}}</a></td><td>{{leg_finish}}</td>
+				<td>{{leg_status}}</td>
+				<td class="{{#if leg_valid}}uk-text-success{{else}}uk-text-danger{{/if}}">{{#if leg_valid}} Yes {{else}} No {{/if}}</td>
+			</tr>
+				
+				
+		{{else}}
+		   <tr><td>No Items</td></tr>
+		{{/each}}
+			</tbody>
+			</table>
+		</td></tr>
+	{{/each}}
+        </tbody>
+    </table>
+{{/each}}
+
+
+{{#each r}}
+	{{#each teams}}
+		{{#each legs}}
+<div id="modal-slip{{leg_id}}" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body">
+        <h2 class="uk-modal-title">Splits</h2>
+		<a href="" class="uk-icon-link uk-position-small uk-position-top-right print-button" id="slip{{leg_id}}" uk-icon="print"></a>
+        <ul>
+          <li>{{../team_name}}</li>
+          <li>{{comp_bib}} - {{comp_name}}</li>
+          <li>{{leg_course}}</li>
+          <li>Started at: {{leg_start}}</li>
+		  <li>{{leg_status}} - <b>{{leg_time}}</b></li>
+			{{#if (isDskPenalty dsk_penalty)}}<li><i>Penalty: {{dsk_penalty}}</i></li>{{/if}}		  
+        </ul>
+		<table class="uk-table uk-table-hover uk-table-divider uk-table-small">
+		<tr><th>Position</th><th>Code</th><th>Time</th><th>Lap</th></tr>
+		{{#each splits}}
+		<tr><td>{{position}}</td><td>{{control_code}}</td><td>{{punch_time}}</td><td>{{lap_time}}</td></tr>
+		{{/each}}
+		</table>
+		<p>Finished at: {{leg_finish}}</p>
+		<p class="uk-text-right"><button class="uk-button uk-button-default uk-modal-close" type="button">Close</button></p>
+    </div>
+</div>
+
+		{{/each}}
+	{{/each}}
+{{/each}}
+
+</script>
+<script>
+
+$(document).ready(function(){
+    $(".print-button").click(function(){
+        // Get class list string
+        var classList = $(".print-button").attr("id");
+        $("#modal-"+ classList).addClass("printable");
+		$("header").addClass("nonprintable");
+		$("#content").addClass("nonprintable");
+
+		//fire the print method 
+		window.print();
+        $("#modal-"+ classList).class("printable");
+		$("header").removeClass("nonprintable");
+		$("#content").removeClass("nonprintable");
+    });
+});
+
+</script>
+
+<script type="text/javascript">
+
+Handlebars.registerHelper('tRank', (idx) => {
+	return  idx + 1;
+});
+Handlebars.registerHelper('kmRound', (km) => {
+	return Math.round(km * 10) /10000;
+});
+Handlebars.registerHelper('isDskPenalty', (name) => {
+	return name != "00:00:00";
+});
+
+
+    var quoteInfo = document.getElementById("quote-template").innerHTML;
+    var template = Handlebars.compile(quoteInfo);
+
+    var rawData =
+        {
+			r:<!-- placeholder -->
+
+};
+    var allTeams = [];
+    rawData.r.forEach(function(cls){ cls.teams.forEach(function(t){ allTeams.push(t); }); });
+    var quoteData = template(rawData);
+    document.getElementById("quoteData").innerHTML = quoteData;
+
+var pivotChart = null;
+var pivotSelectedTeams = [];
+var pivotActiveTab = 'table';
+
+function parseHmsToSeconds(hms) {
+    if (!hms || hms.indexOf(':') === -1) return 0;
+    var p = hms.split(':');
+    if (p.length !== 3) return 0;
+    return (parseInt(p[0], 10) || 0) * 3600 + (parseInt(p[1], 10) || 0) * 60 + (parseInt(p[2], 10) || 0);
+}
+
+function formatSecondsHms(totalSeconds) {
+    var s = Math.max(0, Math.round(totalSeconds));
+    var h = Math.floor(s / 3600);
+    var m = Math.floor((s % 3600) / 60);
+    var sec = s % 60;
+    return String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0');
+}
+
+function setPivotTab(tabName) {
+    pivotActiveTab = tabName;
+    var tableTab = document.getElementById('pivot-tab-table');
+    var chartTab = document.getElementById('pivot-tab-chart');
+    var tablePanel = document.getElementById('pivot-table-panel');
+    var chartPanel = document.getElementById('pivot-chart-panel');
+
+    if (tabName === 'chart') {
+        tablePanel.style.display = 'none';
+        chartPanel.style.display = 'block';
+        tableTab.classList.remove('is-active');
+        chartTab.classList.add('is-active');
+        renderPivotChart();
+    } else {
+        tablePanel.style.display = 'block';
+        chartPanel.style.display = 'none';
+        tableTab.classList.add('is-active');
+        chartTab.classList.remove('is-active');
+    }
+}
+
+function renderPivotChart() {
+    var canvas = document.getElementById('pivot-chart-canvas');
+    if (!canvas || pivotSelectedTeams.length === 0 || typeof Chart === 'undefined') return;
+
+    var colors = ['#1f77b4', '#e15759', '#2ca02c', '#ff7f0e', '#9467bd', '#17becf', '#8c564b', '#bcbd22'];
+    var datasets = pivotSelectedTeams.map(function(team, i){
+        var tSec = 0;
+        var distKm = 0;
+        var validLegs = 0;
+        var points = [{x: 0, y: 0, validLegs: 0, legCourse: '-'}];
+        team.legs.forEach(function(leg){
+            tSec += parseHmsToSeconds(leg.leg_time);
+            if (leg.leg_valid) {
+                validLegs += 1;
+                distKm += ((leg.leg_length || 0) / 1000);
+            }
+            points.push({
+                x: tSec,
+                y: Math.round(distKm * 100) / 100,
+                validLegs: validLegs,
+				legTime: leg.leg_time,
+                legCourse: leg.leg_course || '-'
+            });
+        });
+
+        return {
+            label: team.team_nr + ' - ' + team.team_name,
+            data: points,
+            borderColor: colors[i % colors.length],
+            backgroundColor: colors[i % colors.length],
+            borderWidth: 2,
+            pointRadius: 2,
+            stepped: true,
+            fill: false
+        };
+    });
+
+    if (pivotChart) pivotChart.destroy();
+
+    pivotChart = new Chart(canvas, {
+        type: 'line',
+        data: { datasets: datasets },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            parsing: false,
+            animation: false,
+            scales: {
+                x: {
+                    type: 'linear',
+                    title: { display: true, text: 'Time (hh:mm)' },
+                    ticks: {
+                        stepSize: 3600,
+                        callback: function(value){ return formatSecondsHms(value); }
+                    }
+                },
+                y: {
+                    title: { display: true, text: 'Total length after leg (km)' },
+                    beginAtZero: true
+                }
+            },
+            plugins: {
+                legend: { position: 'bottom' },
+                tooltip: {
+                    callbacks: {
+                        title: function(items) {
+                            return (items && items.length > 0 && items[0].dataset) ? items[0].dataset.label : '';
+                        },
+                        label: function(context) {
+                            var p = context.raw || {};
+                            var timeText = 'Time: ' + formatSecondsHms(p.x || 0);
+//                            var distanceText = 'Distance: ' + (Number(p.y || 0)).toFixed(2) + ' km';
+                            var validLegsText = 'Valid legs: ' + (p.validLegs || 0);
+                            var courseText = 'Leg course: ' + (p.legCourse || '-');
+							var courseTime = 'Leg time:' + (p.legTime)
+                            return [timeText, validLegsText, courseText, courseTime];
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+
+function buildPivot() {
+    var selectedNrs = [];
+    document.querySelectorAll('.team-select-cb:checked').forEach(function(cb){
+        selectedNrs.push(parseInt(cb.value, 10));
+    });
+    var pivotSection = document.getElementById('pivot-section');
+    if (selectedNrs.length === 0) {
+        pivotSection.style.display = 'none';
+        if (pivotChart) { pivotChart.destroy(); pivotChart = null; }
+        pivotSelectedTeams = [];
+        return;
+    }
+    pivotSection.style.display = 'block';
+
+    var selectedTeams = allTeams.filter(function(t){ return selectedNrs.indexOf(t.team_nr) >= 0; });
+    pivotSelectedTeams = selectedTeams;
+
+    // collect all courses in order of first appearance
+    var allCourses = [];
+    selectedTeams.forEach(function(team){
+        team.legs.forEach(function(leg){
+            if (allCourses.indexOf(leg.leg_course) < 0) allCourses.push(leg.leg_course);
+        });
+    });
+
+    // build lookup: team_nr -> leg_course -> [times]
+    var lookup = {};
+    selectedTeams.forEach(function(team){
+        lookup[team.team_nr] = {};
+        team.legs.forEach(function(leg){
+            if (!lookup[team.team_nr][leg.leg_course]) lookup[team.team_nr][leg.leg_course] = [];
+            lookup[team.team_nr][leg.leg_course].push({id: leg.leg_id, time: leg.leg_time, valid: leg.leg_valid});
+        });
+    });
+
+    var html = '<table class="uk-table uk-table-divider uk-table-small uk-table-striped"><thead><tr><th>Course</th>';
+    selectedTeams.forEach(function(team){
+        html += '<th>' + team.team_nr + '<br><small>' + team.team_name + '</small></th>';
+    });
+    html += '</tr></thead><tbody>';
+    allCourses.forEach(function(course){
+        html += '<tr><td><strong>' + course + '</strong></td>';
+        selectedTeams.forEach(function(team){
+            var entries = lookup[team.team_nr][course];
+            html += '<td>' + (entries ? entries.map(function(e){
+                return '<a href="#modal-slip' + e.id + '" uk-toggle>' + e.time + (e.valid ? '' : '*') + '</a>';
+            }).join('<br>') : '&ndash;') + '</td>';
+        });
+        html += '</tr>';
+    });
+    html += '</tbody></table><p class="uk-text-muted uk-text-small">* invalid leg</p>';
+    document.getElementById('pivot-table-content').innerHTML = html;
+
+    if (pivotActiveTab === 'chart') {
+        renderPivotChart();
+    }
+}
+
+function clearPivot() {
+    document.querySelectorAll('.team-select-cb:checked').forEach(function(cb){ cb.checked = false; });
+    document.getElementById('pivot-section').style.display = 'none';
+    document.getElementById('pivot-table-content').innerHTML = '';
+    pivotSelectedTeams = [];
+    if (pivotChart) { pivotChart.destroy(); pivotChart = null; }
+    setPivotTab('table');
+}
+
+function initPivotResize() {
+    var pivot = document.getElementById('pivot-section');
+    var topHandle = document.getElementById('pivot-resize-top');
+    var leftHandle = document.getElementById('pivot-resize-left');
+    if (!pivot || !topHandle || !leftHandle) return;
+
+    var start = null;
+    var mode = null;
+    var minW = 360;
+    var minH = 220;
+
+    function onMove(e) {
+        if (!start || !mode) return;
+        if (mode === 'left') {
+            var dx = e.clientX - start.x;
+            var newW = Math.max(minW, Math.min(window.innerWidth - 16, start.w - dx));
+            pivot.style.width = newW + 'px';
+        }
+        if (mode === 'top') {
+            var dy = e.clientY - start.y;
+            var newH = Math.max(minH, Math.min(window.innerHeight - 16, start.h - dy));
+            pivot.style.height = newH + 'px';
+        }
+    }
+
+    function onUp() {
+        start = null;
+        mode = null;
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('mouseup', onUp);
+    }
+
+    function beginResize(e, resizeMode) {
+        e.preventDefault();
+        start = { x: e.clientX, y: e.clientY, w: pivot.offsetWidth, h: pivot.offsetHeight };
+        mode = resizeMode;
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup', onUp);
+    }
+
+    topHandle.addEventListener('mousedown', function(e){ beginResize(e, 'top'); });
+    leftHandle.addEventListener('mousedown', function(e){ beginResize(e, 'left'); });
+}
+
+function hideSplashScreen() {
+    var splash = document.getElementById('splash-screen');
+    if (splash) {
+        splash.style.display = 'none';
+    }
+}
+
+window.addEventListener('load', function() {
+    hideSplashScreen();
+    initPivotResize();
+});
+
+/*
+$document.ready(function(){
+   $.get('template.hbs', function( source ) {
+      var template = Handlebars.compile(source);
+      document.querySelector("#quote-template").innerHTML = template({});
+   })
+});
+*/    
+/*
+$.get('templates.hbs', function (data) {
+    var template = Handlebars.compile(data);
+    $("#quote-template").html(template(quoteData));
+}, 'html')
+*/
+    //document.getElementById("quoteData").innerHTML += quoteData;
+</script>
+</body>
+
+</html>
